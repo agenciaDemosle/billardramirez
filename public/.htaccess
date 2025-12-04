@@ -7,7 +7,31 @@ RewriteBase /
 # RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
 # ============================================
-# IMPORTANTE: Permitir acceso a la API de Mailchimp
+# REDIRECCIONES 301 - URLs ANTIGUAS DE WOOCOMMERCE
+# Redirige /product-category/X/ a /tienda?categoria=X
+# IMPORTANTE para SEO: mantiene el link juice de Google
+# ============================================
+
+# Redirección genérica para todas las categorías de producto
+RewriteRule ^product-category/(.+?)/?$ /tienda?categoria=$1 [R=301,L,QSA]
+
+# Redirección para productos individuales antiguos (si existían en /product/)
+RewriteRule ^product/(.+?)/?$ /producto/$1 [R=301,L,QSA]
+
+# Redirección para /shop/ antiguo
+RewriteRule ^shop/?$ /tienda [R=301,L]
+
+# Redirección para /tienda-2/ o variantes
+RewriteRule ^tienda-2/?$ /tienda [R=301,L]
+
+# Redirección para /cart/ antiguo
+RewriteRule ^cart/?$ /carrito [R=301,L]
+
+# Redirección para /my-account/ antiguo
+RewriteRule ^my-account/?$ / [R=301,L]
+
+# ============================================
+# IMPORTANTE: Permitir acceso a la API
 # Esta regla DEBE ir ANTES de la regla de React Router
 # ============================================
 RewriteCond %{REQUEST_URI} ^/api/
