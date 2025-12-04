@@ -175,21 +175,81 @@ export default function Shop() {
     (categoryParam ? 1 : 0) + (searchQuery ? 1 : 0) + (tipoParam ? 1 : 0) +
     (usoParam ? 1 : 0) + (superficieParam ? 1 : 0) + (acabadoParam ? 1 : 0);
 
-  // SEO dinámico basado en filtros
+  // SEO dinámico avanzado basado en filtros
   const generateSEOContent = () => {
     let title = 'Tienda - Mesas de Pool y Accesorios';
-    let description = 'Descubre nuestra amplia selección de mesas de pool profesionales, recreacionales y accesorios. Envío a todo Chile.';
-    let keywords = 'mesas pool, accesorios billar, tacos, bolas pool, comprar mesa pool chile';
+    let description = 'Descubre nuestra amplia selección de mesas de pool profesionales, recreacionales y accesorios de billar. Showroom en Santiago con envío a todo Chile. Precios competitivos y garantía.';
+    let keywords = 'mesas pool chile, accesorios billar, tacos pool, bolas pool, comprar mesa pool chile, tienda billar santiago, mesa pool precio';
+    let collectionName = 'Todos los Productos';
+    let collectionDescription = description;
 
-    if (categoryParam) {
+    const categoryData: Record<string, { title: string; desc: string; keywords: string }> = {
+      'mesas-de-pool': {
+        title: 'Mesas de Pool - Profesionales y Recreacionales',
+        desc: 'Mesas de pool profesionales con superficie de pizarra y recreacionales para el hogar. Variedad de tamaños y acabados. Instalación incluida en Santiago. Envío a todo Chile.',
+        keywords: 'mesas de pool, mesa pool profesional, mesa pool recreacional, mesa billar chile, comprar mesa pool, mesa pool pizarra, mesa pool madera'
+      },
+      'superficie-en-piedra': {
+        title: 'Mesas de Pool con Superficie de Piedra - Profesionales',
+        desc: 'Mesas de pool profesionales con superficie de pizarra italiana. Rebote perfecto y máxima durabilidad. Ideales para torneos y uso intensivo. Envío e instalación a todo Chile.',
+        keywords: 'mesa pool pizarra, mesa pool piedra, mesa billar profesional, mesa pool torneo, pizarra italiana'
+      },
+      'superficie-en-madera': {
+        title: 'Mesas de Pool con Superficie de Madera - Para el Hogar',
+        desc: 'Mesas de pool con superficie de madera MDF, perfectas para uso recreacional en casa. Excelente relación precio-calidad. Fácil armado y envío a todo Chile.',
+        keywords: 'mesa pool madera, mesa pool mdf, mesa pool casa, mesa pool económica, mesa billar hogar'
+      },
+      'tacos': {
+        title: 'Tacos de Billar - Profesionales y Recreacionales',
+        desc: 'Tacos de billar de alta calidad en diferentes materiales y pesos. Tacos profesionales de arce y tacos recreacionales. Envío a todo Chile.',
+        keywords: 'tacos billar, taco pool, taco profesional, taco arce, palos de pool chile'
+      },
+      'bolas-de-pool': {
+        title: 'Bolas de Pool - Sets Profesionales y Recreacionales',
+        desc: 'Sets de bolas de pool en diferentes calidades. Bolas de resina profesionales y sets recreacionales. Numeradas y lisas disponibles. Envío a todo Chile.',
+        keywords: 'bolas pool, set bolas billar, bolas pool profesionales, bolas aramith, bolas resina'
+      },
+      'accesorios': {
+        title: 'Accesorios de Billar - Todo para tu Mesa de Pool',
+        desc: 'Accesorios de billar: tizas, portatizas, guantes, paños, triángulos, cepillos y más. Todo lo que necesitas para tu mesa de pool. Envío gratis sobre $100.000.',
+        keywords: 'accesorios billar, tiza pool, guantes billar, paño mesa pool, triángulo pool, cepillo mesa'
+      },
+      'fundas': {
+        title: 'Fundas para Mesa de Pool - Protección Premium',
+        desc: 'Fundas protectoras para mesas de pool en diferentes tamaños. Material resistente al agua y polvo. Protege tu inversión. Envío a todo Chile.',
+        keywords: 'funda mesa pool, cobertor mesa billar, protector mesa pool, funda impermeable'
+      },
+      'luces': {
+        title: 'Lámparas para Mesa de Pool - Iluminación Profesional',
+        desc: 'Lámparas y luces para mesas de pool. Iluminación profesional Tiffany y moderna. Diferentes estilos y tamaños. Envío a todo Chile.',
+        keywords: 'lampara mesa pool, luz billar, iluminación pool, lampara tiffany billar'
+      },
+      'tapas-comedor': {
+        title: 'Tapas Comedor para Mesa de Pool - 2 en 1',
+        desc: 'Tapas comedor para convertir tu mesa de pool en mesa de comedor. Máximo aprovechamiento del espacio. Diferentes acabados disponibles.',
+        keywords: 'tapa comedor mesa pool, mesa pool comedor, convertidor mesa pool, tapa mesa billar'
+      }
+    };
+
+    if (categoryParam && categoryData[categoryParam]) {
+      const data = categoryData[categoryParam];
+      title = data.title;
+      description = data.desc;
+      keywords = data.keywords;
+      collectionName = categories?.find(cat => cat.slug === categoryParam)?.name || categoryParam;
+      collectionDescription = data.desc;
+    } else if (categoryParam) {
       const categoryName = categories?.find(cat => cat.slug === categoryParam)?.name || categoryParam;
       title = `${categoryName} - Billard Ramirez`;
-      description = `Explora nuestra selección de ${categoryName.toLowerCase()}. Productos de calidad con envío a todo Chile.`;
+      description = `Explora nuestra selección de ${categoryName.toLowerCase()}. Productos de calidad premium con envío a todo Chile y garantía.`;
+      collectionName = categoryName;
+      collectionDescription = description;
     }
 
     if (searchQuery) {
       title = `Resultados para "${searchQuery}" - Billard Ramirez`;
-      description = `Encuentra ${searchQuery} y más productos de pool y billar en Billard Ramirez.`;
+      description = `Encuentra ${searchQuery} y más productos de pool y billar en Billard Ramirez. Envío a todo Chile.`;
+      collectionName = `Búsqueda: ${searchQuery}`;
     }
 
     if (tipoParam) {
@@ -197,9 +257,10 @@ export default function Shop() {
       title = `Mesas de Pool ${tipoCapitalized}es - Billard Ramirez`;
       description = `Descubre nuestras mesas de pool ${tipoParam}es de alta calidad. Precios competitivos y envío a todo Chile.`;
       keywords = `mesas pool ${tipoParam}, mesa billar ${tipoParam} chile, ${tipoParam} pool`;
+      collectionName = `Mesas ${tipoCapitalized}es`;
     }
 
-    return { title, description, keywords };
+    return { title, description, keywords, collectionName, collectionDescription };
   };
 
   const seoContent = generateSEOContent();
@@ -209,6 +270,16 @@ export default function Shop() {
     ? categories?.find(cat => cat.slug === categoryParam)?.name
     : null;
 
+  // Breadcrumbs para SEO
+  const breadcrumbs = [
+    { name: 'Inicio', url: 'https://billardramirez.cl/' },
+    { name: 'Tienda', url: 'https://billardramirez.cl/tienda' },
+    ...(categoryParam && currentCategoryName ? [{
+      name: currentCategoryName,
+      url: `https://billardramirez.cl/tienda?categoria=${categoryParam}`
+    }] : [])
+  ];
+
   return (
     <>
       <SEO
@@ -216,6 +287,14 @@ export default function Shop() {
         description={seoContent.description}
         keywords={seoContent.keywords}
         canonical={`https://billardramirez.cl/tienda${categoryParam ? `?categoria=${categoryParam}` : ''}`}
+        breadcrumbs={breadcrumbs}
+        pageType="category"
+        collection={{
+          name: seoContent.collectionName,
+          description: seoContent.collectionDescription,
+          itemCount: products?.length || 0,
+          category: currentCategoryName || 'Productos de Billar'
+        }}
       />
 
       <div className="bg-white min-h-screen">

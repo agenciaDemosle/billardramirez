@@ -137,10 +137,21 @@ export default function Footer() {
       <div className="border-t border-gray-800">
         <div className="max-w-[1590px] mx-auto px-5 md:px-8 lg:px-16 py-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-500">
-            <p>
-              © {currentYear} Billard Ramirez. Todos los derechos reservados.
-            </p>
-            <div className="flex gap-6">
+            <div className="flex items-center gap-4">
+              <p>
+                © {currentYear} Billard Ramirez. Todos los derechos reservados.
+              </p>
+              <span className="hidden md:inline text-gray-600">|</span>
+              <a
+                href="https://demosle.cl"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-white transition-colors"
+              >
+                Creado por demosle.cl
+              </a>
+            </div>
+            <div className="flex items-center gap-6">
               <Link to="/terminos-condiciones" className="hover:text-white transition-colors">
                 Términos
               </Link>

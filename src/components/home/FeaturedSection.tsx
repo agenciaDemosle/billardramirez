@@ -94,7 +94,7 @@ export default function FeaturedSection() {
             <Link
               key={product.id}
               to={`/producto/${product.slug}`}
-              className="flex-shrink-0 w-[calc(50%-2px)] md:w-[calc(33.333%-3px)] lg:w-[calc(25%-3px)] snap-start group relative overflow-hidden aspect-[4/5]"
+              className="flex-shrink-0 w-[calc(100%-24px)] sm:w-[calc(50%-4px)] md:w-[calc(33.333%-5px)] lg:w-[calc(25%-6px)] snap-start group relative overflow-hidden aspect-[4/5] first:ml-3 sm:first:ml-0"
             >
               {/* Image */}
               <img
@@ -102,13 +102,15 @@ export default function FeaturedSection() {
                 alt={product.name}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
               />
-              {/* Title - Arriba con primera palabra destacada con font Brothers */}
-              <div className="absolute top-6 sm:top-10 left-0 right-0 p-4 sm:p-6">
-                <h3 className="text-white text-xl sm:text-2xl md:text-3xl lg:text-4xl font-display uppercase leading-tight tracking-wide text-center">
-                  <span className="block font-display text-white text-4xl sm:text-5xl md:text-6xl lg:text-7xl uppercase tracking-wider mb-1">
+              {/* Overlay oscuro para legibilidad */}
+              <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-transparent"></div>
+              {/* Title - Arriba con primera palabra destacada */}
+              <div className="absolute top-4 sm:top-10 left-0 right-0 p-3 sm:p-6">
+                <h3 className="text-white font-display uppercase leading-tight tracking-wide text-center drop-shadow-lg">
+                  <span className="block text-2xl sm:text-5xl md:text-6xl lg:text-7xl tracking-wider mb-1">
                     {product.name.split(' ')[0]}
                   </span>
-                  <span>
+                  <span className="block text-base sm:text-2xl md:text-3xl lg:text-4xl">
                     {product.name.split(' ').slice(1).join(' ')}
                   </span>
                 </h3>

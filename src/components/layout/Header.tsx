@@ -1,18 +1,78 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Menu, X, Search, ShoppingCart, Phone, Home, Store, Mail, ChevronDown, Box, Star, Package, Flame, Sparkles } from 'lucide-react';
+import { Menu, X, Search, ShoppingCart, Phone, Mail, ChevronDown, Box, Star, Package, Flame, Mic } from 'lucide-react';
 import { useCart } from '../../hooks/useCart';
 import { useQuery } from '@tanstack/react-query';
 import { wooApi } from '../../api/woocommerce';
 import CategoryMenu from './CategoryMenu';
+
+// Extend Window interface for SpeechRecognition
+declare global {
+  interface Window {
+    SpeechRecognition: typeof SpeechRecognition;
+    webkitSpeechRecognition: typeof SpeechRecognition;
+  }
+}
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [isListening, setIsListening] = useState(false);
+  const [isSearchingVoice, setIsSearchingVoice] = useState(false);
   const { itemCount, toggleCart } = useCart();
   const navigate = useNavigate();
+
+  // Speech Recognition
+  const startVoiceSearch = () => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (!SpeechRecognition) {
+      alert('Tu navegador no soporta búsqueda por voz. Prueba con Chrome o Edge.');
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'es-CL';
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    recognition.onstart = () => {
+      setIsListening(true);
+    };
+
+    recognition.onresult = (event: SpeechRecognitionEvent) => {
+      const transcript = event.results[0][0].transcript;
+      setSearchQuery(transcript);
+      setIsListening(false);
+      setIsSearchingVoice(true);
+
+      // Auto-search after voice input with small delay to show "Buscando..."
+      if (transcript.trim()) {
+        setTimeout(() => {
+          const params = new URLSearchParams();
+          params.set('buscar', transcript.trim());
+          navigate(`/tienda?${params.toString()}`);
+          setSearchQuery('');
+          setIsMenuOpen(false);
+          setIsSearchingVoice(false);
+        }, 800);
+      } else {
+        setIsSearchingVoice(false);
+      }
+    };
+
+    recognition.onerror = () => {
+      setIsListening(false);
+    };
+
+    recognition.onend = () => {
+      setIsListening(false);
+    };
+
+    recognition.start();
+  };
 
   // Colores de bolas de billar según el número
   const getBallColor = (count: number) => {
@@ -214,23 +274,16 @@ export default function Header() {
                 />
               </Link>
 
-              {/* Carrito y Menú - Botones táctiles más grandes */}
+              {/* Carrito y Menú - Estilo minimalista */}
               <div className="flex items-center gap-1">
                 <button
                   onClick={toggleCart}
-                  className="relative text-white p-2.5 hover:bg-white/20 rounded-lg transition-colors active:scale-95 touch-target"
+                  className="relative text-white p-2.5 transition-all"
                   aria-label="Carrito de compras"
                 >
-                  <ShoppingCart size={24} strokeWidth={2.5} />
+                  <ShoppingCart size={22} strokeWidth={1.5} />
                   {itemCount > 0 && (
-                    <span
-                      className="absolute -top-0.5 -right-0.5 text-[10px] font-bold rounded-full h-5 w-5 flex items-center justify-center shadow-lg border-2 transition-all duration-300"
-                      style={{
-                        backgroundColor: ballColor.bg,
-                        color: ballColor.text,
-                        borderColor: ballColor.border
-                      }}
-                    >
+                    <span className="absolute -top-0.5 -right-0.5 text-[10px] font-medium bg-white text-[#00963c] h-4 w-4 flex items-center justify-center rounded-full">
                       {itemCount}
                     </span>
                   )}
@@ -238,10 +291,10 @@ export default function Header() {
 
                 <button
                   onClick={() => setIsMenuOpen(!isMenuOpen)}
-                  className="text-white p-2.5 hover:bg-white/10 rounded-lg transition-colors touch-target"
+                  className="text-white p-2.5 transition-colors"
                   aria-label={isMenuOpen ? 'Cerrar menú' : 'Abrir menú'}
                 >
-                  {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                  {isMenuOpen ? <X size={22} strokeWidth={1.5} /> : <Menu size={22} strokeWidth={1.5} />}
                 </button>
               </div>
             </div>
@@ -256,9 +309,21 @@ export default function Header() {
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onFocus={() => setShowSuggestions(true)}
                   onBlur={() => setTimeout(() => setShowSuggestions(false), 300)}
-                  placeholder="Buscar productos..."
+                  placeholder={isListening ? 'Escuchando...' : isSearchingVoice ? 'Buscando...' : 'Buscar productos...'}
                   className="flex-1 px-3 py-2.5 bg-transparent text-white text-sm focus:outline-none placeholder:text-white/50"
                 />
+                <button
+                  type="button"
+                  onClick={startVoiceSearch}
+                  className={`mr-3 p-1.5 rounded-full transition-all ${
+                    isListening
+                      ? 'bg-white text-[#00963c] animate-pulse'
+                      : 'text-white/60 hover:text-white hover:bg-white/10'
+                  }`}
+                  aria-label="Buscar por voz"
+                >
+                  <Mic size={16} />
+                </button>
               </form>
 
               {/* Sugerencias Mobile - Estilo minimalista */}
@@ -312,9 +377,21 @@ export default function Header() {
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onFocus={() => setShowSuggestions(true)}
                   onBlur={() => setTimeout(() => setShowSuggestions(false), 300)}
-                  placeholder="Buscar productos..."
+                  placeholder={isListening ? 'Escuchando...' : isSearchingVoice ? 'Buscando...' : 'Buscar productos...'}
                   className="flex-1 px-4 py-2.5 bg-transparent text-white text-sm focus:outline-none placeholder:text-white/50"
                 />
+                <button
+                  type="button"
+                  onClick={startVoiceSearch}
+                  className={`mr-4 p-1.5 rounded-full transition-all ${
+                    isListening
+                      ? 'bg-white text-[#00963c] animate-pulse'
+                      : 'text-white/60 hover:text-white hover:bg-white/10'
+                  }`}
+                  aria-label="Buscar por voz"
+                >
+                  <Mic size={18} />
+                </button>
               </form>
 
               {/* Sugerencias Desktop - Estilo minimalista */}
@@ -401,177 +478,186 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Mobile Sidebar Menu */}
-      {isMenuOpen && (
-        <>
-          {/* Overlay */}
-          <div
-            className="md:hidden fixed inset-0 bg-black/60 z-[60] transition-opacity animate-in fade-in duration-200 backdrop-blur-sm"
+      {/* Mobile Full Screen Menu - Estilo Redecora */}
+      <div
+        className={`md:hidden fixed inset-0 bg-white z-[70] transform transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+          isMenuOpen ? 'translate-x-0' : 'translate-x-full'
+        }`}
+      >
+        {/* Header del menú */}
+        <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
+          <Link
+            to="/"
             onClick={() => setIsMenuOpen(false)}
-          />
+            className="block"
+          >
+            <img
+              src="/images/logo.png"
+              alt="Billard Ramirez"
+              className="h-8 w-auto"
+            />
+          </Link>
+          <button
+            onClick={() => setIsMenuOpen(false)}
+            className="p-2 text-black hover:opacity-60 transition-opacity"
+            aria-label="Cerrar menú"
+          >
+            <X size={24} strokeWidth={1.5} />
+          </button>
+        </div>
 
-          {/* Sidebar - Ancho optimizado y scroll suave */}
-          <div className="md:hidden fixed top-0 right-0 h-full w-[85vw] max-w-[320px] bg-white z-[70] shadow-2xl transform transition-transform duration-300 ease-in-out overflow-y-auto scroll-smooth-mobile slide-in-right safe-area-inset">
-            {/* Header del Sidebar - Más compacto */}
-            <div className="bg-[#00963c] px-4 py-4 flex items-center justify-between sticky top-0 z-10">
-              <div className="flex items-center gap-3">
-                <img
-                  src="/images/logo.png"
-                  alt="Billard Ramirez"
-                  className="h-8 w-auto brightness-0 invert"
-                />
-              </div>
-              <button
+        {/* Contenido scrolleable */}
+        <div className="h-[calc(100vh-65px)] overflow-y-auto">
+          {/* Navegación Principal */}
+          <nav className="px-5 py-6">
+            <div className="space-y-0">
+              <Link
+                to="/"
+                className="block py-3 text-2xl font-display uppercase tracking-wide text-black hover:opacity-60 transition-opacity border-b border-gray-100"
                 onClick={() => setIsMenuOpen(false)}
-                className="text-white hover:bg-white/10 p-2.5 rounded-lg transition-colors touch-target"
-                aria-label="Cerrar menú"
               >
-                <X size={24} />
-              </button>
-            </div>
-
-            {/* Navegación Principal - Espaciado táctil optimizado */}
-            <div className="p-4 border-b border-gray-200">
-              <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-3">
-                Menú Principal
-              </h3>
-
-              {/* Botón destacado de cotización */}
+                Inicio
+              </Link>
+              <Link
+                to="/tienda"
+                className="block py-3 text-2xl font-display uppercase tracking-wide text-black hover:opacity-60 transition-opacity border-b border-gray-100"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Tienda
+              </Link>
               <Link
                 to="/tienda?categoria=mesas-de-pool"
-                className="flex items-center justify-center gap-2 mb-4 bg-accent hover:bg-accent/90 text-white font-bold px-4 py-3.5 rounded-lg transition-all duration-300 shadow-md touch-target"
+                className="block py-3 text-2xl font-display uppercase tracking-wide text-black hover:opacity-60 transition-opacity border-b border-gray-100"
                 onClick={() => setIsMenuOpen(false)}
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                </svg>
-                Cotizar mi mesa de pool
+                Mesas de Pool
               </Link>
-
-              <nav className="space-y-1">
-                <Link
-                  to="/"
-                  className="flex items-center gap-3 px-4 py-3.5 text-gray-700 hover:bg-[#00963c]/5 hover:text-[#00963c] rounded-lg transition-colors font-medium touch-target"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  <Home size={22} />
-                  Inicio
-                </Link>
-                <Link
-                  to="/tienda"
-                  className="flex items-center gap-3 px-4 py-3.5 text-gray-700 hover:bg-[#00963c]/5 hover:text-[#00963c] rounded-lg transition-colors font-medium touch-target"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  <Store size={22} />
-                  Tienda
-                </Link>
-                <Link
-                  to="/tienda?categoria=tacos"
-                  className="flex items-center gap-3 px-4 py-3.5 text-gray-700 hover:bg-gradient-to-r hover:from-amber-50 hover:to-yellow-50 hover:text-amber-700 rounded-lg transition-all font-medium border-2 border-transparent hover:border-amber-300 touch-target"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  <Sparkles size={22} className="text-amber-500" />
-                  <span>Personaliza tu Taco</span>
-                </Link>
-                <Link
-                  to="/contacto"
-                  className="flex items-center gap-3 px-4 py-3.5 text-gray-700 hover:bg-[#00963c]/5 hover:text-[#00963c] rounded-lg transition-colors font-medium touch-target"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  <Mail size={22} />
-                  Contacto
-                </Link>
-              </nav>
+              <Link
+                to="/tienda?categoria=accesorios"
+                className="block py-3 text-2xl font-display uppercase tracking-wide text-black hover:opacity-60 transition-opacity border-b border-gray-100"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Accesorios
+              </Link>
+              <Link
+                to="/contacto"
+                className="block py-3 text-2xl font-display uppercase tracking-wide text-black hover:opacity-60 transition-opacity border-b border-gray-100"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Contacto
+              </Link>
             </div>
+          </nav>
 
-            {/* Categorías de Productos */}
-            <div className="p-4">
-              <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-3">
-                Categorías
-              </h3>
-              <nav className="space-y-1">
-                {mainCategories.map((category) => {
-                  const IconComponent = category.icon;
-                  const hasSubcategories = category.subcategories.length > 0;
-                  const isExpanded = expandedCategory === category.slug;
+          {/* Categorías */}
+          <div className="px-5 py-4 border-t border-gray-100">
+            <p className="text-[10px] uppercase tracking-[0.2em] text-gray-400 mb-4">
+              Categorías
+            </p>
+            <div className="space-y-0">
+              {mainCategories.map((category) => {
+                const hasSubcategories = category.subcategories.length > 0;
+                const isExpanded = expandedCategory === category.slug;
 
-                  return (
-                    <div key={category.slug}>
-                      {/* Categoría principal */}
-                      <div className="flex items-center">
-                        <Link
-                          to={`/tienda?categoria=${category.slug}`}
-                          className="flex-1 flex items-center gap-3 px-4 py-3.5 text-gray-700 hover:bg-[#00963c]/5 hover:text-[#00963c] rounded-lg transition-colors font-bold touch-target"
-                          onClick={() => setIsMenuOpen(false)}
+                return (
+                  <div key={category.slug} className="border-b border-gray-100">
+                    <div className="flex items-center justify-between">
+                      <Link
+                        to={`/tienda?categoria=${category.slug}`}
+                        className="flex-1 py-3 text-sm uppercase tracking-wider text-gray-600 hover:text-black transition-colors"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        {category.name}
+                      </Link>
+                      {hasSubcategories && (
+                        <button
+                          onClick={() => setExpandedCategory(isExpanded ? null : category.slug)}
+                          className="p-3 text-gray-400 hover:text-black transition-colors"
+                          aria-label={isExpanded ? 'Contraer' : 'Expandir'}
                         >
-                          <IconComponent size={22} />
-                          {category.name}
-                        </Link>
-
-                        {/* Botón expandir si tiene subcategorías */}
-                        {hasSubcategories && (
-                          <button
-                            onClick={() => setExpandedCategory(isExpanded ? null : category.slug)}
-                            className="p-3.5 text-gray-500 hover:text-[#00963c] transition-colors touch-target"
-                            aria-label={isExpanded ? 'Contraer' : 'Expandir'}
-                          >
-                            <ChevronDown
-                              size={22}
-                              className={`transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`}
-                            />
-                          </button>
-                        )}
-                      </div>
-
-                      {/* Subcategorías expandibles */}
-                      {hasSubcategories && isExpanded && (
-                        <div className="ml-4 mt-1 space-y-0.5 border-l-2 border-[#00963c]/20 pl-3">
-                          {category.subcategories.map((subcategory, index) => (
-                            <Link
-                              key={subcategory.slug}
-                              to={`/tienda?categoria=${subcategory.slug}`}
-                              className="flex items-center gap-3 px-3 py-3 text-sm text-gray-600 hover:text-[#00963c] hover:bg-[#00963c]/5 rounded-lg transition-colors touch-target"
-                              onClick={() => setIsMenuOpen(false)}
-                            >
-                              <div className="w-6 h-6 rounded-full bg-white border-2 border-[#00963c] flex items-center justify-center text-xs font-bold text-[#00963c] flex-shrink-0">
-                                {index + 1}
-                              </div>
-                              <span className="truncate">{subcategory.name}</span>
-                            </Link>
-                          ))}
-                        </div>
+                          <ChevronDown
+                            size={16}
+                            strokeWidth={1.5}
+                            className={`transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`}
+                          />
+                        </button>
                       )}
                     </div>
-                  );
-                })}
-              </nav>
-            </div>
 
-            {/* Información de Contacto - Más compacto */}
-            <div className="p-4 border-t border-gray-200 bg-gray-50 safe-area-bottom">
-              <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-3">
-                Contacto
-              </h3>
-              <div className="space-y-2">
-                <a
-                  href="tel:+56965839601"
-                  className="flex items-center gap-3 px-3 py-3 text-sm text-gray-700 hover:text-[#00963c] hover:bg-[#00963c]/5 rounded-lg transition-colors touch-target"
-                >
-                  <Phone size={20} />
-                  +56 9 6583 9601
-                </a>
-                <a
-                  href="mailto:contacto@billardramirez.cl"
-                  className="flex items-center gap-3 px-3 py-3 text-sm text-gray-700 hover:text-[#00963c] hover:bg-[#00963c]/5 rounded-lg transition-colors touch-target"
-                >
-                  <Mail size={20} />
-                  contacto@billardramirez.cl
-                </a>
-              </div>
+                    {/* Subcategorías */}
+                    <div
+                      className={`overflow-hidden transition-all duration-300 ease-out ${
+                        isExpanded ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+                      }`}
+                    >
+                      <div className="pl-4 pb-3 space-y-0">
+                        {category.subcategories.map((subcategory) => (
+                          <Link
+                            key={subcategory.slug}
+                            to={`/tienda?categoria=${subcategory.slug}`}
+                            className="block py-2 text-xs uppercase tracking-wider text-gray-400 hover:text-black transition-colors"
+                            onClick={() => setIsMenuOpen(false)}
+                          >
+                            {subcategory.name}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
-        </>
-      )}
+
+          {/* CTA Cotizar */}
+          <div className="px-5 py-6">
+            <Link
+              to="/tienda?categoria=mesas-de-pool"
+              className="block w-full py-4 text-center text-xs uppercase tracking-[0.2em] bg-black text-white hover:bg-gray-900 transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Cotizar Mesa
+            </Link>
+          </div>
+
+          {/* Footer del menú */}
+          <div className="px-5 py-6 border-t border-gray-100 bg-gray-50">
+            <p className="text-[10px] uppercase tracking-[0.2em] text-gray-400 mb-4">
+              Contacto
+            </p>
+            <div className="space-y-3">
+              <a
+                href="tel:+56965839601"
+                className="block text-sm text-gray-600 hover:text-black transition-colors"
+              >
+                +56 9 6583 9601
+              </a>
+              <a
+                href="mailto:contacto@billardramirez.cl"
+                className="block text-sm text-gray-600 hover:text-black transition-colors"
+              >
+                contacto@billardramirez.cl
+              </a>
+              <p className="text-sm text-gray-600">
+                Maximiliano Ibáñez 1436, Quinta Normal
+              </p>
+            </div>
+
+            {/* Horario */}
+            <div className="mt-6 pt-4 border-t border-gray-200">
+              <p className="text-[10px] uppercase tracking-[0.2em] text-gray-400 mb-2">
+                Horario
+              </p>
+              <p className="text-xs text-gray-500">
+                Lun - Vie: 9:00 - 18:00
+              </p>
+              <p className="text-xs text-gray-500">
+                Sábados: 10:00 - 14:00
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

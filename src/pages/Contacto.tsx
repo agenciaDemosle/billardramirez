@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 import { Mail, Phone, MapPin, Clock } from 'lucide-react';
 import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
+import SEO from '../components/SEO';
 
 const contactSchema = z.object({
   name: z.string().min(2, 'El nombre debe tener al menos 2 caracteres'),
@@ -57,7 +58,40 @@ export default function Contacto() {
     }
   };
 
+  const contactStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    "name": "Contacto - Billard Ramirez",
+    "description": "Página de contacto de Billard Ramirez",
+    "url": "https://billardramirez.cl/contacto",
+    "mainEntity": {
+      "@type": "Organization",
+      "name": "Billard Ramirez",
+      "telephone": "+56965839601",
+      "email": "contacto@billardramirez.cl",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Maximiliano Ibáñez 1436",
+        "addressLocality": "Quinta Normal",
+        "addressRegion": "Región Metropolitana",
+        "addressCountry": "CL"
+      }
+    }
+  };
+
   return (
+    <>
+      <SEO
+        title="Contacto - Billard Ramirez"
+        description="Contáctanos para cotizar mesas de pool, resolver dudas o agendar una visita a nuestro showroom en Santiago. Teléfono: +56 9 6583 9601. Atención personalizada."
+        canonical="https://billardramirez.cl/contacto"
+        keywords="contacto billard ramirez, teléfono mesas de pool, cotizar mesa pool, showroom billar santiago, atencion cliente pool"
+        structuredData={contactStructuredData}
+        breadcrumbs={[
+          { name: 'Inicio', url: 'https://billardramirez.cl/' },
+          { name: 'Contacto', url: 'https://billardramirez.cl/contacto' }
+        ]}
+      />
     <div className="min-h-screen bg-gray-50 py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
@@ -217,5 +251,6 @@ export default function Contacto() {
         </div>
       </div>
     </div>
+    </>
   );
 }

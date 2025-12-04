@@ -1,5 +1,4 @@
-import { Truck, Trophy, Shield, Headphones } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Truck, Trophy, Shield, Headphones, ArrowUp } from 'lucide-react';
 
 export default function ShowroomSection() {
   return (
@@ -38,16 +37,24 @@ export default function ShowroomSection() {
 
             {/* Botones - Estilo elegante negro/blanco */}
             <div className="flex flex-col sm:flex-row gap-4">
-              <Link to="/contacto">
+              <a
+                href="https://wa.me/56965839601?text=Hola%20quiero%20agendar%20una%20visita%20al%20showroom"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <button className="bg-white text-black hover:bg-black hover:text-white border-2 border-white font-medium px-8 py-4 uppercase text-sm tracking-wider transition-all duration-300">
                   Agendar visita
                 </button>
-              </Link>
-              <Link to="/contacto">
+              </a>
+              <a
+                href="https://www.google.com/maps/search/?api=1&query=Maximiliano+Ibáñez+1436,+Quinta+Normal,+Santiago,+Chile"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <button className="bg-transparent text-white hover:bg-white hover:text-black border-2 border-white font-medium px-8 py-4 uppercase text-sm tracking-wider transition-all duration-300">
                   Ver ubicación
                 </button>
-              </Link>
+              </a>
             </div>
           </div>
         </div>
@@ -93,6 +100,17 @@ export default function ShowroomSection() {
               <h3 className="font-display text-lg uppercase tracking-wide text-black mb-2">Asesoría</h3>
               <p className="text-gray-500 text-sm">Atención personalizada</p>
             </div>
+          </div>
+
+          {/* Botón Volver al inicio */}
+          <div className="mt-12 text-center">
+            <button
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className="inline-flex items-center gap-2 text-black hover:opacity-60 transition-opacity uppercase text-sm tracking-wider font-medium"
+            >
+              <ArrowUp size={18} strokeWidth={2} />
+              Volver al inicio
+            </button>
           </div>
         </div>
       </section>
