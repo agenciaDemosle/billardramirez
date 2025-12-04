@@ -1,0 +1,365 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Dancing+Script:wght@400;500;600;700&display=swap');
+
+/* Brothers Font - Regular */
+@font-face {
+  font-family: 'Brothers';
+  src: url('/fonts/Brothers-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Colores principales - temática pool/billar */
+    --color-primary: #1a472a;
+    --color-secondary: #8b4513;
+    --color-accent: #ffd700;
+
+    /* Colores complementarios */
+    --color-felt-green: #0f5c3c;
+    --color-wood-dark: #654321;
+    --color-cream: #fffacd;
+
+    /* UI Estados */
+    --color-success: #10b981;
+    --color-error: #ef4444;
+    --color-warning: #f59e0b;
+
+    /* Neutros */
+    --color-gray-50: #f9fafb;
+    --color-gray-900: #111827;
+
+    /* === SISTEMA RESPONSIVE ESTILO REDECORA === */
+    /* Espaciados fluidos */
+    --gutter-xs: 12px;
+    --gutter-sm: 16px;
+    --gutter-md: 24px;
+    --gutter-lg: 32px;
+    --gutter-xl: 48px;
+
+    /* Tipografía fluida base */
+    --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+    --text-sm: clamp(0.875rem, 0.8rem + 0.35vw, 1rem);
+    --text-base: clamp(1rem, 0.9rem + 0.5vw, 1.125rem);
+    --text-lg: clamp(1.125rem, 1rem + 0.625vw, 1.25rem);
+    --text-xl: clamp(1.25rem, 1.1rem + 0.75vw, 1.5rem);
+    --text-2xl: clamp(1.5rem, 1.25rem + 1.25vw, 2rem);
+    --text-3xl: clamp(1.875rem, 1.5rem + 1.875vw, 2.5rem);
+    --text-4xl: clamp(2.25rem, 1.75rem + 2.5vw, 3rem);
+    --text-5xl: clamp(3rem, 2rem + 5vw, 4rem);
+
+    /* Radios de botones */
+    --btn-radius: 4px;
+    --card-radius: 8px;
+  }
+
+  /* Breakpoints para variables CSS */
+  @media (min-width: 640px) {
+    :root {
+      --gutter-xs: 16px;
+      --gutter-sm: 20px;
+      --gutter-md: 32px;
+      --gutter-lg: 48px;
+      --gutter-xl: 64px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    :root {
+      --gutter-xs: 20px;
+      --gutter-sm: 24px;
+      --gutter-md: 40px;
+      --gutter-lg: 64px;
+      --gutter-xl: 80px;
+    }
+  }
+
+  body {
+    @apply bg-gray-50 text-gray-900 font-sans antialiased;
+    margin: 0;
+    min-height: 100vh;
+    /* Mejor renderizado de fuentes en mobile */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display font-semibold;
+  }
+
+  /* Imágenes responsivas por defecto */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+@layer components {
+  /* Animaciones personalizadas */
+  .animate-lift {
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+  }
+
+  .animate-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Overlay para modales/drawers */
+  .overlay {
+    @apply fixed inset-0 bg-black/50 z-40;
+    animation: fadeIn 0.2s ease-out;
+  }
+
+  /* Skeleton loader */
+  .skeleton {
+    @apply bg-gray-200 animate-pulse rounded;
+  }
+
+  /* Custom scrollbar */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    @apply bg-gray-100;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-gray-300 rounded-full;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-400;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Animación marquee para banner */
+  @keyframes marquee {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  .animate-marquee {
+    animation: marquee 15s linear infinite;
+  }
+
+  /* Marquee más lento en desktop */
+  @media (min-width: 768px) {
+    .animate-marquee {
+      animation: marquee 30s linear infinite;
+    }
+  }
+
+  /* Animación para el sidebar mobile */
+  @keyframes slideInRight {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes slideOutRight {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(100%);
+    }
+  }
+
+  .slide-in-right {
+    animation: slideInRight 0.3s ease-out;
+  }
+
+  .slide-out-right {
+    animation: slideOutRight 0.3s ease-out;
+  }
+
+  /* Touch interactions mejoras para mobile */
+  @media (hover: none) and (pointer: coarse) {
+    button, a {
+      -webkit-tap-highlight-color: transparent;
+    }
+  }
+
+  /* Safe area utilities para dispositivos con notch */
+  .safe-area-top {
+    padding-top: env(safe-area-inset-top);
+  }
+
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .safe-area-inset {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+
+  /* Mejoras de scroll para mobile */
+  .scroll-smooth-mobile {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+
+  /* Prevenir zoom en inputs en iOS */
+  @media screen and (max-width: 768px) {
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="number"],
+    input[type="password"],
+    select,
+    textarea {
+      font-size: 16px !important;
+    }
+  }
+
+  /* === UTILIDADES MOBILE ESTILO REDECORA === */
+
+  /* Contenedor fluido con padding responsivo */
+  .container-fluid {
+    width: 100%;
+    padding-left: var(--gutter-sm);
+    padding-right: var(--gutter-sm);
+  }
+
+  @media (min-width: 640px) {
+    .container-fluid {
+      padding-left: var(--gutter-md);
+      padding-right: var(--gutter-md);
+    }
+  }
+
+  /* Ocultar elementos en mobile */
+  .mobile-hide {
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .mobile-hide {
+      display: block;
+    }
+  }
+
+  /* Mostrar solo en mobile */
+  .mobile-only {
+    display: block;
+  }
+
+  @media (min-width: 768px) {
+    .mobile-only {
+      display: none;
+    }
+  }
+
+  /* Botones táctiles optimizados - mínimo 44px de altura */
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Texto que no se selecciona en móvil (mejora UX) */
+  .no-select {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  /* Grid responsivo estilo redecora */
+  .grid-mobile-1 {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--gutter-sm);
+  }
+
+  @media (min-width: 480px) {
+    .grid-mobile-2 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 768px) {
+    .grid-mobile-2 {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--gutter-md);
+    }
+  }
+
+  /* Espaciado vertical responsivo para secciones */
+  .section-spacing {
+    padding-top: var(--gutter-lg);
+    padding-bottom: var(--gutter-lg);
+  }
+
+  @media (min-width: 768px) {
+    .section-spacing {
+      padding-top: var(--gutter-xl);
+      padding-bottom: var(--gutter-xl);
+    }
+  }
+
+  /* Tipografía fluida con clamp */
+  .text-fluid-xs { font-size: var(--text-xs); }
+  .text-fluid-sm { font-size: var(--text-sm); }
+  .text-fluid-base { font-size: var(--text-base); }
+  .text-fluid-lg { font-size: var(--text-lg); }
+  .text-fluid-xl { font-size: var(--text-xl); }
+  .text-fluid-2xl { font-size: var(--text-2xl); }
+  .text-fluid-3xl { font-size: var(--text-3xl); }
+  .text-fluid-4xl { font-size: var(--text-4xl); }
+  .text-fluid-5xl { font-size: var(--text-5xl); }
+
+  /* Transiciones suaves para elementos interactivos */
+  .transition-smooth {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Fix para elementos sticky en iOS */
+  .sticky-ios {
+    position: -webkit-sticky;
+    position: sticky;
+  }
+
+  /* Aspect ratios para cards */
+  .aspect-card {
+    aspect-ratio: 4 / 5;
+  }
+
+  .aspect-product {
+    aspect-ratio: 1 / 1;
+  }
+
+  .aspect-hero {
+    aspect-ratio: 16 / 9;
+  }
+
+  @media (max-width: 767px) {
+    .aspect-hero {
+      aspect-ratio: 9 / 16;
+      min-height: 500px;
+    }
+  }
+}

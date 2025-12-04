@@ -1,0 +1,60 @@
+═══════════════════════════════════════════════════════════
+  INSTALACIÓN PLUGIN CORS - PASOS SÚPER SIMPLES
+═══════════════════════════════════════════════════════════
+
+📦 ARCHIVO A INSTALAR:
+   billard-ramirez-cors.zip
+
+🌐 DONDE INSTALARLO:
+   https://billardramirez.cl/wp-admin
+
+───────────────────────────────────────────────────────────
+
+✅ PASO 1: Abre WordPress Admin
+   https://billardramirez.cl/wp-admin
+   (Inicia sesión con tu usuario y contraseña)
+
+✅ PASO 2: Ve a la sección de Plugins
+   En el menú lateral → Plugins → Añadir nuevo
+
+✅ PASO 3: Sube el plugin
+   - Haz clic en "Subir plugin" (botón arriba)
+   - Haz clic en "Seleccionar archivo"
+   - Selecciona: billard-ramirez-cors.zip
+   - Haz clic en "Instalar ahora"
+
+✅ PASO 4: Activa el plugin
+   - Espera que termine de instalar
+   - Haz clic en "Activar plugin"
+
+✅ PASO 5: Verifica que funciona
+   - Abre: https://franciscal46.sg-host.com
+   - Abre la consola (F12)
+   - Ya NO deberías ver errores de CORS ✅
+
+───────────────────────────────────────────────────────────
+
+🎯 RESULTADO ESPERADO:
+
+ANTES:
+❌ Access to XMLHttpRequest at 'https://billardramirez.cl/wp-json/...'
+   has been blocked by CORS policy
+
+DESPUÉS:
+✅ Sin errores de CORS
+✅ Productos se cargan correctamente
+✅ Todo funciona normal
+
+───────────────────────────────────────────────────────────
+
+⏱️ TIEMPO TOTAL: 2-3 minutos
+
+───────────────────────────────────────────────────────────
+
+🚨 ¿PROBLEMAS?
+
+1. Limpia la caché de WordPress (si usas plugin de caché)
+2. Limpia la caché del navegador (Ctrl+Shift+Delete)
+3. Verifica que el plugin está "Activo" en WordPress
+
+───────────────────────────────────────────────────────────

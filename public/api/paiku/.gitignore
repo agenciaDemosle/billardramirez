@@ -1,0 +1,11 @@
+# Logs
+*.log
+paiku.log
+
+# Transacciones (contienen datos sensibles)
+transactions/*.json
+!transactions/.gitkeep
+
+# Archivos temporales
+*.tmp
+*.temp

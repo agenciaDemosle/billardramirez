@@ -1,0 +1,49 @@
+# robots.txt para Billard Ramirez
+# https://billardramirez.cl
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://billardramirez.cl/sitemap.xml
+
+# Disallow - Áreas privadas y checkout
+Disallow: /admin/
+Disallow: /checkout
+Disallow: /carrito
+Disallow: /wp-admin/
+Disallow: /wp-login.php
+
+# Allow - Páginas importantes para SEO
+Allow: /
+Allow: /tienda
+Allow: /tienda/*
+Allow: /producto/*
+Allow: /mesas-de-pool
+Allow: /accesorios
+Allow: /contacto
+Allow: /cotizador
+
+# Crawl delay (opcional - ajustar si es necesario)
+# Crawl-delay: 10
+
+# Google specific
+User-agent: Googlebot
+Allow: /
+Disallow: /checkout
+Disallow: /carrito
+
+# Bing specific
+User-agent: Bingbot
+Allow: /
+Disallow: /checkout
+Disallow: /carrito
+
+# Archivos de medios - Allow crawling
+Allow: /images/
+Allow: /*.jpg$
+Allow: /*.jpeg$
+Allow: /*.png$
+Allow: /*.gif$
+Allow: /*.webp$
+Allow: /*.svg$
