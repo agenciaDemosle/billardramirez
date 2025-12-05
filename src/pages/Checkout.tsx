@@ -10,27 +10,7 @@ import { useCart } from '../hooks/useCart';
 import { formatPrice } from '../utils/helpers';
 import { wooApi } from '../api/woocommerce';
 
-// Regiones de Chile
-const REGIONES_CHILE = [
-  { code: 'AP', name: 'Arica y Parinacota' },
-  { code: 'TA', name: 'Tarapacá' },
-  { code: 'AN', name: 'Antofagasta' },
-  { code: 'AT', name: 'Atacama' },
-  { code: 'CO', name: 'Coquimbo' },
-  { code: 'VS', name: 'Valparaíso' },
-  { code: 'RM', name: 'Región Metropolitana' },
-  { code: 'LI', name: "O'Higgins" },
-  { code: 'ML', name: 'Maule' },
-  { code: 'NB', name: 'Ñuble' },
-  { code: 'BI', name: 'Biobío' },
-  { code: 'AR', name: 'La Araucanía' },
-  { code: 'LR', name: 'Los Ríos' },
-  { code: 'LL', name: 'Los Lagos' },
-  { code: 'AI', name: 'Aysén' },
-  { code: 'MA', name: 'Magallanes' },
-];
-
-// Comunas con envío a $4.000 (Región Metropolitana)
+// Comunas con envío a $4.000 (solo estas de la RM)
 const COMUNAS_ENVIO_4000 = [
   'Colina', 'San Bernardo', 'Puente Alto', 'Padre Hurtado', 'La Florida',
   'Peñalolén', 'Ñuñoa', 'Macul', 'Las Condes', 'Vitacura', 'Lo Barnechea',
@@ -41,20 +21,33 @@ const COMUNAS_ENVIO_4000 = [
   'La Pintana', 'El Bosque', 'La Cisterna',
 ];
 
-const TODAS_LAS_COMUNAS = [
-  ...COMUNAS_ENVIO_4000,
-  'Arica', 'Iquique', 'Alto Hospicio', 'Antofagasta', 'Calama', 'Copiapó',
-  'La Serena', 'Coquimbo', 'Valparaíso', 'Viña del Mar', 'Quilpué',
-  'Villa Alemana', 'Concón', 'San Antonio', 'Rancagua', 'Talca', 'Curicó',
-  'Linares', 'Chillán', 'Concepción', 'Talcahuano', 'Los Ángeles', 'Temuco',
-  'Valdivia', 'Osorno', 'Puerto Montt', 'Coyhaique', 'Punta Arenas', 'Otra comuna',
-].sort((a, b) => {
-  const aHasEnvio = COMUNAS_ENVIO_4000.includes(a);
-  const bHasEnvio = COMUNAS_ENVIO_4000.includes(b);
-  if (aHasEnvio && !bHasEnvio) return -1;
-  if (!aHasEnvio && bHasEnvio) return 1;
-  return a.localeCompare(b);
-});
+// Mapeo completo de comunas por región
+const COMUNAS_POR_REGION: Record<string, string[]> = {
+  'Arica y Parinacota': ['Arica', 'Camarones', 'General Lagos', 'Putre'],
+  'Tarapacá': ['Alto Hospicio', 'Camiña', 'Colchane', 'Huara', 'Iquique', 'Pica', 'Pozo Almonte'],
+  'Antofagasta': ['Antofagasta', 'Calama', 'María Elena', 'Mejillones', 'Ollagüe', 'San Pedro de Atacama', 'Sierra Gorda', 'Taltal', 'Tocopilla'],
+  'Atacama': ['Alto del Carmen', 'Caldera', 'Chañaral', 'Copiapó', 'Diego de Almagro', 'Freirina', 'Huasco', 'Tierra Amarilla', 'Vallenar'],
+  'Coquimbo': ['Andacollo', 'Canela', 'Combarbalá', 'Coquimbo', 'Illapel', 'La Higuera', 'La Serena', 'Los Vilos', 'Monte Patria', 'Ovalle', 'Paiguano', 'Punitaqui', 'Río Hurtado', 'Salamanca', 'Vicuña'],
+  'Valparaíso': ['Algarrobo', 'Cabildo', 'Calle Larga', 'Cartagena', 'Casablanca', 'Catemu', 'Concón', 'El Quisco', 'El Tabo', 'Hijuelas', 'Isla de Pascua', 'Juan Fernández', 'La Calera', 'La Cruz', 'La Ligua', 'Limache', 'Llaillay', 'Los Andes', 'Nogales', 'Olmué', 'Panquehue', 'Papudo', 'Petorca', 'Puchuncaví', 'Putaendo', 'Quillota', 'Quilpué', 'Quintero', 'Rinconada', 'San Antonio', 'San Esteban', 'San Felipe', 'Santa María', 'Santo Domingo', 'Valparaíso', 'Villa Alemana', 'Viña del Mar', 'Zapallar'],
+  'Región Metropolitana': [
+    'Alhué', 'Buin', 'Calera de Tango', 'Cerrillos', 'Cerro Navia', 'Colina', 'Conchalí', 'Curacaví', 'El Bosque', 'El Monte', 'Estación Central', 'Huechuraba', 'Independencia', 'Isla de Maipo', 'La Cisterna', 'La Florida', 'La Granja', 'La Pintana', 'La Reina', 'Lampa', 'Las Condes', 'Lo Barnechea', 'Lo Espejo', 'Lo Prado', 'Macul', 'Maipú', 'María Pinto', 'Melipilla', 'Ñuñoa', 'Padre Hurtado', 'Paine', 'Pedro Aguirre Cerda', 'Peñaflor', 'Peñalolén', 'Pirque', 'Providencia', 'Pudahuel', 'Puente Alto', 'Quilicura', 'Quinta Normal', 'Recoleta', 'Renca', 'San Bernardo', 'San Joaquín', 'San José de Maipo', 'San Miguel', 'San Pedro', 'San Ramón', 'Santiago Centro', 'Talagante', 'Tiltil', 'Vitacura'
+  ],
+  "O'Higgins": ['Chimbarongo', 'Chépica', 'Codegua', 'Coinco', 'Coltauco', 'Doñihue', 'Graneros', 'La Estrella', 'Las Cabras', 'Litueche', 'Lolol', 'Machalí', 'Malloa', 'Marchigüe', 'Mostazal', 'Nancagua', 'Navidad', 'Olivar', 'Palmilla', 'Paredones', 'Peralillo', 'Peumo', 'Pichidegua', 'Pichilemu', 'Placilla', 'Pumanque', 'Quinta de Tilcoco', 'Rancagua', 'Rengo', 'Requínoa', 'San Fernando', 'San Vicente', 'Santa Cruz'],
+  'Maule': ['Cauquenes', 'Chanco', 'Colbún', 'Constitución', 'Curepto', 'Curicó', 'Empedrado', 'Hualañé', 'Licantén', 'Linares', 'Longaví', 'Maule', 'Molina', 'Parral', 'Pelarco', 'Pelluhue', 'Pencahue', 'Rauco', 'Retiro', 'Río Claro', 'Romeral', 'Sagrada Familia', 'San Clemente', 'San Javier', 'San Rafael', 'Talca', 'Teno', 'Vichuquén', 'Villa Alegre', 'Yerbas Buenas'],
+  'Ñuble': ['Bulnes', 'Chillán', 'Chillán Viejo', 'Cobquecura', 'Coelemu', 'Coihueco', 'El Carmen', 'Ninhue', 'Ñiquén', 'Pemuco', 'Pinto', 'Portezuelo', 'Quillón', 'Quirihue', 'Ránquil', 'San Carlos', 'San Fabián', 'San Ignacio', 'San Nicolás', 'Treguaco', 'Yungay'],
+  'Biobío': ['Alto Biobío', 'Antuco', 'Arauco', 'Cabrero', 'Cañete', 'Chiguayante', 'Concepción', 'Contulmo', 'Coronel', 'Curanilahue', 'Florida', 'Hualpén', 'Hualqui', 'Laja', 'Lebu', 'Los Álamos', 'Los Ángeles', 'Lota', 'Mulchén', 'Nacimiento', 'Negrete', 'Penco', 'Quilaco', 'Quilleco', 'San Pedro de la Paz', 'San Rosendo', 'Santa Bárbara', 'Santa Juana', 'Talcahuano', 'Tirúa', 'Tomé', 'Tucapel', 'Yumbel'],
+  'La Araucanía': ['Angol', 'Carahue', 'Cholchol', 'Collipulli', 'Cunco', 'Curacautín', 'Curarrehue', 'Ercilla', 'Freire', 'Galvarino', 'Gorbea', 'Lautaro', 'Loncoche', 'Lonquimay', 'Los Sauces', 'Lumaco', 'Melipeuco', 'Nueva Imperial', 'Padre Las Casas', 'Perquenco', 'Pitrufquén', 'Pucón', 'Purén', 'Renaico', 'Saavedra', 'Temuco', 'Teodoro Schmidt', 'Toltén', 'Traiguén', 'Victoria', 'Vilcún', 'Villarrica'],
+  'Los Ríos': ['Corral', 'Futrono', 'La Unión', 'Lago Ranco', 'Lanco', 'Los Lagos', 'Máfil', 'Mariquina', 'Paillaco', 'Panguipulli', 'Río Bueno', 'Valdivia'],
+  'Los Lagos': ['Ancud', 'Calbuco', 'Castro', 'Chaitén', 'Chonchi', 'Cochamó', 'Curaco de Vélez', 'Dalcahue', 'Fresia', 'Frutillar', 'Futaleufú', 'Hualaihué', 'Llanquihue', 'Los Muermos', 'Maullín', 'Osorno', 'Palena', 'Puerto Montt', 'Puerto Octay', 'Puerto Varas', 'Puqueldón', 'Purranque', 'Puyehue', 'Queilén', 'Quellón', 'Quemchi', 'Quinchao', 'Río Negro', 'San Juan de la Costa', 'San Pablo'],
+  'Aysén': ['Aysén', 'Chile Chico', 'Cisnes', 'Cochrane', 'Coyhaique', 'Guaitecas', 'Lago Verde', "O'Higgins", 'Río Ibáñez', 'Tortel'],
+  'Magallanes': ['Antártica', 'Cabo de Hornos', 'Laguna Blanca', 'Natales', 'Porvenir', 'Primavera', 'Punta Arenas', 'Río Verde', 'San Gregorio', 'Timaukel', 'Torres del Paine'],
+};
+
+// Lista de regiones
+const REGIONES_CHILE = Object.keys(COMUNAS_POR_REGION).map((name, index) => ({
+  code: ['AP', 'TA', 'AN', 'AT', 'CO', 'VS', 'RM', 'LI', 'ML', 'NB', 'BI', 'AR', 'LR', 'LL', 'AI', 'MA'][index],
+  name,
+}));
 
 const checkoutSchema = z.object({
   firstName: z.string().min(2, 'El nombre debe tener al menos 2 caracteres'),
@@ -75,7 +68,11 @@ export default function Checkout() {
   const { items, total, clearCart } = useCart();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState('payku');
+  const [selectedRegion, setSelectedRegion] = useState('');
   const [selectedComuna, setSelectedComuna] = useState('');
+
+  // Obtener comunas de la región seleccionada
+  const comunasDisponibles = selectedRegion ? COMUNAS_POR_REGION[selectedRegion] || [] : [];
 
   const { data: wooGateways = [], isLoading: isLoadingGateways } = useQuery({
     queryKey: ['payment-gateways'],
@@ -419,34 +416,15 @@ export default function Checkout() {
                     className="w-full border-b border-gray-300 py-3 text-sm focus:outline-none focus:border-black transition-colors bg-transparent placeholder:text-gray-400"
                   />
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <select
-                        {...register('comuna')}
-                        onChange={(e) => {
-                          register('comuna').onChange(e);
-                          setSelectedComuna(e.target.value);
-                        }}
-                        className="w-full border-b border-gray-300 py-3 text-sm focus:outline-none focus:border-black transition-colors bg-transparent text-gray-900"
-                      >
-                        <option value="">Comuna</option>
-                        <optgroup label="Envío $4.000">
-                          {COMUNAS_ENVIO_4000.map((comuna) => (
-                            <option key={comuna} value={comuna}>{comuna}</option>
-                          ))}
-                        </optgroup>
-                        <optgroup label="Envío por pagar">
-                          {TODAS_LAS_COMUNAS.filter(c => !COMUNAS_ENVIO_4000.includes(c)).map((comuna) => (
-                            <option key={comuna} value={comuna}>{comuna}</option>
-                          ))}
-                        </optgroup>
-                      </select>
-                      {errors.comuna && (
-                        <p className="text-xs text-red-500 mt-1">{errors.comuna.message}</p>
-                      )}
-                    </div>
+                    {/* Primero Región */}
                     <div>
                       <select
                         {...register('state')}
+                        onChange={(e) => {
+                          register('state').onChange(e);
+                          setSelectedRegion(e.target.value);
+                          setSelectedComuna(''); // Resetear comuna al cambiar región
+                        }}
                         className="w-full border-b border-gray-300 py-3 text-sm focus:outline-none focus:border-black transition-colors bg-transparent text-gray-900"
                       >
                         <option value="">Región</option>
@@ -458,6 +436,32 @@ export default function Checkout() {
                       </select>
                       {errors.state && (
                         <p className="text-xs text-red-500 mt-1">{errors.state.message}</p>
+                      )}
+                    </div>
+                    {/* Luego Comuna */}
+                    <div>
+                      <select
+                        {...register('comuna')}
+                        value={selectedComuna}
+                        onChange={(e) => {
+                          register('comuna').onChange(e);
+                          setSelectedComuna(e.target.value);
+                        }}
+                        disabled={!selectedRegion}
+                        className="w-full border-b border-gray-300 py-3 text-sm focus:outline-none focus:border-black transition-colors bg-transparent text-gray-900 disabled:text-gray-400 disabled:cursor-not-allowed"
+                      >
+                        <option value="">{selectedRegion ? 'Selecciona comuna' : 'Primero selecciona región'}</option>
+                        {comunasDisponibles.map((comuna) => {
+                          const tieneEnvio4000 = COMUNAS_ENVIO_4000.includes(comuna);
+                          return (
+                            <option key={comuna} value={comuna}>
+                              {comuna} {tieneEnvio4000 ? '($4.000)' : '(Por pagar)'}
+                            </option>
+                          );
+                        })}
+                      </select>
+                      {errors.comuna && (
+                        <p className="text-xs text-red-500 mt-1">{errors.comuna.message}</p>
                       )}
                     </div>
                   </div>
