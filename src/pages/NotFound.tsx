@@ -10,7 +10,7 @@ export default function NotFound() {
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 
-      <div className="min-h-[80vh] bg-white flex items-center justify-center px-5">
+      <div className="min-h-[80vh] bg-white flex items-center justify-center px-5 py-16 md:py-24">
         <div className="max-w-xl w-full text-center">
           {/* Pool balls illustration */}
           <div className="flex justify-center items-center gap-3 mb-12">

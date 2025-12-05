@@ -16,7 +16,7 @@ export default function Footer() {
               className="h-12 w-auto mb-6 brightness-0 invert"
             />
             <p className="text-sm text-gray-400 leading-relaxed mb-6">
-              Especialistas en mesas de pool y accesorios de billar desde 1995.
+              Donde el juego se convierte en arte.
             </p>
             <div className="flex gap-4">
               <a
