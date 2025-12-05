@@ -108,12 +108,12 @@ export default function Checkout() {
       trackInitiateCheckout({
         cart_total: finalTotal,
         num_items: items.length,
-        product_ids: items.map(item => item.product.id.toString()),
+        product_ids: items.map(item => item.productId.toString()),
         items: items.map(item => ({
-          item_id: item.product.id.toString(),
-          item_name: item.product.name,
-          item_category: item.product.categories[0]?.name || 'Sin categoría',
-          price: parseFloat(item.product.price),
+          item_id: item.productId.toString(),
+          item_name: item.name,
+          item_category: 'Sin categoría', // CartItem no almacena categorías
+          price: item.price,
           quantity: item.quantity,
         })),
       });
@@ -235,10 +235,10 @@ export default function Checkout() {
         const orderDataForTracking = {
           total: finalTotal,
           items: items.map(item => ({
-            product_id: item.product.id,
-            name: item.product.name,
-            category: item.product.categories[0]?.name || 'Sin categoría',
-            price: parseFloat(item.product.price),
+            product_id: item.productId,
+            name: item.name,
+            category: 'Sin categoría', // CartItem no almacena categorías
+            price: item.price,
             quantity: item.quantity,
           })),
           email: data.email,
