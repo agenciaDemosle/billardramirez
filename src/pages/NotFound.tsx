@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Home, ArrowLeft, Circle } from 'lucide-react';
+import { ArrowLeft, Search } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 
 export default function NotFound() {
@@ -10,96 +10,93 @@ export default function NotFound() {
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 
-      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 flex items-center justify-center px-4 py-16">
-        <div className="max-w-2xl w-full text-center">
-          {/* Billiard Balls Animation */}
-          <div className="mb-8 relative">
-            <div className="flex justify-center items-center gap-4 mb-6">
-              <Circle className="w-20 h-20 text-gray-800 fill-gray-800 animate-bounce" style={{ animationDelay: '0s' }} />
-              <Circle className="w-20 h-20 text-primary fill-primary animate-bounce" style={{ animationDelay: '0.2s' }} />
-              <Circle className="w-20 h-20 text-gray-600 fill-gray-600 animate-bounce" style={{ animationDelay: '0.4s' }} />
+      <div className="min-h-[80vh] bg-white flex items-center justify-center px-5">
+        <div className="max-w-xl w-full text-center">
+          {/* Pool balls illustration */}
+          <div className="flex justify-center items-center gap-3 mb-12">
+            <div className="w-16 h-16 rounded-full bg-black flex items-center justify-center">
+              <span className="text-white text-2xl font-display">4</span>
+            </div>
+            <div className="w-16 h-16 rounded-full bg-[#00963c] flex items-center justify-center">
+              <span className="text-white text-2xl font-display">0</span>
+            </div>
+            <div className="w-16 h-16 rounded-full bg-black flex items-center justify-center">
+              <span className="text-white text-2xl font-display">4</span>
             </div>
           </div>
 
-          {/* Error Code */}
-          <h1 className="text-8xl md:text-9xl font-display font-bold text-gray-900 mb-4">
-            404
+          {/* Message */}
+          <p className="text-[10px] uppercase tracking-[0.3em] text-gray-400 mb-4">
+            Página no encontrada
+          </p>
+
+          <h1 className="text-3xl md:text-4xl font-display uppercase tracking-wide mb-6">
+            La bola se fue fuera de la mesa
           </h1>
 
-          {/* Pool-themed Message */}
-          <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
-            <h2 className="text-3xl md:text-4xl font-display font-bold text-gray-900 mb-4">
-              ¡Raspaste! 🎱
-            </h2>
-            <p className="text-xl text-gray-600 mb-2">
-              La bola que buscabas se fue fuera de la mesa
-            </p>
-            <p className="text-gray-500">
-              Esta página no existe o fue movida a otra buchaca.
-            </p>
-          </div>
+          <p className="text-gray-500 text-sm leading-relaxed mb-12 max-w-md mx-auto">
+            La página que buscas no existe o ha sido movida.
+            No te preocupes, hasta los profesionales fallan un tiro de vez en cuando.
+          </p>
 
-          {/* Fun Pool Facts */}
-          <div className="bg-primary/10 border border-primary/20 rounded-lg p-6 mb-8">
-            <p className="text-sm text-gray-700 italic">
-              "En el pool, como en la web, cada tiro cuenta.
-              No te preocupes, hasta los profesionales fallan a veces."
-            </p>
-          </div>
-
-          {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          {/* Actions */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
             <Link
               to="/"
-              className="inline-flex items-center justify-center gap-2 bg-primary text-white px-8 py-4 rounded-lg font-semibold hover:bg-primary-dark transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+              className="inline-flex items-center justify-center gap-2 bg-black text-white text-sm uppercase tracking-wider px-8 py-4 hover:bg-gray-900 transition-colors"
             >
-              <Home size={20} />
-              Volver al Inicio
+              Volver al inicio
             </Link>
-            <button
-              onClick={() => window.history.back()}
-              className="inline-flex items-center justify-center gap-2 bg-white text-gray-700 border-2 border-gray-300 px-8 py-4 rounded-lg font-semibold hover:bg-gray-50 transition-all duration-200 shadow hover:shadow-lg"
+            <Link
+              to="/tienda"
+              className="inline-flex items-center justify-center gap-2 border border-gray-300 text-sm uppercase tracking-wider px-8 py-4 hover:border-black transition-colors"
             >
-              <ArrowLeft size={20} />
-              Volver Atrás
-            </button>
+              <Search size={14} />
+              Explorar tienda
+            </Link>
           </div>
 
           {/* Quick Links */}
-          <div className="mt-12 pt-8 border-t border-gray-200">
-            <p className="text-sm text-gray-500 mb-4">
-              ¿Buscabas algo en específico? Prueba estos enlaces:
+          <div className="border-t border-gray-200 pt-8">
+            <p className="text-[10px] uppercase tracking-[0.2em] text-gray-400 mb-6">
+              Enlaces populares
             </p>
-            <div className="flex flex-wrap justify-center gap-3">
-              <Link
-                to="/tienda"
-                className="text-sm text-primary hover:text-primary-dark hover:underline"
-              >
-                Tienda
-              </Link>
-              <span className="text-gray-300">•</span>
+            <div className="flex flex-wrap justify-center gap-x-8 gap-y-3">
               <Link
                 to="/mesas-de-pool"
-                className="text-sm text-primary hover:text-primary-dark hover:underline"
+                className="text-sm text-gray-600 hover:text-black transition-colors border-b border-transparent hover:border-black pb-0.5"
               >
                 Mesas de Pool
               </Link>
-              <span className="text-gray-300">•</span>
               <Link
                 to="/accesorios"
-                className="text-sm text-primary hover:text-primary-dark hover:underline"
+                className="text-sm text-gray-600 hover:text-black transition-colors border-b border-transparent hover:border-black pb-0.5"
               >
                 Accesorios
               </Link>
-              <span className="text-gray-300">•</span>
+              <Link
+                to="/cotizador"
+                className="text-sm text-gray-600 hover:text-black transition-colors border-b border-transparent hover:border-black pb-0.5"
+              >
+                Cotizador
+              </Link>
               <Link
                 to="/contacto"
-                className="text-sm text-primary hover:text-primary-dark hover:underline"
+                className="text-sm text-gray-600 hover:text-black transition-colors border-b border-transparent hover:border-black pb-0.5"
               >
                 Contacto
               </Link>
             </div>
           </div>
+
+          {/* Back button */}
+          <button
+            onClick={() => window.history.back()}
+            className="inline-flex items-center gap-2 text-xs text-gray-400 hover:text-black transition-colors mt-12"
+          >
+            <ArrowLeft size={12} />
+            Volver a la página anterior
+          </button>
         </div>
       </div>
     </>
