@@ -5,30 +5,36 @@ import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
 import { wooApi } from '../../api/woocommerce';
 import type { Product } from '../../types/product';
 
+// Categorías de mesas de pool (padre + hijos)
+const MESAS_POOL_SLUGS = ['mesas-de-pool', 'superficie-en-piedra', 'superficie-en-madera'];
+
 export default function FeaturedSection() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  // Primero obtener las categorías para encontrar el ID de mesas-de-pool
+  // Primero obtener las categorías para encontrar IDs de mesas
   const { data: categories = [] } = useQuery({
     queryKey: ['categories'],
     queryFn: () => wooApi.getCategories(),
   });
 
-  // Encontrar el ID de la categoría mesas-de-pool
-  const mesasCategory = categories.find(cat => cat.slug === 'mesas-de-pool');
-  const categoryId = mesasCategory?.id;
+  // Encontrar IDs de las categorías de mesas de pool
+  const mesasCategoryIds = categories
+    .filter(cat => MESAS_POOL_SLUGS.includes(cat.slug))
+    .map(cat => cat.id);
 
-  // Obtener productos de la categoría
+  // Obtener productos de TODAS las categorías de mesas
   const { data: products = [], isLoading } = useQuery({
-    queryKey: ['pool-tables-featured', categoryId],
+    queryKey: ['pool-tables-featured-all', mesasCategoryIds],
     queryFn: async () => {
-      if (!categoryId) return [];
-      return wooApi.getProducts({
-        per_page: 12,
-        category: categoryId.toString(),
+      if (mesasCategoryIds.length === 0) return [];
+      // Traer todos los productos y filtrar por categorías de mesas
+      const allProducts = await wooApi.getProducts({ per_page: 100 });
+      return allProducts.filter((product: Product) => {
+        const productCategoryIds = product.categories?.map(cat => cat.id) || [];
+        return productCategoryIds.some(id => mesasCategoryIds.includes(id));
       });
     },
-    enabled: !!categoryId,
+    enabled: mesasCategoryIds.length > 0,
   });
 
   const scroll = (direction: 'left' | 'right') => {
@@ -105,12 +111,12 @@ export default function FeaturedSection() {
               {/* Overlay oscuro para legibilidad */}
               <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-transparent"></div>
               {/* Title - Arriba con primera palabra destacada */}
-              <div className="absolute top-4 sm:top-10 left-0 right-0 p-3 sm:p-6">
+              <div className="absolute top-4 sm:top-8 left-0 right-0 p-3 sm:p-5">
                 <h3 className="text-white font-display uppercase leading-tight tracking-wide text-center drop-shadow-lg">
-                  <span className="block text-2xl sm:text-5xl md:text-6xl lg:text-7xl tracking-wider mb-1">
+                  <span className="block text-xl sm:text-3xl md:text-4xl lg:text-5xl tracking-wider mb-1">
                     {product.name.split(' ')[0]}
                   </span>
-                  <span className="block text-base sm:text-2xl md:text-3xl lg:text-4xl">
+                  <span className="block text-sm sm:text-lg md:text-xl lg:text-2xl">
                     {product.name.split(' ').slice(1).join(' ')}
                   </span>
                 </h3>
