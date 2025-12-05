@@ -8,7 +8,7 @@ export default function ShowroomSection() {
         {/* Imagen de fondo */}
         <div className="absolute inset-0">
           <img
-            src="/images/fotos/showroom-bg.png"
+            src="/images/fotos/showroom-bg.webp"
             alt="Showroom Billard Ramirez"
             className="w-full h-full object-cover"
           />

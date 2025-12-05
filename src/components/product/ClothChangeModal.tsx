@@ -72,7 +72,7 @@ export default function ClothChangeModal({ isOpen, onClose }: ClothChangeModalPr
       images: [
         {
           id: 1,
-          src: '/images/fotos/cambia-pano.png',
+          src: '/images/fotos/cambia-pano.webp',
           name: 'Cambio de Paño',
           alt: 'Servicio de cambio de paño',
         },

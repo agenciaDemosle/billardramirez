@@ -10,7 +10,7 @@ export default function PopularCollections() {
       backgroundColor: '#00963c',
       layout: 'horizontal-multi' as const,
       pattern: 'none' as const,
-      imageUrl: '/images/fotos/four-smiling-friends-in-bar-playing-billiard-toget-2025-01-29-08-00-02-utc.jpg'
+      imageUrl: '/images/fotos/four-smiling-friends-in-bar-playing-billiard-toget-2025-01-29-08-00-02-utc.webp'
     },
     {
       id: 2,
@@ -19,7 +19,7 @@ export default function PopularCollections() {
       backgroundColor: '#007a31',
       layout: 'horizontal' as const,
       pattern: 'none' as const,
-      imageUrl: '/images/fotos/billiard-equipment-2024-11-28-12-05-30-utc.jpg'
+      imageUrl: '/images/fotos/billiard-equipment-2024-11-28-12-05-30-utc.webp'
     },
     {
       id: 3,
@@ -28,7 +28,7 @@ export default function PopularCollections() {
       backgroundColor: '#00963c',
       layout: 'vertical' as const,
       pattern: 'none' as const,
-      imageUrl: '/images/fotos/happy-friends-enjoying-playing-pool-2025-03-15-21-36-33-utc.jpg'
+      imageUrl: '/images/fotos/happy-friends-enjoying-playing-pool-2025-03-15-21-36-33-utc.webp'
     },
     {
       id: 4,
@@ -37,7 +37,7 @@ export default function PopularCollections() {
       backgroundColor: '#007a31',
       layout: 'horizontal' as const,
       pattern: 'none' as const,
-      imageUrl: '/images/fotos/billiard-equipment-2024-11-28-12-05-30-utc.jpg'
+      imageUrl: '/images/fotos/billiard-equipment-2024-11-28-12-05-30-utc.webp'
     },
     {
       id: 5,
@@ -46,7 +46,7 @@ export default function PopularCollections() {
       backgroundColor: '#00963c',
       layout: 'horizontal' as const,
       pattern: 'none' as const,
-      imageUrl: '/images/fotos/happy-friends-playing-billiards-in-a-bowling-alley-2025-06-10-08-18-24-utc.jpg'
+      imageUrl: '/images/fotos/happy-friends-playing-billiards-in-a-bowling-alley-2025-06-10-08-18-24-utc.webp'
     },
     {
       id: 6,
@@ -55,7 +55,7 @@ export default function PopularCollections() {
       backgroundColor: '#007a31',
       layout: 'horizontal' as const,
       pattern: 'none' as const,
-      imageUrl: '/images/fotos/happy-friends-enjoying-playing-pool-2025-03-15-21-36-33-utc.jpg'
+      imageUrl: '/images/fotos/happy-friends-enjoying-playing-pool-2025-03-15-21-36-33-utc.webp'
     }
   ];
 

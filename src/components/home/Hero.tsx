@@ -4,8 +4,8 @@ import ClothChangeModal from '../product/ClothChangeModal';
 import { Link } from 'react-router-dom';
 
 const heroImages = [
-  '/images/fotos/heronavidad.png',
-  '/images/fotos/viejito-pascuero.png',
+  '/images/fotos/heronavidad.webp',
+  '/images/fotos/viejito-pascuero.webp',
 ];
 
 export default function Hero() {
@@ -126,7 +126,7 @@ export default function Hero() {
               className="group relative overflow-hidden aspect-[3/4] sm:aspect-[4/5]"
             >
               <img
-                src="/images/fotos/personaliza-taco.png"
+                src="/images/fotos/personaliza-taco.webp"
                 alt="Personaliza tu taco"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 loading="lazy"
@@ -146,7 +146,7 @@ export default function Hero() {
               className="group relative overflow-hidden aspect-[3/4] sm:aspect-[4/5]"
             >
               <img
-                src="/images/fotos/mesas-de-pool.png"
+                src="/images/fotos/mesas-de-pool.webp"
                 alt="Mesas de pool"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 loading="lazy"
@@ -166,7 +166,7 @@ export default function Hero() {
               className="group relative overflow-hidden aspect-[3/4] sm:aspect-[4/5] w-full"
             >
               <img
-                src="/images/fotos/cambia-pano.png"
+                src="/images/fotos/cambia-pano.webp"
                 alt="Cambio de paño"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 loading="lazy"
@@ -186,7 +186,7 @@ export default function Hero() {
               className="group relative overflow-hidden aspect-[3/4] sm:aspect-[4/5]"
             >
               <img
-                src="/images/fotos/reparacion-mesas.png"
+                src="/images/fotos/reparacion-mesas.webp"
                 alt="Reparación de mesas"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 loading="lazy"
@@ -206,7 +206,7 @@ export default function Hero() {
               className="group relative overflow-hidden aspect-[3/4] sm:aspect-[4/5]"
             >
               <img
-                src="/images/fotos/arriendo-mesa.png"
+                src="/images/fotos/arriendo-mesa.webp"
                 alt="Arriendo de mesa"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 loading="lazy"
@@ -226,7 +226,7 @@ export default function Hero() {
               className="group relative overflow-hidden aspect-[3/4] sm:aspect-[4/5]"
             >
               <img
-                src="/images/fotos/accesorios.png"
+                src="/images/fotos/accesorios.webp"
                 alt="Accesorios"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 loading="lazy"

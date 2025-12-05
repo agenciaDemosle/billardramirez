@@ -24,7 +24,7 @@ export default function Header() {
   const { itemCount, toggleCart } = useCart();
   const navigate = useNavigate();
 
-  // Speech Recognition
+  // Speech Recognition - Optimizado para respuesta rápida
   const startVoiceSearch = () => {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
@@ -35,36 +35,56 @@ export default function Header() {
 
     const recognition = new SpeechRecognition();
     recognition.lang = 'es-CL';
-    recognition.interimResults = false;
+    recognition.interimResults = true; // Resultados en tiempo real
+    recognition.continuous = false;
     recognition.maxAlternatives = 1;
+
+    let finalTranscript = '';
+    let searchTimeout: ReturnType<typeof setTimeout>;
 
     recognition.onstart = () => {
       setIsListening(true);
+      finalTranscript = '';
     };
 
     recognition.onresult = (event: SpeechRecognitionEvent) => {
-      const transcript = event.results[0][0].transcript;
-      setSearchQuery(transcript);
-      setIsListening(false);
-      setIsSearchingVoice(true);
+      let interimTranscript = '';
 
-      // Auto-search after voice input with small delay to show "Buscando..."
-      if (transcript.trim()) {
-        setTimeout(() => {
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        const transcript = event.results[i][0].transcript;
+        if (event.results[i].isFinal) {
+          finalTranscript = transcript;
+        } else {
+          interimTranscript = transcript;
+        }
+      }
+
+      // Mostrar texto mientras habla
+      setSearchQuery(finalTranscript || interimTranscript);
+
+      // Si es resultado final, buscar inmediatamente
+      if (finalTranscript) {
+        clearTimeout(searchTimeout);
+        setIsListening(false);
+        setIsSearchingVoice(true);
+
+        // Buscar con delay mínimo
+        searchTimeout = setTimeout(() => {
           const params = new URLSearchParams();
-          params.set('buscar', transcript.trim());
+          params.set('buscar', finalTranscript.trim());
           navigate(`/tienda?${params.toString()}`);
           setSearchQuery('');
           setIsMenuOpen(false);
           setIsSearchingVoice(false);
-        }, 800);
-      } else {
-        setIsSearchingVoice(false);
+        }, 300);
       }
     };
 
-    recognition.onerror = () => {
+    recognition.onerror = (event) => {
       setIsListening(false);
+      if (event.error === 'no-speech') {
+        // Silencioso si no detecta voz
+      }
     };
 
     recognition.onend = () => {

@@ -1,64 +1,57 @@
+#!/usr/bin/env node
+
+/**
+ * Script para comprimir imágenes PNG/JPG y convertirlas a WebP
+ * Reemplaza los originales con versiones optimizadas
+ */
+
 import { execSync } from 'child_process';
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import { readdirSync, statSync, renameSync, unlinkSync } from 'fs';
+import { join, extname, basename } from 'path';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const IMAGES_DIR = './public/images/fotos';
+const WEBP_QUALITY = 82;
+const MAX_WIDTH = 1600;
 
-const IMAGES_DIR = path.join(__dirname, '..', 'woocommerce-export', 'images');
-const MAX_SIZE = 2 * 1024 * 1024; // 2MB
-const MAX_DIMENSION = 1200; // máximo 1200px
+// Obtener todas las imágenes
+const files = readdirSync(IMAGES_DIR).filter(file => {
+  const ext = extname(file).toLowerCase();
+  return ['.png', '.jpg', '.jpeg'].includes(ext);
+});
 
-console.log('═'.repeat(60));
-console.log('🗜️  COMPRESIÓN DE IMÁGENES');
-console.log('═'.repeat(60));
+console.log(`\n🖼️  Encontradas ${files.length} imágenes para optimizar\n`);
 
-const files = fs.readdirSync(IMAGES_DIR);
-let compressed = 0;
-let skipped = 0;
-let errors = 0;
+let totalOriginal = 0;
+let totalOptimized = 0;
 
 for (const file of files) {
-  const filePath = path.join(IMAGES_DIR, file);
-  const stats = fs.statSync(filePath);
+  const inputPath = join(IMAGES_DIR, file);
+  const stats = statSync(inputPath);
+  const originalSize = stats.size;
+  totalOriginal += originalSize;
 
-  if (stats.size <= MAX_SIZE) {
-    continue;
-  }
+  const nameWithoutExt = basename(file, extname(file));
+  const webpOutput = join(IMAGES_DIR, `${nameWithoutExt}.webp`);
 
-  const ext = path.extname(file).toLowerCase();
-  if (!['.png', '.jpg', '.jpeg'].includes(ext)) {
-    continue;
-  }
-
-  console.log(`\n📷 ${file} (${(stats.size / 1024 / 1024).toFixed(1)}MB)`);
+  console.log(`📷 ${file} (${(originalSize / 1024 / 1024).toFixed(2)} MB)`);
 
   try {
-    // Redimensionar con sips (macOS)
-    execSync(`sips --resampleHeightWidthMax ${MAX_DIMENSION} "${filePath}" --out "${filePath}"`, { stdio: 'pipe' });
+    // Convertir a WebP con compresión
+    execSync(`cwebp -q ${WEBP_QUALITY} -resize ${MAX_WIDTH} 0 "${inputPath}" -o "${webpOutput}" 2>/dev/null`);
 
-    // Si es PNG y sigue siendo muy grande, convertir a JPG
-    const newStats = fs.statSync(filePath);
-    if (newStats.size > MAX_SIZE && ext === '.png') {
-      const jpgPath = filePath.replace('.png', '.jpg');
-      execSync(`sips -s format jpeg -s formatOptions 80 "${filePath}" --out "${jpgPath}"`, { stdio: 'pipe' });
+    const webpStats = statSync(webpOutput);
+    const webpSize = webpStats.size;
+    totalOptimized += webpSize;
 
-      // Eliminar PNG y actualizar referencias
-      fs.unlinkSync(filePath);
-      console.log(`  ✅ Convertido a JPG: ${(fs.statSync(jpgPath).size / 1024 / 1024).toFixed(1)}MB`);
-    } else {
-      console.log(`  ✅ Redimensionado: ${(newStats.size / 1024 / 1024).toFixed(1)}MB`);
-    }
-
-    compressed++;
+    const savings = ((1 - webpSize / originalSize) * 100).toFixed(1);
+    console.log(`   ✅ WebP: ${(webpSize / 1024).toFixed(0)} KB (${savings}% más pequeño)\n`);
   } catch (error) {
-    console.log(`  ❌ Error: ${error.message}`);
-    errors++;
+    console.log(`   ❌ Error: ${error.message}\n`);
   }
 }
 
-console.log('\n' + '═'.repeat(60));
-console.log(`✅ Comprimidas: ${compressed}`);
-console.log(`❌ Errores: ${errors}`);
-console.log('═'.repeat(60));
+console.log('━'.repeat(50));
+console.log(`📊 Total original: ${(totalOriginal / 1024 / 1024).toFixed(2)} MB`);
+console.log(`📊 Total optimizado: ${(totalOptimized / 1024 / 1024).toFixed(2)} MB`);
+console.log(`💾 Ahorro total: ${((1 - totalOptimized / totalOriginal) * 100).toFixed(1)}%`);
+console.log(`\n✨ Archivos WebP creados junto a los originales`);

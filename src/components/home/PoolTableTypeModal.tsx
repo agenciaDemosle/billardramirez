@@ -71,7 +71,7 @@ export default function PoolTableTypeModal({ isOpen, onClose }: PoolTableTypeMod
                   >
                     <div className="aspect-[4/3] bg-[#f5f5f5] mb-3 sm:mb-4 overflow-hidden">
                       <img
-                        src="/images/fotos/mesas-de-pool.png"
+                        src="/images/fotos/mesas-de-pool.webp"
                         alt="Mesa Profesional"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
@@ -97,7 +97,7 @@ export default function PoolTableTypeModal({ isOpen, onClose }: PoolTableTypeMod
                   >
                     <div className="aspect-[4/3] bg-[#f5f5f5] mb-3 sm:mb-4 overflow-hidden">
                       <img
-                        src="/images/fotos/familia-feliz.png"
+                        src="/images/fotos/familia-feliz.webp"
                         alt="Mesa Recreacional"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />

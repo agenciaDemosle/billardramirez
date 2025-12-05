@@ -9,7 +9,7 @@ export default function FeaturedCollections() {
       description: 'Transforma tu espacio con nuestras mesas de pool de categoría profesional. Diseño premium y rendimiento excepcional.',
       buttonText: 'Explorar mesas',
       buttonLink: '/tienda?categoria=mesas-de-pool',
-      imageUrl: '/images/fotos/happy-friends-playing-billiards-in-a-bowling-alley-2025-06-10-08-18-24-utc.jpg',
+      imageUrl: '/images/fotos/happy-friends-playing-billiards-in-a-bowling-alley-2025-06-10-08-18-24-utc.webp',
       size: 'full' as const
     },
     {
@@ -18,7 +18,7 @@ export default function FeaturedCollections() {
       description: 'Tacos y accesorios profesionales para jugadores exigentes.',
       buttonText: 'Ver productos',
       buttonLink: '/tienda?categoria=tacos',
-      imageUrl: '/images/fotos/billiard-equipment-2024-11-28-12-05-30-utc.jpg',
+      imageUrl: '/images/fotos/billiard-equipment-2024-11-28-12-05-30-utc.webp',
       size: 'half' as const
     },
     {
@@ -27,7 +27,7 @@ export default function FeaturedCollections() {
       description: 'Descubre nuestras mejores ofertas en productos seleccionados.',
       buttonText: 'Ver ofertas',
       buttonLink: '/tienda?categoria=ofertas',
-      imageUrl: '/images/fotos/weekend-fun-2024-10-18-04-42-55-utc.jpg',
+      imageUrl: '/images/fotos/weekend-fun-2024-10-18-04-42-55-utc.webp',
       size: 'half' as const
     }
   ];
