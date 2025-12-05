@@ -605,6 +605,8 @@ export default function Shop() {
                 products={products || []}
                 isLoading={isLoading}
                 columns={showFilters ? 3 : 4}
+                listName={categoryParam ? `Category: ${categoryParam}` : 'Shop'}
+                listId={categoryParam ? `category_${categoryParam}` : 'shop_all'}
               />
 
               {/* No Results */}

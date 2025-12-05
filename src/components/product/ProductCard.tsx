@@ -5,12 +5,16 @@ import type { Product } from '../../types/product';
 import { formatPrice, getDiscountPercentage, getProductUrl } from '../../utils/helpers';
 import { useCart } from '../../hooks/useCart';
 import StockNotificationModal from './StockNotificationModal';
+import { trackAddToCart } from '../../hooks/useAnalytics';
 
 interface ProductCardProps {
   product: Product;
+  listName?: string;
+  listId?: string;
+  index?: number;
 }
 
-export default function ProductCard({ product }: ProductCardProps) {
+export default function ProductCard({ product, listName, listId, index }: ProductCardProps) {
   const { addToCart } = useCart();
   const [showNotificationModal, setShowNotificationModal] = useState(false);
   const discount = getDiscountPercentage(product.regular_price, product.sale_price);
@@ -36,6 +40,18 @@ export default function ProductCard({ product }: ProductCardProps) {
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
     addToCart(product);
+
+    // Track add to cart
+    trackAddToCart({
+      product_id: product.id.toString(),
+      product_name: product.name,
+      product_category: product.categories[0]?.name || 'Sin categoría',
+      product_price: parseFloat(product.price),
+      quantity: 1,
+      item_list_name: listName,
+      item_list_id: listId,
+      index: index,
+    });
   };
 
   return (

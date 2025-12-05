@@ -1,0 +1,1618 @@
+{
+  "exportFormatVersion": 2,
+  "exportTime": "2025-12-05 11:45:00",
+  "containerVersion": {
+    "container": {
+      "name": "billardramirez.com",
+      "publicId": "GTM-WM6F6DHP",
+      "usageContext": [
+        "WEB"
+      ],
+      "features": {
+        "supportUserPermissions": true,
+        "supportEnvironments": true,
+        "supportWorkspaces": true,
+        "supportGtagConfigs": false,
+        "supportBuiltInVariables": true,
+        "supportClients": false,
+        "supportFolders": true,
+        "supportTags": true,
+        "supportTemplates": true,
+        "supportTriggers": true,
+        "supportVariables": true,
+        "supportVersions": true,
+        "supportZones": true,
+        "supportTransformations": false
+      },
+      "tagIds": [
+        "GTM-WM6F6DHP"
+      ]
+    },
+    "tag": [
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "tagId": "1",
+        "name": "GA4 Config",
+        "type": "googtag",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "tagId",
+            "value": "{{GA4 Measurement ID}}"
+          },
+          {
+            "type": "LIST",
+            "key": "configSettingsTable",
+            "list": [
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "send_page_view"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "false"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "debug_mode"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "false"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "fingerprint": "1733404200001",
+        "firingTriggerId": [
+          "100"
+        ],
+        "tagFiringOption": "ONCE_PER_EVENT",
+        "monitoringMetadata": {
+          "type": "MAP"
+        },
+        "consentSettings": {
+          "consentStatus": "NOT_SET"
+        }
+      },
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "tagId": "2",
+        "name": "Meta Pixel - Base Code",
+        "type": "html",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "html",
+            "value": "<script>\n!function(f,b,e,v,n,t,s)\n{if(f.fbq)return;n=f.fbq=function(){n.callMethod?\nn.callMethod.apply(n,arguments):n.queue.push(arguments)};\nif(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';\nn.queue=[];t=b.createElement(e);t.async=!0;\nt.src=v;s=b.getElementsByTagName(e)[0];\ns.parentNode.insertBefore(t,s)}(window, document,'script',\n'https://connect.facebook.net/en_US/fbevents.js');\nfbq('init', '{{Meta Pixel ID}}');\nfbq('track', 'PageView');\n</script>\n<noscript>\n<img height=\"1\" width=\"1\" style=\"display:none\"\nsrc=\"https://www.facebook.com/tr?id={{Meta Pixel ID}}&ev=PageView&noscript=1\"/>\n</noscript>"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "supportDocumentWrite",
+            "value": "false"
+          }
+        ],
+        "fingerprint": "1733404200002",
+        "firingTriggerId": [
+          "100"
+        ],
+        "tagFiringOption": "ONCE_PER_EVENT",
+        "monitoringMetadata": {
+          "type": "MAP"
+        },
+        "consentSettings": {
+          "consentStatus": "NOT_SET"
+        }
+      },
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "tagId": "10",
+        "name": "GA4 - Page View",
+        "type": "gaawe",
+        "parameter": [
+          {
+            "type": "BOOLEAN",
+            "key": "sendEcommerceData",
+            "value": "false"
+          },
+          {
+            "type": "LIST",
+            "key": "eventSettingsTable",
+            "list": [
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "page_path"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{DL - Page Path}}"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "page_title"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{DL - Page Title}}"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "page_type"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{DL - Page Type}}"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "eventName",
+            "value": "page_view"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "measurementIdOverride",
+            "value": "{{GA4 Measurement ID}}"
+          }
+        ],
+        "fingerprint": "1733404200010",
+        "firingTriggerId": [
+          "110"
+        ],
+        "monitoringMetadata": {
+          "type": "MAP"
+        },
+        "consentSettings": {
+          "consentStatus": "NOT_SET"
+        }
+      },
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "tagId": "20",
+        "name": "GA4 - View Content",
+        "type": "gaawe",
+        "parameter": [
+          {
+            "type": "BOOLEAN",
+            "key": "sendEcommerceData",
+            "value": "true"
+          },
+          {
+            "type": "LIST",
+            "key": "eventSettingsTable",
+            "list": [
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "items"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "[{\"item_id\":\"{{DL - Product ID}}\",\"item_name\":\"{{DL - Product Name}}\",\"item_category\":\"{{DL - Product Category}}\",\"price\":{{DL - Value}}}]"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "eventName",
+            "value": "view_item"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "measurementIdOverride",
+            "value": "{{GA4 Measurement ID}}"
+          }
+        ],
+        "fingerprint": "1733404200020",
+        "firingTriggerId": [
+          "120"
+        ],
+        "monitoringMetadata": {
+          "type": "MAP"
+        },
+        "consentSettings": {
+          "consentStatus": "NOT_SET"
+        }
+      },
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "tagId": "21",
+        "name": "Meta Pixel - ViewContent",
+        "type": "html",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "html",
+            "value": "<script>\nfbq('track', 'ViewContent', {\n  value: {{DL - Value}},\n  currency: '{{DL - Currency}}',\n  content_name: '{{DL - Product Name}}',\n  content_ids: ['{{DL - Product ID}}'],\n  content_type: 'product',\n  content_category: '{{DL - Product Category}}'\n}, {\n  eventID: {{DL - Event ID}}\n});\n</script>"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "supportDocumentWrite",
+            "value": "false"
+          }
+        ],
+        "fingerprint": "1733404200021",
+        "firingTriggerId": [
+          "120"
+        ],
+        "monitoringMetadata": {
+          "type": "MAP"
+        },
+        "consentSettings": {
+          "consentStatus": "NOT_SET"
+        }
+      },
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "tagId": "30",
+        "name": "GA4 - Add to Cart",
+        "type": "gaawe",
+        "parameter": [
+          {
+            "type": "BOOLEAN",
+            "key": "sendEcommerceData",
+            "value": "true"
+          },
+          {
+            "type": "LIST",
+            "key": "eventSettingsTable",
+            "list": [
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "items"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "[{\"item_id\":\"{{DL - Product ID}}\",\"item_name\":\"{{DL - Product Name}}\",\"item_category\":\"{{DL - Product Category}}\",\"price\":{{DL - Value}},\"quantity\":1}]"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "value"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{DL - Value}}"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "currency"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{DL - Currency}}"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "eventName",
+            "value": "add_to_cart"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "measurementIdOverride",
+            "value": "{{GA4 Measurement ID}}"
+          }
+        ],
+        "fingerprint": "1733404200030",
+        "firingTriggerId": [
+          "130"
+        ],
+        "monitoringMetadata": {
+          "type": "MAP"
+        },
+        "consentSettings": {
+          "consentStatus": "NOT_SET"
+        }
+      },
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "tagId": "31",
+        "name": "Meta Pixel - AddToCart",
+        "type": "html",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "html",
+            "value": "<script>\nfbq('track', 'AddToCart', {\n  value: {{DL - Value}},\n  currency: '{{DL - Currency}}',\n  content_name: '{{DL - Product Name}}',\n  content_ids: ['{{DL - Product ID}}'],\n  content_type: 'product',\n  content_category: '{{DL - Product Category}}'\n}, {\n  eventID: {{DL - Event ID}}\n});\n</script>"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "supportDocumentWrite",
+            "value": "false"
+          }
+        ],
+        "fingerprint": "1733404200031",
+        "firingTriggerId": [
+          "130"
+        ],
+        "monitoringMetadata": {
+          "type": "MAP"
+        },
+        "consentSettings": {
+          "consentStatus": "NOT_SET"
+        }
+      },
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "tagId": "40",
+        "name": "GA4 - Initiate Checkout",
+        "type": "gaawe",
+        "parameter": [
+          {
+            "type": "BOOLEAN",
+            "key": "sendEcommerceData",
+            "value": "true"
+          },
+          {
+            "type": "LIST",
+            "key": "eventSettingsTable",
+            "list": [
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "value"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{DL - Value}}"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "currency"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{DL - Currency}}"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "eventName",
+            "value": "begin_checkout"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "measurementIdOverride",
+            "value": "{{GA4 Measurement ID}}"
+          }
+        ],
+        "fingerprint": "1733404200040",
+        "firingTriggerId": [
+          "140"
+        ],
+        "monitoringMetadata": {
+          "type": "MAP"
+        },
+        "consentSettings": {
+          "consentStatus": "NOT_SET"
+        }
+      },
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "tagId": "41",
+        "name": "Meta Pixel - InitiateCheckout",
+        "type": "html",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "html",
+            "value": "<script>\nfbq('track', 'InitiateCheckout', {\n  value: {{DL - Value}},\n  currency: '{{DL - Currency}}',\n  content_name: 'checkout_initiated',\n  num_items: {{DL - Num Items}}\n}, {\n  eventID: {{DL - Event ID}}\n});\n</script>"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "supportDocumentWrite",
+            "value": "false"
+          }
+        ],
+        "fingerprint": "1733404200041",
+        "firingTriggerId": [
+          "140"
+        ],
+        "monitoringMetadata": {
+          "type": "MAP"
+        },
+        "consentSettings": {
+          "consentStatus": "NOT_SET"
+        }
+      },
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "tagId": "50",
+        "name": "GA4 - Purchase",
+        "type": "gaawe",
+        "parameter": [
+          {
+            "type": "BOOLEAN",
+            "key": "sendEcommerceData",
+            "value": "true"
+          },
+          {
+            "type": "LIST",
+            "key": "eventSettingsTable",
+            "list": [
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "transaction_id"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{DL - Transaction ID}}"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "value"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{DL - Value}}"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "currency"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{DL - Currency}}"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "eventName",
+            "value": "purchase"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "measurementIdOverride",
+            "value": "{{GA4 Measurement ID}}"
+          }
+        ],
+        "fingerprint": "1733404200050",
+        "firingTriggerId": [
+          "150"
+        ],
+        "monitoringMetadata": {
+          "type": "MAP"
+        },
+        "consentSettings": {
+          "consentStatus": "NOT_SET"
+        }
+      },
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "tagId": "51",
+        "name": "Meta Pixel - Purchase",
+        "type": "html",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "html",
+            "value": "<script>\nfbq('track', 'Purchase', {\n  value: {{DL - Value}},\n  currency: '{{DL - Currency}}',\n  content_name: '{{DL - Product Name}}',\n  content_ids: {{DL - Product IDs}},\n  num_items: {{DL - Num Items}}\n}, {\n  eventID: {{DL - Event ID}}\n});\n</script>"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "supportDocumentWrite",
+            "value": "false"
+          }
+        ],
+        "fingerprint": "1733404200051",
+        "firingTriggerId": [
+          "150"
+        ],
+        "monitoringMetadata": {
+          "type": "MAP"
+        },
+        "consentSettings": {
+          "consentStatus": "NOT_SET"
+        }
+      },
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "tagId": "60",
+        "name": "GA4 - WhatsApp Click",
+        "type": "gaawe",
+        "parameter": [
+          {
+            "type": "BOOLEAN",
+            "key": "sendEcommerceData",
+            "value": "false"
+          },
+          {
+            "type": "LIST",
+            "key": "eventSettingsTable",
+            "list": [
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "click_location"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{DL - Click Location}}"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "button_text"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{DL - Button Text}}"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "eventName",
+            "value": "whatsapp_click"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "measurementIdOverride",
+            "value": "{{GA4 Measurement ID}}"
+          }
+        ],
+        "fingerprint": "1733404200060",
+        "firingTriggerId": [
+          "160"
+        ],
+        "monitoringMetadata": {
+          "type": "MAP"
+        },
+        "consentSettings": {
+          "consentStatus": "NOT_SET"
+        }
+      },
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "tagId": "61",
+        "name": "Meta Pixel - Contact (WhatsApp)",
+        "type": "html",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "html",
+            "value": "<script>\nfbq('track', 'Contact', {\n  value: {{DL - Value}},\n  currency: '{{DL - Currency}}',\n  content_name: '{{DL - Click Location}}',\n  content_category: '{{DL - Service Interested}}'\n}, {\n  eventID: {{DL - Event ID}}\n});\n</script>"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "supportDocumentWrite",
+            "value": "false"
+          }
+        ],
+        "fingerprint": "1733404200061",
+        "firingTriggerId": [
+          "160"
+        ],
+        "monitoringMetadata": {
+          "type": "MAP"
+        },
+        "consentSettings": {
+          "consentStatus": "NOT_SET"
+        }
+      },
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "tagId": "70",
+        "name": "GA4 - Phone Click",
+        "type": "gaawe",
+        "parameter": [
+          {
+            "type": "BOOLEAN",
+            "key": "sendEcommerceData",
+            "value": "false"
+          },
+          {
+            "type": "LIST",
+            "key": "eventSettingsTable",
+            "list": [
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "click_location"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{DL - Click Location}}"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "eventName",
+            "value": "phone_click"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "measurementIdOverride",
+            "value": "{{GA4 Measurement ID}}"
+          }
+        ],
+        "fingerprint": "1733404200070",
+        "firingTriggerId": [
+          "170"
+        ],
+        "monitoringMetadata": {
+          "type": "MAP"
+        },
+        "consentSettings": {
+          "consentStatus": "NOT_SET"
+        }
+      },
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "tagId": "71",
+        "name": "Meta Pixel - Contact (Phone)",
+        "type": "html",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "html",
+            "value": "<script>\nfbq('track', 'Contact', {\n  content_name: '{{DL - Click Location}}',\n  content_category: 'phone_call'\n}, {\n  eventID: {{DL - Event ID}}\n});\n</script>"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "supportDocumentWrite",
+            "value": "false"
+          }
+        ],
+        "fingerprint": "1733404200071",
+        "firingTriggerId": [
+          "170"
+        ],
+        "monitoringMetadata": {
+          "type": "MAP"
+        },
+        "consentSettings": {
+          "consentStatus": "NOT_SET"
+        }
+      },
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "tagId": "80",
+        "name": "GA4 - Contact Submit",
+        "type": "gaawe",
+        "parameter": [
+          {
+            "type": "BOOLEAN",
+            "key": "sendEcommerceData",
+            "value": "false"
+          },
+          {
+            "type": "LIST",
+            "key": "eventSettingsTable",
+            "list": [
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "form_name"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{DL - Form Name}}"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "eventName",
+            "value": "contact_submit"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "measurementIdOverride",
+            "value": "{{GA4 Measurement ID}}"
+          }
+        ],
+        "fingerprint": "1733404200080",
+        "firingTriggerId": [
+          "180"
+        ],
+        "monitoringMetadata": {
+          "type": "MAP"
+        },
+        "consentSettings": {
+          "consentStatus": "NOT_SET"
+        }
+      },
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "tagId": "81",
+        "name": "Meta Pixel - Lead (Contact Form)",
+        "type": "html",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "html",
+            "value": "<script>\nfbq('track', 'Lead', {\n  content_name: '{{DL - Form Name}}',\n  content_category: '{{DL - Service Interested}}'\n}, {\n  eventID: {{DL - Event ID}}\n});\n</script>"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "supportDocumentWrite",
+            "value": "false"
+          }
+        ],
+        "fingerprint": "1733404200081",
+        "firingTriggerId": [
+          "180"
+        ],
+        "monitoringMetadata": {
+          "type": "MAP"
+        },
+        "consentSettings": {
+          "consentStatus": "NOT_SET"
+        }
+      },
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "tagId": "90",
+        "name": "GA4 - CTA Click",
+        "type": "gaawe",
+        "parameter": [
+          {
+            "type": "BOOLEAN",
+            "key": "sendEcommerceData",
+            "value": "false"
+          },
+          {
+            "type": "LIST",
+            "key": "eventSettingsTable",
+            "list": [
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "cta_text"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{DL - CTA Text}}"
+                  }
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameter",
+                    "value": "cta_location"
+                  },
+                  {
+                    "type": "TEMPLATE",
+                    "key": "parameterValue",
+                    "value": "{{DL - CTA Location}}"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "eventName",
+            "value": "cta_click"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "measurementIdOverride",
+            "value": "{{GA4 Measurement ID}}"
+          }
+        ],
+        "fingerprint": "1733404200090",
+        "firingTriggerId": [
+          "190"
+        ],
+        "monitoringMetadata": {
+          "type": "MAP"
+        },
+        "consentSettings": {
+          "consentStatus": "NOT_SET"
+        }
+      }
+    ],
+    "trigger": [
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "triggerId": "100",
+        "name": "All Pages",
+        "type": "PAGEVIEW",
+        "fingerprint": "1733404200100"
+      },
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "triggerId": "110",
+        "name": "CE - Page View",
+        "type": "CUSTOM_EVENT",
+        "customEventFilter": [
+          {
+            "type": "EQUALS",
+            "parameter": [
+              {
+                "type": "TEMPLATE",
+                "key": "arg0",
+                "value": "{{_event}}"
+              },
+              {
+                "type": "TEMPLATE",
+                "key": "arg1",
+                "value": "page_view"
+              }
+            ]
+          }
+        ],
+        "fingerprint": "1733404200110"
+      },
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "triggerId": "120",
+        "name": "CE - View Content",
+        "type": "CUSTOM_EVENT",
+        "customEventFilter": [
+          {
+            "type": "EQUALS",
+            "parameter": [
+              {
+                "type": "TEMPLATE",
+                "key": "arg0",
+                "value": "{{_event}}"
+              },
+              {
+                "type": "TEMPLATE",
+                "key": "arg1",
+                "value": "view_content"
+              }
+            ]
+          }
+        ],
+        "fingerprint": "1733404200120"
+      },
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "triggerId": "130",
+        "name": "CE - Add to Cart",
+        "type": "CUSTOM_EVENT",
+        "customEventFilter": [
+          {
+            "type": "EQUALS",
+            "parameter": [
+              {
+                "type": "TEMPLATE",
+                "key": "arg0",
+                "value": "{{_event}}"
+              },
+              {
+                "type": "TEMPLATE",
+                "key": "arg1",
+                "value": "add_to_cart"
+              }
+            ]
+          }
+        ],
+        "fingerprint": "1733404200130"
+      },
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "triggerId": "140",
+        "name": "CE - Initiate Checkout",
+        "type": "CUSTOM_EVENT",
+        "customEventFilter": [
+          {
+            "type": "EQUALS",
+            "parameter": [
+              {
+                "type": "TEMPLATE",
+                "key": "arg0",
+                "value": "{{_event}}"
+              },
+              {
+                "type": "TEMPLATE",
+                "key": "arg1",
+                "value": "initiate_checkout"
+              }
+            ]
+          }
+        ],
+        "fingerprint": "1733404200140"
+      },
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "triggerId": "150",
+        "name": "CE - Purchase",
+        "type": "CUSTOM_EVENT",
+        "customEventFilter": [
+          {
+            "type": "EQUALS",
+            "parameter": [
+              {
+                "type": "TEMPLATE",
+                "key": "arg0",
+                "value": "{{_event}}"
+              },
+              {
+                "type": "TEMPLATE",
+                "key": "arg1",
+                "value": "purchase"
+              }
+            ]
+          }
+        ],
+        "fingerprint": "1733404200150"
+      },
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "triggerId": "160",
+        "name": "CE - WhatsApp Click",
+        "type": "CUSTOM_EVENT",
+        "customEventFilter": [
+          {
+            "type": "EQUALS",
+            "parameter": [
+              {
+                "type": "TEMPLATE",
+                "key": "arg0",
+                "value": "{{_event}}"
+              },
+              {
+                "type": "TEMPLATE",
+                "key": "arg1",
+                "value": "whatsapp_click"
+              }
+            ]
+          }
+        ],
+        "fingerprint": "1733404200160"
+      },
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "triggerId": "170",
+        "name": "CE - Phone Click",
+        "type": "CUSTOM_EVENT",
+        "customEventFilter": [
+          {
+            "type": "EQUALS",
+            "parameter": [
+              {
+                "type": "TEMPLATE",
+                "key": "arg0",
+                "value": "{{_event}}"
+              },
+              {
+                "type": "TEMPLATE",
+                "key": "arg1",
+                "value": "phone_click"
+              }
+            ]
+          }
+        ],
+        "fingerprint": "1733404200170"
+      },
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "triggerId": "180",
+        "name": "CE - Contact Submit",
+        "type": "CUSTOM_EVENT",
+        "customEventFilter": [
+          {
+            "type": "EQUALS",
+            "parameter": [
+              {
+                "type": "TEMPLATE",
+                "key": "arg0",
+                "value": "{{_event}}"
+              },
+              {
+                "type": "TEMPLATE",
+                "key": "arg1",
+                "value": "contact_submit"
+              }
+            ]
+          }
+        ],
+        "fingerprint": "1733404200180"
+      },
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "triggerId": "190",
+        "name": "CE - CTA Click",
+        "type": "CUSTOM_EVENT",
+        "customEventFilter": [
+          {
+            "type": "EQUALS",
+            "parameter": [
+              {
+                "type": "TEMPLATE",
+                "key": "arg0",
+                "value": "{{_event}}"
+              },
+              {
+                "type": "TEMPLATE",
+                "key": "arg1",
+                "value": "cta_click"
+              }
+            ]
+          }
+        ],
+        "fingerprint": "1733404200190"
+      }
+    ],
+    "variable": [
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "variableId": "1",
+        "name": "GA4 Measurement ID",
+        "type": "c",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "value",
+            "value": "G-XZJJ1KT7KJ"
+          }
+        ],
+        "fingerprint": "1733404200201"
+      },
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "variableId": "2",
+        "name": "Meta Pixel ID",
+        "type": "c",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "value",
+            "value": "1319147365456724"
+          }
+        ],
+        "fingerprint": "1733404200202"
+      },
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "variableId": "10",
+        "name": "DL - Event ID",
+        "type": "v",
+        "parameter": [
+          {
+            "type": "INTEGER",
+            "key": "dataLayerVersion",
+            "value": "2"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "name",
+            "value": "event_id"
+          }
+        ],
+        "fingerprint": "1733404200210"
+      },
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "variableId": "11",
+        "name": "DL - Page Path",
+        "type": "v",
+        "parameter": [
+          {
+            "type": "INTEGER",
+            "key": "dataLayerVersion",
+            "value": "2"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "name",
+            "value": "page_path"
+          }
+        ],
+        "fingerprint": "1733404200211"
+      },
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "variableId": "12",
+        "name": "DL - Page Title",
+        "type": "v",
+        "parameter": [
+          {
+            "type": "INTEGER",
+            "key": "dataLayerVersion",
+            "value": "2"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "name",
+            "value": "page_title"
+          }
+        ],
+        "fingerprint": "1733404200212"
+      },
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "variableId": "13",
+        "name": "DL - Page Type",
+        "type": "v",
+        "parameter": [
+          {
+            "type": "INTEGER",
+            "key": "dataLayerVersion",
+            "value": "2"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "name",
+            "value": "page_type"
+          }
+        ],
+        "fingerprint": "1733404200213"
+      },
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "variableId": "20",
+        "name": "DL - Product ID",
+        "type": "v",
+        "parameter": [
+          {
+            "type": "INTEGER",
+            "key": "dataLayerVersion",
+            "value": "2"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "name",
+            "value": "product_id"
+          }
+        ],
+        "fingerprint": "1733404200220"
+      },
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "variableId": "21",
+        "name": "DL - Product Name",
+        "type": "v",
+        "parameter": [
+          {
+            "type": "INTEGER",
+            "key": "dataLayerVersion",
+            "value": "2"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "name",
+            "value": "product_name"
+          }
+        ],
+        "fingerprint": "1733404200221"
+      },
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "variableId": "22",
+        "name": "DL - Product Category",
+        "type": "v",
+        "parameter": [
+          {
+            "type": "INTEGER",
+            "key": "dataLayerVersion",
+            "value": "2"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "name",
+            "value": "product_category"
+          }
+        ],
+        "fingerprint": "1733404200222"
+      },
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "variableId": "23",
+        "name": "DL - Product IDs",
+        "type": "v",
+        "parameter": [
+          {
+            "type": "INTEGER",
+            "key": "dataLayerVersion",
+            "value": "2"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "name",
+            "value": "product_ids"
+          }
+        ],
+        "fingerprint": "1733404200223"
+      },
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "variableId": "30",
+        "name": "DL - Value",
+        "type": "v",
+        "parameter": [
+          {
+            "type": "INTEGER",
+            "key": "dataLayerVersion",
+            "value": "2"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "name",
+            "value": "value"
+          }
+        ],
+        "fingerprint": "1733404200230"
+      },
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "variableId": "31",
+        "name": "DL - Currency",
+        "type": "v",
+        "parameter": [
+          {
+            "type": "INTEGER",
+            "key": "dataLayerVersion",
+            "value": "2"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "name",
+            "value": "currency"
+          }
+        ],
+        "fingerprint": "1733404200231"
+      },
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "variableId": "32",
+        "name": "DL - Num Items",
+        "type": "v",
+        "parameter": [
+          {
+            "type": "INTEGER",
+            "key": "dataLayerVersion",
+            "value": "2"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "name",
+            "value": "num_items"
+          }
+        ],
+        "fingerprint": "1733404200232"
+      },
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "variableId": "33",
+        "name": "DL - Transaction ID",
+        "type": "v",
+        "parameter": [
+          {
+            "type": "INTEGER",
+            "key": "dataLayerVersion",
+            "value": "2"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "name",
+            "value": "transaction_id"
+          }
+        ],
+        "fingerprint": "1733404200233"
+      },
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "variableId": "40",
+        "name": "DL - Click Location",
+        "type": "v",
+        "parameter": [
+          {
+            "type": "INTEGER",
+            "key": "dataLayerVersion",
+            "value": "2"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "name",
+            "value": "click_location"
+          }
+        ],
+        "fingerprint": "1733404200240"
+      },
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "variableId": "41",
+        "name": "DL - Button Text",
+        "type": "v",
+        "parameter": [
+          {
+            "type": "INTEGER",
+            "key": "dataLayerVersion",
+            "value": "2"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "name",
+            "value": "button_text"
+          }
+        ],
+        "fingerprint": "1733404200241"
+      },
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "variableId": "42",
+        "name": "DL - Service Interested",
+        "type": "v",
+        "parameter": [
+          {
+            "type": "INTEGER",
+            "key": "dataLayerVersion",
+            "value": "2"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "name",
+            "value": "service_interested"
+          }
+        ],
+        "fingerprint": "1733404200242"
+      },
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "variableId": "50",
+        "name": "DL - Form Name",
+        "type": "v",
+        "parameter": [
+          {
+            "type": "INTEGER",
+            "key": "dataLayerVersion",
+            "value": "2"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "name",
+            "value": "form_name"
+          }
+        ],
+        "fingerprint": "1733404200250"
+      },
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "variableId": "60",
+        "name": "DL - CTA Text",
+        "type": "v",
+        "parameter": [
+          {
+            "type": "INTEGER",
+            "key": "dataLayerVersion",
+            "value": "2"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "name",
+            "value": "cta_text"
+          }
+        ],
+        "fingerprint": "1733404200260"
+      },
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "variableId": "61",
+        "name": "DL - CTA Location",
+        "type": "v",
+        "parameter": [
+          {
+            "type": "INTEGER",
+            "key": "dataLayerVersion",
+            "value": "2"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "name",
+            "value": "cta_location"
+          }
+        ],
+        "fingerprint": "1733404200261"
+      }
+    ],
+    "builtInVariable": [
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "type": "PAGE_URL",
+        "name": "Page URL"
+      },
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "type": "PAGE_HOSTNAME",
+        "name": "Page Hostname"
+      },
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "type": "PAGE_PATH",
+        "name": "Page Path"
+      },
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "type": "REFERRER",
+        "name": "Referrer"
+      },
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "type": "EVENT",
+        "name": "Event"
+      }
+    ],
+    "tagManagerUrl": "https://tagmanager.google.com/#/versions/accounts/6307985569/containers/GTM-WM6F6DHP/versions/0?apiLink=version"
+  }
+}

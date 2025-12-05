@@ -5,12 +5,16 @@ interface ProductGridProps {
   products: Product[];
   isLoading?: boolean;
   columns?: 2 | 3 | 4;
+  listName?: string;
+  listId?: string;
 }
 
 export default function ProductGrid({
   products,
   isLoading = false,
   columns = 4,
+  listName,
+  listId,
 }: ProductGridProps) {
   if (isLoading) {
     return (
@@ -37,8 +41,14 @@ export default function ProductGrid({
 
   return (
     <div className={`grid ${gridCols[columns]} gap-x-5 gap-y-10 md:gap-x-8 md:gap-y-14`}>
-      {products.map((product) => (
-        <ProductCard key={product.id} product={product} />
+      {products.map((product, index) => (
+        <ProductCard
+          key={product.id}
+          product={product}
+          listName={listName}
+          listId={listId}
+          index={index}
+        />
       ))}
     </div>
   );

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import PoolTableTypeModal from './PoolTableTypeModal';
 import ClothChangeModal from '../product/ClothChangeModal';
 import { Link } from 'react-router-dom';
+import { trackCTAClick } from '../../hooks/useAnalytics';
 
 const heroImages = [
   '/images/fotos/heronavidad.webp',
@@ -79,12 +80,16 @@ export default function Hero() {
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center max-w-md sm:max-w-none mx-auto">
               <Link
                 to="/tienda"
+                onClick={() => trackCTAClick('Ver Regalos', 'hero', 'primary')}
                 className="inline-flex items-center justify-center bg-white text-black hover:bg-black hover:text-white border-2 border-white font-medium px-6 sm:px-8 md:px-10 py-3 sm:py-3.5 md:py-4 text-xs sm:text-sm uppercase tracking-wider transition-all duration-300 touch-target w-full sm:w-auto"
               >
                 Ver Regalos
               </Link>
               <button
-                onClick={() => setIsModalOpen(true)}
+                onClick={() => {
+                  trackCTAClick('Cotizar Mesa de Pool', 'hero', 'secondary');
+                  setIsModalOpen(true);
+                }}
                 className="inline-flex items-center justify-center bg-transparent text-white hover:bg-white hover:text-black border-2 border-white font-medium px-6 sm:px-8 md:px-10 py-3 sm:py-3.5 md:py-4 text-xs sm:text-sm uppercase tracking-wider transition-all duration-300 touch-target w-full sm:w-auto"
               >
                 Cotizar Mesa de Pool

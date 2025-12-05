@@ -181,6 +181,8 @@ export default function ProductPage() {
             <ProductGrid
               products={relatedProducts.filter((p) => p.id !== product.id).slice(0, 4)}
               columns={4}
+              listName="Related Products"
+              listId="related_products"
             />
           </div>
         </section>

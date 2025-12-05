@@ -1,0 +1,225 @@
+{
+  "exportFormatVersion": 2,
+  "exportTime": "2025-12-05 11:30:00",
+  "containerVersion": {
+    "tag": [
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "name": "Meta Pixel - Lead (con Event ID)",
+        "type": "html",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "html",
+            "value": "<script>\nfbq('track', 'Lead', {\n  value: {{DL - Value}},\n  currency: '{{DL - Currency}}',\n  content_name: 'Quote Completed',\n  content_category: '{{DL - Services Selected}}',\n  num_items: {{DL - Services Count}}\n}, {\n  eventID: {{DL - Event ID}}\n});\n</script>"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "supportDocumentWrite",
+            "value": "false"
+          }
+        ],
+        "fingerprint": "1733404200000",
+        "firingTriggerId": [
+          "202"
+        ],
+        "monitoringMetadata": {
+          "type": "MAP"
+        },
+        "consentSettings": {
+          "consentStatus": "NOT_SET"
+        }
+      },
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "name": "Meta Pixel - Contact (con Event ID)",
+        "type": "html",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "html",
+            "value": "<script>\nfbq('track', 'Contact', {\n  value: {{DL - Value}},\n  currency: '{{DL - Currency}}',\n  content_name: '{{DL - Click Location}}',\n  content_category: '{{DL - Service Interested}}'\n}, {\n  eventID: {{DL - Event ID}}\n});\n</script>"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "supportDocumentWrite",
+            "value": "false"
+          }
+        ],
+        "fingerprint": "1733404200001",
+        "firingTriggerId": [
+          "229"
+        ],
+        "monitoringMetadata": {
+          "type": "MAP"
+        },
+        "consentSettings": {
+          "consentStatus": "NOT_SET"
+        }
+      },
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "name": "Meta Pixel - Purchase (con Event ID)",
+        "type": "html",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "html",
+            "value": "<script>\nfbq('track', 'Purchase', {\n  value: {{DL - Value}},\n  currency: '{{DL - Currency}}',\n  content_name: '{{DL - Product Name}}',\n  content_ids: {{DL - Product IDs}},\n  num_items: {{DL - Num Items}}\n}, {\n  eventID: {{DL - Event ID}}\n});\n</script>"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "supportDocumentWrite",
+            "value": "false"
+          }
+        ],
+        "fingerprint": "1733404200002",
+        "firingTriggerId": [
+          "255"
+        ],
+        "monitoringMetadata": {
+          "type": "MAP"
+        },
+        "consentSettings": {
+          "consentStatus": "NOT_SET"
+        }
+      },
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "name": "Meta Pixel - AddToCart (con Event ID)",
+        "type": "html",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "html",
+            "value": "<script>\nfbq('track', 'AddToCart', {\n  value: {{DL - Value}},\n  currency: '{{DL - Currency}}',\n  content_name: {{DL - Product Name}},\n  content_ids: [{{DL - Product ID}}],\n  content_type: 'product',\n  content_category: '{{DL - Product Category}}'\n}, {\n  eventID: {{DL - Event ID}}\n});\n</script>"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "supportDocumentWrite",
+            "value": "false"
+          }
+        ],
+        "fingerprint": "1733404200003",
+        "firingTriggerId": [
+          "231"
+        ],
+        "monitoringMetadata": {
+          "type": "MAP"
+        },
+        "consentSettings": {
+          "consentStatus": "NOT_SET"
+        }
+      },
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "name": "Meta Pixel - InitiateCheckout (con Event ID)",
+        "type": "html",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "html",
+            "value": "<script>\nfbq('track', 'InitiateCheckout', {\n  value: {{DL - Value}},\n  currency: '{{DL - Currency}}',\n  content_name: 'checkout_initiated',\n  num_items: {{DL - Num Items}}\n}, {\n  eventID: {{DL - Event ID}}\n});\n</script>"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "supportDocumentWrite",
+            "value": "false"
+          }
+        ],
+        "fingerprint": "1733404200004",
+        "firingTriggerId": [
+          "260"
+        ],
+        "monitoringMetadata": {
+          "type": "MAP"
+        },
+        "consentSettings": {
+          "consentStatus": "NOT_SET"
+        }
+      },
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "name": "Meta Pixel - ViewContent (con Event ID)",
+        "type": "html",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "html",
+            "value": "<script>\nfbq('track', 'ViewContent', {\n  value: {{DL - Value}},\n  currency: '{{DL - Currency}}',\n  content_name: {{DL - Product Name}},\n  content_ids: [{{DL - Product ID}}],\n  content_type: 'product',\n  content_category: '{{DL - Product Category}}'\n}, {\n  eventID: {{DL - Event ID}}\n});\n</script>"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "supportDocumentWrite",
+            "value": "false"
+          }
+        ],
+        "fingerprint": "1733404200005",
+        "firingTriggerId": [
+          "265"
+        ],
+        "monitoringMetadata": {
+          "type": "MAP"
+        },
+        "consentSettings": {
+          "consentStatus": "NOT_SET"
+        }
+      }
+    ],
+    "variable": [
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "name": "DL - Event ID",
+        "type": "v",
+        "parameter": [
+          {
+            "type": "INTEGER",
+            "key": "dataLayerVersion",
+            "value": "2"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "name",
+            "value": "event_id"
+          }
+        ],
+        "fingerprint": "1733404200006"
+      },
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "name": "Constant - GA4 Measurement ID",
+        "type": "c",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "value",
+            "value": "G-XZJJ1KT7KJ"
+          }
+        ],
+        "fingerprint": "1733404200007"
+      },
+      {
+        "accountId": "6307985569",
+        "containerId": "GTM-WM6F6DHP",
+        "name": "Constant - Meta Pixel ID",
+        "type": "c",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "value",
+            "value": "1319147365456724"
+          }
+        ],
+        "fingerprint": "1733404200008"
+      }
+    ]
+  }
+}

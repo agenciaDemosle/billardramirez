@@ -9,6 +9,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useCart } from '../hooks/useCart';
 import { formatPrice } from '../utils/helpers';
 import { wooApi } from '../api/woocommerce';
+import { trackInitiateCheckout, trackPurchase } from '../hooks/useAnalytics';
 
 // Comunas con envío a $4.000 (solo estas de la RM)
 const COMUNAS_ENVIO_4000 = [
@@ -100,6 +101,24 @@ export default function Checkout() {
   const isEnvioPorPagar = selectedComuna && !COMUNAS_ENVIO_4000.includes(selectedComuna);
   const shippingCost = isEnvioPorPagar ? 0 : 4000;
   const finalTotal = total + shippingCost;
+
+  // Track initiate checkout when user reaches checkout page
+  useEffect(() => {
+    if (items.length > 0) {
+      trackInitiateCheckout({
+        cart_total: finalTotal,
+        num_items: items.length,
+        product_ids: items.map(item => item.product.id.toString()),
+        items: items.map(item => ({
+          item_id: item.product.id.toString(),
+          item_name: item.product.name,
+          item_category: item.product.categories[0]?.name || 'Sin categoría',
+          price: parseFloat(item.product.price),
+          quantity: item.quantity,
+        })),
+      });
+    }
+  }, []); // Solo ejecutar una vez al montar
 
   if (items.length === 0) {
     return (
@@ -211,6 +230,23 @@ export default function Checkout() {
         if (!result.success) {
           throw new Error(result.error || 'Error al procesar el pago');
         }
+
+        // Save order data for purchase tracking
+        const orderDataForTracking = {
+          total: finalTotal,
+          items: items.map(item => ({
+            product_id: item.product.id,
+            name: item.product.name,
+            category: item.product.categories[0]?.name || 'Sin categoría',
+            price: parseFloat(item.product.price),
+            quantity: item.quantity,
+          })),
+          email: data.email,
+          phone: data.phone,
+          firstName: data.firstName,
+          lastName: data.lastName,
+        };
+        localStorage.setItem(`order_${result.order_id || orderId}`, JSON.stringify(orderDataForTracking));
 
         clearCart();
 

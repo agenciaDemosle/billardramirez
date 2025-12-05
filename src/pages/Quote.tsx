@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { Helmet } from 'react-helmet-async';
 import { Calculator, CheckCircle, Ruler, Home, DollarSign, Truck, Send, ArrowRight, ArrowLeft, User, MessageSquare } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { trackPoolTableQuoteStart, trackPoolTableCustomization, trackPoolTableQuoteComplete } from '../hooks/useAnalytics';
 
 // Schema de validación por pasos
 const step1Schema = z.object({
@@ -33,6 +34,7 @@ export default function Quote() {
   const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [hasStartedQuote, setHasStartedQuote] = useState(false);
 
   const {
     register,
@@ -89,6 +91,29 @@ export default function Quote() {
       isValid = await trigger(['name', 'email', 'phone', 'deliveryAddress']);
     } else if (currentStep === 2) {
       isValid = await trigger(['tableSize', 'tableType']);
+
+      // Track customizations when moving from step 2 to 3
+      if (isValid) {
+        const values = getValues();
+
+        // Track quote start if not already tracked
+        if (!hasStartedQuote && values.tableType) {
+          trackPoolTableQuoteStart({
+            table_type: values.tableType,
+            location: 'quote_form_page',
+          });
+          setHasStartedQuote(true);
+        }
+
+        // Track table size
+        if (values.tableSize) {
+          trackPoolTableCustomization({
+            table_type: values.tableType || 'unknown',
+            customization_type: 'dimensions',
+            customization_value: values.tableSize,
+          });
+        }
+      }
     }
 
     if (isValid) {
@@ -102,6 +127,33 @@ export default function Quote() {
 
   const onSubmit = async (data: QuoteFormData) => {
     setIsSubmitting(true);
+
+    // Calculate estimated value based on table type
+    const tableTypePrices = {
+      'recreativa': 1200000,
+      'semi-profesional': 2500000,
+      'profesional': 4500000,
+      'comercial': 3000000,
+    };
+
+    const estimatedValue = tableTypePrices[data.tableType as keyof typeof tableTypePrices] || 2000000;
+
+    // Track installation customization
+    if (data.installationNeeded === 'si') {
+      trackPoolTableCustomization({
+        table_type: data.tableType,
+        customization_type: 'installation',
+        customization_value: 'Instalación profesional',
+      });
+    }
+
+    // Track quote completion
+    trackPoolTableQuoteComplete({
+      table_type: data.tableType,
+      dimensions: data.tableSize,
+      estimated_value: estimatedValue,
+      contact_method: 'email',
+    });
 
     try {
       const response = await fetch('/api/quote/send.php', {
@@ -119,6 +171,7 @@ export default function Quote() {
         toast.success('¡Cotización enviada con éxito! Te contactaremos pronto.');
         reset();
         setCurrentStep(1);
+        setHasStartedQuote(false);
         setTimeout(() => setSubmitSuccess(false), 5000);
       } else {
         throw new Error(result.error || 'Error al enviar la cotización');

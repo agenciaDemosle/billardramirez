@@ -1,0 +1,272 @@
+{
+  "exportFormatVersion": 2,
+  "exportTime": "2025-12-05 14:00:00",
+  "containerVersion": {
+    "tag": [
+      {
+        "name": "GA4 - Pool Table Quote Start",
+        "type": "gaawe",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "eventName",
+            "value": "pool_table_quote_start"
+          },
+          {
+            "type": "LIST",
+            "key": "eventParameters",
+            "list": [
+              {
+                "type": "MAP",
+                "map": [
+                  {"type": "TEMPLATE", "key": "name", "value": "table_type"},
+                  {"type": "TEMPLATE", "key": "value", "value": "{{DL - Table Type}}"}
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {"type": "TEMPLATE", "key": "name", "value": "quote_location"},
+                  {"type": "TEMPLATE", "key": "value", "value": "{{DL - Quote Location}}"}
+                ]
+              }
+            ]
+          },
+          {
+            "type": "TAG_REFERENCE",
+            "key": "measurementId",
+            "value": "GA4 Config"
+          }
+        ],
+        "monitoringMetadata": {"type": "MAP"},
+        "consentSettings": {"consentStatus": "NOT_SET"}
+      },
+      {
+        "name": "GA4 - Pool Table Customization",
+        "type": "gaawe",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "eventName",
+            "value": "pool_table_customization"
+          },
+          {
+            "type": "LIST",
+            "key": "eventParameters",
+            "list": [
+              {
+                "type": "MAP",
+                "map": [
+                  {"type": "TEMPLATE", "key": "name", "value": "table_type"},
+                  {"type": "TEMPLATE", "key": "value", "value": "{{DL - Table Type}}"}
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {"type": "TEMPLATE", "key": "name", "value": "customization_type"},
+                  {"type": "TEMPLATE", "key": "value", "value": "{{DL - Customization Type}}"}
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {"type": "TEMPLATE", "key": "name", "value": "customization_value"},
+                  {"type": "TEMPLATE", "key": "value", "value": "{{DL - Customization Value}}"}
+                ]
+              }
+            ]
+          },
+          {
+            "type": "TAG_REFERENCE",
+            "key": "measurementId",
+            "value": "GA4 Config"
+          }
+        ],
+        "monitoringMetadata": {"type": "MAP"},
+        "consentSettings": {"consentStatus": "NOT_SET"}
+      },
+      {
+        "name": "GA4 - Pool Table Quote Complete",
+        "type": "gaawe",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "eventName",
+            "value": "pool_table_quote_complete"
+          },
+          {
+            "type": "LIST",
+            "key": "eventParameters",
+            "list": [
+              {
+                "type": "MAP",
+                "map": [
+                  {"type": "TEMPLATE", "key": "name", "value": "table_type"},
+                  {"type": "TEMPLATE", "key": "value", "value": "{{DL - Table Type}}"}
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {"type": "TEMPLATE", "key": "name", "value": "dimensions"},
+                  {"type": "TEMPLATE", "key": "value", "value": "{{DL - Dimensions}}"}
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {"type": "TEMPLATE", "key": "name", "value": "cloth_color"},
+                  {"type": "TEMPLATE", "key": "value", "value": "{{DL - Cloth Color}}"}
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {"type": "TEMPLATE", "key": "name", "value": "accessories_count"},
+                  {"type": "TEMPLATE", "key": "value", "value": "{{DL - Accessories Count}}"}
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {"type": "TEMPLATE", "key": "name", "value": "estimated_value"},
+                  {"type": "TEMPLATE", "key": "value", "value": "{{DL - Estimated Value}}"}
+                ]
+              },
+              {
+                "type": "MAP",
+                "map": [
+                  {"type": "TEMPLATE", "key": "name", "value": "contact_method"},
+                  {"type": "TEMPLATE", "key": "value", "value": "{{DL - Contact Method}}"}
+                ]
+              }
+            ]
+          },
+          {
+            "type": "TAG_REFERENCE",
+            "key": "measurementId",
+            "value": "GA4 Config"
+          }
+        ],
+        "monitoringMetadata": {"type": "MAP"},
+        "consentSettings": {"consentStatus": "NOT_SET"}
+      }
+    ],
+    "trigger": [
+      {
+        "name": "CE - pool_table_quote_start",
+        "type": "CUSTOM_EVENT",
+        "customEventFilter": [
+          {
+            "type": "EQUALS",
+            "parameter": [
+              {"type": "TEMPLATE", "key": "arg0", "value": "{{_event}}"},
+              {"type": "TEMPLATE", "key": "arg1", "value": "pool_table_quote_start"}
+            ]
+          }
+        ]
+      },
+      {
+        "name": "CE - pool_table_customization",
+        "type": "CUSTOM_EVENT",
+        "customEventFilter": [
+          {
+            "type": "EQUALS",
+            "parameter": [
+              {"type": "TEMPLATE", "key": "arg0", "value": "{{_event}}"},
+              {"type": "TEMPLATE", "key": "arg1", "value": "pool_table_customization"}
+            ]
+          }
+        ]
+      },
+      {
+        "name": "CE - pool_table_quote_complete",
+        "type": "CUSTOM_EVENT",
+        "customEventFilter": [
+          {
+            "type": "EQUALS",
+            "parameter": [
+              {"type": "TEMPLATE", "key": "arg0", "value": "{{_event}}"},
+              {"type": "TEMPLATE", "key": "arg1", "value": "pool_table_quote_complete"}
+            ]
+          }
+        ]
+      }
+    ],
+    "variable": [
+      {
+        "name": "DL - Table Type",
+        "type": "v",
+        "parameter": [
+          {"type": "INTEGER", "key": "dataLayerVersion", "value": "2"},
+          {"type": "TEMPLATE", "key": "name", "value": "table_type"}
+        ]
+      },
+      {
+        "name": "DL - Quote Location",
+        "type": "v",
+        "parameter": [
+          {"type": "INTEGER", "key": "dataLayerVersion", "value": "2"},
+          {"type": "TEMPLATE", "key": "name", "value": "quote_location"}
+        ]
+      },
+      {
+        "name": "DL - Customization Type",
+        "type": "v",
+        "parameter": [
+          {"type": "INTEGER", "key": "dataLayerVersion", "value": "2"},
+          {"type": "TEMPLATE", "key": "name", "value": "customization_type"}
+        ]
+      },
+      {
+        "name": "DL - Customization Value",
+        "type": "v",
+        "parameter": [
+          {"type": "INTEGER", "key": "dataLayerVersion", "value": "2"},
+          {"type": "TEMPLATE", "key": "name", "value": "customization_value"}
+        ]
+      },
+      {
+        "name": "DL - Dimensions",
+        "type": "v",
+        "parameter": [
+          {"type": "INTEGER", "key": "dataLayerVersion", "value": "2"},
+          {"type": "TEMPLATE", "key": "name", "value": "dimensions"}
+        ]
+      },
+      {
+        "name": "DL - Cloth Color",
+        "type": "v",
+        "parameter": [
+          {"type": "INTEGER", "key": "dataLayerVersion", "value": "2"},
+          {"type": "TEMPLATE", "key": "name", "value": "cloth_color"}
+        ]
+      },
+      {
+        "name": "DL - Accessories Count",
+        "type": "v",
+        "parameter": [
+          {"type": "INTEGER", "key": "dataLayerVersion", "value": "2"},
+          {"type": "TEMPLATE", "key": "name", "value": "accessories_count"}
+        ]
+      },
+      {
+        "name": "DL - Estimated Value",
+        "type": "v",
+        "parameter": [
+          {"type": "INTEGER", "key": "dataLayerVersion", "value": "2"},
+          {"type": "TEMPLATE", "key": "name", "value": "estimated_value"}
+        ]
+      },
+      {
+        "name": "DL - Contact Method",
+        "type": "v",
+        "parameter": [
+          {"type": "INTEGER", "key": "dataLayerVersion", "value": "2"},
+          {"type": "TEMPLATE", "key": "name", "value": "contact_method"}
+        ]
+      }
+    ]
+  }
+}

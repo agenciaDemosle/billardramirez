@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Minus,
   Plus,
@@ -19,6 +19,7 @@ import { useLaserEngravingPrice } from '../../hooks/useCustomization';
 import { Helmet } from 'react-helmet-async';
 import PoolTableSpecs from './PoolTableSpecs';
 import PoolTableQuotation from './PoolTableQuotation';
+import { trackViewContent, trackAddToCart } from '../../hooks/useAnalytics';
 
 interface ProductDetailProps {
   product: Product;
@@ -51,6 +52,16 @@ export default function ProductDetail({ product }: ProductDetailProps) {
 
   const LASER_ENGRAVING_PRICE = laserPriceData?.price || 10000;
 
+  // Track product view when component mounts
+  useEffect(() => {
+    trackViewContent({
+      product_id: product.id.toString(),
+      product_name: product.name,
+      product_category: product.categories[0]?.name || 'Sin categoría',
+      product_price: price,
+    });
+  }, [product.id, product.name, product.categories, price]);
+
   const handleAddToCart = () => {
     const customization = laserEngravingEnabled && laserEngravingText.trim()
       ? {
@@ -63,6 +74,15 @@ export default function ProductDetail({ product }: ProductDetailProps) {
       : undefined;
 
     addToCart(product, quantity, undefined, undefined, customization);
+
+    // Track add to cart event
+    trackAddToCart({
+      product_id: product.id.toString(),
+      product_name: product.name,
+      product_category: product.categories[0]?.name || 'Sin categoría',
+      product_price: price,
+      quantity: quantity,
+    });
   };
 
   const handleBuyNow = () => {

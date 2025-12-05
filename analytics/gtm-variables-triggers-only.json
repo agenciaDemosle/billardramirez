@@ -1,0 +1,121 @@
+{
+  "exportFormatVersion": 2,
+  "exportTime": "2025-12-05 14:00:00",
+  "containerVersion": {
+    "trigger": [
+      {
+        "name": "CE - pool_table_quote_start",
+        "type": "CUSTOM_EVENT",
+        "customEventFilter": [
+          {
+            "type": "EQUALS",
+            "parameter": [
+              {"type": "TEMPLATE", "key": "arg0", "value": "{{_event}}"},
+              {"type": "TEMPLATE", "key": "arg1", "value": "pool_table_quote_start"}
+            ]
+          }
+        ]
+      },
+      {
+        "name": "CE - pool_table_customization",
+        "type": "CUSTOM_EVENT",
+        "customEventFilter": [
+          {
+            "type": "EQUALS",
+            "parameter": [
+              {"type": "TEMPLATE", "key": "arg0", "value": "{{_event}}"},
+              {"type": "TEMPLATE", "key": "arg1", "value": "pool_table_customization"}
+            ]
+          }
+        ]
+      },
+      {
+        "name": "CE - pool_table_quote_complete",
+        "type": "CUSTOM_EVENT",
+        "customEventFilter": [
+          {
+            "type": "EQUALS",
+            "parameter": [
+              {"type": "TEMPLATE", "key": "arg0", "value": "{{_event}}"},
+              {"type": "TEMPLATE", "key": "arg1", "value": "pool_table_quote_complete"}
+            ]
+          }
+        ]
+      }
+    ],
+    "variable": [
+      {
+        "name": "DL - Table Type",
+        "type": "v",
+        "parameter": [
+          {"type": "INTEGER", "key": "dataLayerVersion", "value": "2"},
+          {"type": "TEMPLATE", "key": "name", "value": "table_type"}
+        ]
+      },
+      {
+        "name": "DL - Quote Location",
+        "type": "v",
+        "parameter": [
+          {"type": "INTEGER", "key": "dataLayerVersion", "value": "2"},
+          {"type": "TEMPLATE", "key": "name", "value": "quote_location"}
+        ]
+      },
+      {
+        "name": "DL - Customization Type",
+        "type": "v",
+        "parameter": [
+          {"type": "INTEGER", "key": "dataLayerVersion", "value": "2"},
+          {"type": "TEMPLATE", "key": "name", "value": "customization_type"}
+        ]
+      },
+      {
+        "name": "DL - Customization Value",
+        "type": "v",
+        "parameter": [
+          {"type": "INTEGER", "key": "dataLayerVersion", "value": "2"},
+          {"type": "TEMPLATE", "key": "name", "value": "customization_value"}
+        ]
+      },
+      {
+        "name": "DL - Dimensions",
+        "type": "v",
+        "parameter": [
+          {"type": "INTEGER", "key": "dataLayerVersion", "value": "2"},
+          {"type": "TEMPLATE", "key": "name", "value": "dimensions"}
+        ]
+      },
+      {
+        "name": "DL - Cloth Color",
+        "type": "v",
+        "parameter": [
+          {"type": "INTEGER", "key": "dataLayerVersion", "value": "2"},
+          {"type": "TEMPLATE", "key": "name", "value": "cloth_color"}
+        ]
+      },
+      {
+        "name": "DL - Accessories Count",
+        "type": "v",
+        "parameter": [
+          {"type": "INTEGER", "key": "dataLayerVersion", "value": "2"},
+          {"type": "TEMPLATE", "key": "name", "value": "accessories_count"}
+        ]
+      },
+      {
+        "name": "DL - Estimated Value",
+        "type": "v",
+        "parameter": [
+          {"type": "INTEGER", "key": "dataLayerVersion", "value": "2"},
+          {"type": "TEMPLATE", "key": "name", "value": "estimated_value"}
+        ]
+      },
+      {
+        "name": "DL - Contact Method",
+        "type": "v",
+        "parameter": [
+          {"type": "INTEGER", "key": "dataLayerVersion", "value": "2"},
+          {"type": "TEMPLATE", "key": "name", "value": "contact_method"}
+        ]
+      }
+    ]
+  }
+}

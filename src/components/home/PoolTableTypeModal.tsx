@@ -1,6 +1,7 @@
 import { X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { trackPoolTableQuoteStart } from '../../hooks/useAnalytics';
 
 interface PoolTableTypeModalProps {
   isOpen: boolean;
@@ -11,6 +12,12 @@ export default function PoolTableTypeModal({ isOpen, onClose }: PoolTableTypeMod
   const navigate = useNavigate();
 
   const handleTypeSelection = (type: 'profesional' | 'recreacional') => {
+    // Track pool table quote start
+    trackPoolTableQuoteStart({
+      table_type: type,
+      location: 'hero',
+    });
+
     onClose();
 
     if (type === 'profesional') {

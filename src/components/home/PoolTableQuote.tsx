@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { ChevronRight, ChevronLeft, Ruler, Package, Palette, CheckCircle2 } from 'lucide-react';
+import { trackPoolTableQuoteStart, trackPoolTableCustomization, trackPoolTableQuoteComplete } from '../../hooks/useAnalytics';
 
 interface QuoteData {
   tableType: string;
@@ -18,6 +19,7 @@ export default function PoolTableQuote() {
     accessories: [],
     installation: false
   });
+  const [hasStartedQuote, setHasStartedQuote] = useState(false);
 
   const tableTypes = [
     {
@@ -89,6 +91,36 @@ export default function PoolTableQuote() {
   };
 
   const handleSubmit = () => {
+    // Calculate estimated value based on table type and accessories
+    const tableTypePrices = {
+      'profesional': 4500000,
+      'semi-profesional': 2500000,
+      'recreativa': 1200000,
+    };
+
+    const basePrice = tableTypePrices[quoteData.tableType as keyof typeof tableTypePrices] || 0;
+    const accessoriesPrice = quoteData.accessories.reduce((sum, accId) => {
+      const acc = accessories.find(a => a.id === accId);
+      return sum + (acc?.price || 0);
+    }, 0);
+    const estimatedValue = basePrice + accessoriesPrice;
+
+    // Get selected accessory names
+    const selectedAccessoryNames = quoteData.accessories.map(accId => {
+      const acc = accessories.find(a => a.id === accId);
+      return acc?.name || accId;
+    });
+
+    // Track quote completion
+    trackPoolTableQuoteComplete({
+      table_type: quoteData.tableType,
+      dimensions: quoteData.size,
+      cloth_color: feltColors.find(c => c.id === quoteData.feltColor)?.name || quoteData.feltColor,
+      accessories: selectedAccessoryNames,
+      estimated_value: estimatedValue,
+      contact_method: 'whatsapp',
+    });
+
     // Aquí se enviaría la cotización
     const message = `
 Cotización Mesa de Pool:
@@ -182,7 +214,18 @@ Cotización Mesa de Pool:
                 {tableTypes.map((type) => (
                   <button
                     key={type.id}
-                    onClick={() => setQuoteData({ ...quoteData, tableType: type.id, size: '' })}
+                    onClick={() => {
+                      setQuoteData({ ...quoteData, tableType: type.id, size: '' });
+
+                      // Track quote start only once
+                      if (!hasStartedQuote) {
+                        trackPoolTableQuoteStart({
+                          table_type: type.id,
+                          location: 'quote_page',
+                        });
+                        setHasStartedQuote(true);
+                      }
+                    }}
                     className={`text-left p-4 sm:p-6 rounded-xl border-2 transition-all hover:shadow-lg active:scale-[0.98] ${
                       quoteData.tableType === type.id
                         ? 'border-[#00963c] bg-[#00963c]/5 shadow-lg'
@@ -220,7 +263,16 @@ Cotización Mesa de Pool:
                 {sizes[quoteData.tableType as keyof typeof sizes]?.map((size) => (
                   <button
                     key={size.id}
-                    onClick={() => setQuoteData({ ...quoteData, size: size.name })}
+                    onClick={() => {
+                      setQuoteData({ ...quoteData, size: size.name });
+
+                      // Track dimensions customization
+                      trackPoolTableCustomization({
+                        table_type: quoteData.tableType,
+                        customization_type: 'dimensions',
+                        customization_value: size.name,
+                      });
+                    }}
                     className={`text-left p-4 sm:p-6 rounded-xl border-2 transition-all hover:shadow-lg active:scale-[0.98] ${
                       quoteData.size === size.name
                         ? 'border-[#00963c] bg-[#00963c]/5 shadow-lg'
@@ -249,7 +301,16 @@ Cotización Mesa de Pool:
                 {feltColors.map((color) => (
                   <button
                     key={color.id}
-                    onClick={() => setQuoteData({ ...quoteData, feltColor: color.id })}
+                    onClick={() => {
+                      setQuoteData({ ...quoteData, feltColor: color.id });
+
+                      // Track cloth color customization
+                      trackPoolTableCustomization({
+                        table_type: quoteData.tableType,
+                        customization_type: 'cloth_color',
+                        customization_value: color.name,
+                      });
+                    }}
                     className={`p-3 sm:p-6 rounded-xl border-2 transition-all hover:shadow-lg active:scale-[0.98] relative ${
                       quoteData.feltColor === color.id
                         ? 'border-[#00963c] shadow-lg'
@@ -299,6 +360,14 @@ Cotización Mesa de Pool:
                               ...quoteData,
                               accessories: [...quoteData.accessories, accessory.id]
                             });
+
+                            // Track accessory added
+                            trackPoolTableCustomization({
+                              table_type: quoteData.tableType,
+                              customization_type: 'accessories',
+                              customization_value: accessory.name,
+                              customization_price: accessory.price,
+                            });
                           } else {
                             setQuoteData({
                               ...quoteData,
@@ -322,7 +391,18 @@ Cotización Mesa de Pool:
                       <input
                         type="checkbox"
                         checked={quoteData.installation}
-                        onChange={(e) => setQuoteData({ ...quoteData, installation: e.target.checked })}
+                        onChange={(e) => {
+                          setQuoteData({ ...quoteData, installation: e.target.checked });
+
+                          // Track installation selection
+                          if (e.target.checked) {
+                            trackPoolTableCustomization({
+                              table_type: quoteData.tableType,
+                              customization_type: 'installation',
+                              customization_value: 'Instalación profesional',
+                            });
+                          }
+                        }}
                         className="w-4 h-4 sm:w-5 sm:h-5 text-[#00963c] rounded focus:ring-[#00963c] mt-0.5 sm:mt-0 flex-shrink-0"
                       />
                       <div className="flex-1 min-w-0">

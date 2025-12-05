@@ -1,0 +1,180 @@
+{
+  "exportFormatVersion": 2,
+  "exportTime": "2025-12-05 11:30:00",
+  "containerVersion": {
+    "tag": [
+      {
+        "name": "Meta Pixel - Lead (con Event ID)",
+        "type": "html",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "html",
+            "value": "<script>\nfbq('track', 'Lead', {\n  value: {{DL - Value}},\n  currency: '{{DL - Currency}}',\n  content_name: 'Quote Completed',\n  content_category: '{{DL - Services Selected}}',\n  num_items: {{DL - Services Count}}\n}, {\n  eventID: {{DL - Event ID}}\n});\n</script>"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "supportDocumentWrite",
+            "value": "false"
+          }
+        ],
+        "monitoringMetadata": {
+          "type": "MAP"
+        },
+        "consentSettings": {
+          "consentStatus": "NOT_SET"
+        }
+      },
+      {
+        "name": "Meta Pixel - Contact (con Event ID)",
+        "type": "html",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "html",
+            "value": "<script>\nfbq('track', 'Contact', {\n  value: {{DL - Value}},\n  currency: '{{DL - Currency}}',\n  content_name: '{{DL - Click Location}}',\n  content_category: '{{DL - Service Interested}}'\n}, {\n  eventID: {{DL - Event ID}}\n});\n</script>"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "supportDocumentWrite",
+            "value": "false"
+          }
+        ],
+        "monitoringMetadata": {
+          "type": "MAP"
+        },
+        "consentSettings": {
+          "consentStatus": "NOT_SET"
+        }
+      },
+      {
+        "name": "Meta Pixel - Purchase (con Event ID)",
+        "type": "html",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "html",
+            "value": "<script>\nfbq('track', 'Purchase', {\n  value: {{DL - Value}},\n  currency: '{{DL - Currency}}',\n  content_name: '{{DL - Product Name}}',\n  content_ids: {{DL - Product IDs}},\n  num_items: {{DL - Num Items}}\n}, {\n  eventID: {{DL - Event ID}}\n});\n</script>"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "supportDocumentWrite",
+            "value": "false"
+          }
+        ],
+        "monitoringMetadata": {
+          "type": "MAP"
+        },
+        "consentSettings": {
+          "consentStatus": "NOT_SET"
+        }
+      },
+      {
+        "name": "Meta Pixel - AddToCart (con Event ID)",
+        "type": "html",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "html",
+            "value": "<script>\nfbq('track', 'AddToCart', {\n  value: {{DL - Value}},\n  currency: '{{DL - Currency}}',\n  content_name: {{DL - Product Name}},\n  content_ids: [{{DL - Product ID}}],\n  content_type: 'product',\n  content_category: '{{DL - Product Category}}'\n}, {\n  eventID: {{DL - Event ID}}\n});\n</script>"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "supportDocumentWrite",
+            "value": "false"
+          }
+        ],
+        "monitoringMetadata": {
+          "type": "MAP"
+        },
+        "consentSettings": {
+          "consentStatus": "NOT_SET"
+        }
+      },
+      {
+        "name": "Meta Pixel - InitiateCheckout (con Event ID)",
+        "type": "html",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "html",
+            "value": "<script>\nfbq('track', 'InitiateCheckout', {\n  value: {{DL - Value}},\n  currency: '{{DL - Currency}}',\n  content_name: 'checkout_initiated',\n  num_items: {{DL - Num Items}}\n}, {\n  eventID: {{DL - Event ID}}\n});\n</script>"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "supportDocumentWrite",
+            "value": "false"
+          }
+        ],
+        "monitoringMetadata": {
+          "type": "MAP"
+        },
+        "consentSettings": {
+          "consentStatus": "NOT_SET"
+        }
+      },
+      {
+        "name": "Meta Pixel - ViewContent (con Event ID)",
+        "type": "html",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "html",
+            "value": "<script>\nfbq('track', 'ViewContent', {\n  value: {{DL - Value}},\n  currency: '{{DL - Currency}}',\n  content_name: {{DL - Product Name}},\n  content_ids: [{{DL - Product ID}}],\n  content_type: 'product',\n  content_category: '{{DL - Product Category}}'\n}, {\n  eventID: {{DL - Event ID}}\n});\n</script>"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "supportDocumentWrite",
+            "value": "false"
+          }
+        ],
+        "monitoringMetadata": {
+          "type": "MAP"
+        },
+        "consentSettings": {
+          "consentStatus": "NOT_SET"
+        }
+      }
+    ],
+    "variable": [
+      {
+        "name": "DL - Event ID",
+        "type": "v",
+        "parameter": [
+          {
+            "type": "INTEGER",
+            "key": "dataLayerVersion",
+            "value": "2"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "name",
+            "value": "event_id"
+          }
+        ]
+      },
+      {
+        "name": "Constant - GA4 Measurement ID",
+        "type": "c",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "value",
+            "value": "G-XZJJ1KT7KJ"
+          }
+        ]
+      },
+      {
+        "name": "Constant - Meta Pixel ID",
+        "type": "c",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "value",
+            "value": "1319147365456724"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
 import { wooApi } from '../../api/woocommerce';
 import type { Product } from '../../types/product';
+import { trackViewContent } from '../../hooks/useAnalytics';
 
 // Categorías de mesas de pool (padre + hijos)
 const MESAS_POOL_SLUGS = ['mesas-de-pool', 'superficie-en-piedra', 'superficie-en-madera'];
@@ -96,10 +97,19 @@ export default function FeaturedSection() {
           className="flex gap-1 sm:gap-2 overflow-x-auto scrollbar-hide snap-x snap-mandatory"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
-          {products.map((product: Product) => (
+          {products.map((product: Product, index: number) => (
             <Link
               key={product.id}
               to={`/producto/${product.slug}`}
+              onClick={() => trackViewContent({
+                product_id: product.id.toString(),
+                product_name: product.name,
+                product_category: product.categories[0]?.name || 'Mesas de Pool',
+                product_price: parseFloat(product.price),
+                item_list_name: 'Homepage Featured',
+                item_list_id: 'homepage_featured',
+                index: index,
+              })}
               className="flex-shrink-0 w-[calc(100%-24px)] sm:w-[calc(50%-4px)] md:w-[calc(33.333%-5px)] lg:w-[calc(25%-6px)] snap-start group relative overflow-hidden aspect-[4/5] first:ml-3 sm:first:ml-0"
             >
               {/* Image */}

@@ -3,6 +3,9 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { HelmetProvider } from 'react-helmet-async';
 import { Toaster } from 'react-hot-toast';
 
+// Analytics
+import { useAnalytics } from './hooks/useAnalytics';
+
 // Layout
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
@@ -43,11 +46,18 @@ const queryClient = new QueryClient({
   },
 });
 
+// Analytics Provider Component
+function AnalyticsProvider() {
+  useAnalytics();
+  return null;
+}
+
 function App() {
   return (
     <HelmetProvider>
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
+          <AnalyticsProvider />
           <ScrollToTop />
           {/* Copos de nieve navideños en toda la página */}
           <Snowfall />

@@ -1,7 +1,17 @@
+import { trackWhatsAppClick } from '../../hooks/useAnalytics';
+
 export default function WhatsAppButton() {
   const phoneNumber = '56965839601';
   const message = encodeURIComponent('Hola, estoy interesado en sus productos de billar');
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
+
+  const handleWhatsAppClick = () => {
+    trackWhatsAppClick({
+      click_location: 'floating_button',
+      button_text: '¿Necesitas ayuda?',
+      service_interested: 'general',
+    });
+  };
 
   return (
     <a
@@ -10,6 +20,7 @@ export default function WhatsAppButton() {
       rel="noopener noreferrer"
       className="fixed bottom-6 right-6 z-[60] group"
       aria-label="Contactar por WhatsApp"
+      onClick={handleWhatsAppClick}
     >
       {/* Mobile: Solo ícono circular */}
       <div className="sm:hidden w-14 h-14 bg-[#25D366] hover:bg-[#128C7E] text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center">

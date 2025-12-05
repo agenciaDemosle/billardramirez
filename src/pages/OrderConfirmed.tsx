@@ -1,9 +1,57 @@
+import { useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { Check } from 'lucide-react';
+import { trackPurchase } from '../hooks/useAnalytics';
 
 export default function OrderConfirmed() {
   const [searchParams] = useSearchParams();
   const orderId = searchParams.get('order') || searchParams.get('id');
+
+  // Track purchase conversion when order is confirmed
+  useEffect(() => {
+    if (orderId) {
+      // Get order data from localStorage if available
+      const orderData = localStorage.getItem(`order_${orderId}`);
+
+      if (orderData) {
+        try {
+          const order = JSON.parse(orderData);
+
+          trackPurchase({
+            transaction_id: orderId,
+            value: order.total || 0,
+            num_items: order.items?.length || 0,
+            product_ids: order.items?.map((item: any) => item.product_id.toString()) || [],
+            product_names: order.items?.map((item: any) => item.name) || [],
+            email: order.email,
+            phone: order.phone,
+            firstName: order.firstName,
+            lastName: order.lastName,
+            items: order.items?.map((item: any) => ({
+              item_id: item.product_id.toString(),
+              item_name: item.name,
+              item_category: item.category || 'Sin categoría',
+              price: item.price || 0,
+              quantity: item.quantity || 1,
+            })) || [],
+          });
+
+          // Clear order data after tracking
+          localStorage.removeItem(`order_${orderId}`);
+        } catch (error) {
+          console.error('Error tracking purchase:', error);
+        }
+      } else {
+        // Track basic purchase if no order data available
+        trackPurchase({
+          transaction_id: orderId,
+          value: 0,
+          num_items: 0,
+          product_ids: [],
+        });
+      }
+    }
+  }, [orderId]);
 
   return (
     <div className="min-h-screen bg-white">

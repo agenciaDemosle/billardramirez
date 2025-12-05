@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 import { Mail, Phone, MapPin, Clock, MessageCircle, Send } from 'lucide-react';
 import Input from '../components/ui/Input';
 import SEO from '../components/SEO';
+import { trackContactSubmit, trackWhatsAppClick } from '../hooks/useAnalytics';
 
 const contactSchema = z.object({
   name: z.string().min(2, 'El nombre debe tener al menos 2 caracteres'),
@@ -37,6 +38,13 @@ export default function Contacto() {
 
   const onSubmit = async (data: ContactFormData) => {
     if (data.contactMethod === 'whatsapp') {
+      // Track WhatsApp contact
+      trackWhatsAppClick({
+        click_location: 'contact_form',
+        button_text: 'Enviar por WhatsApp',
+        service_interested: data.subject,
+      });
+
       // Abrir WhatsApp con el mensaje
       const message = encodeURIComponent(
         `Hola, soy ${data.name}.\n\n` +
@@ -66,6 +74,16 @@ export default function Contacto() {
       const result = await response.json();
 
       if (result.success) {
+        // Track contact form submission
+        trackContactSubmit({
+          form_name: 'contact_form',
+          service_interested: data.subject,
+          email: data.email,
+          phone: data.phone,
+          firstName: data.name.split(' ')[0],
+          lastName: data.name.split(' ').slice(1).join(' '),
+        });
+
         toast.success('¡Mensaje enviado con éxito! Te contactaremos pronto.');
         reset();
       } else {
