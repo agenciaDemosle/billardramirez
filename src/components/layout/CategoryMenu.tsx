@@ -29,8 +29,8 @@ const STATIC_CATEGORIES = [
     slug: 'mesas-de-pool',
     icon: Box,
     subcategories: [
-      { id: 1, name: 'Superficie en Piedra', slug: 'superficie-en-piedra' },
-      { id: 2, name: 'Superficie en Madera', slug: 'superficie-en-madera' },
+      { id: 40, name: 'Profesional', slug: 'superficie-en-piedra' },
+      { id: 39, name: 'Premium Recreacional', slug: 'superficie-en-madera' },
     ]
   },
   {
@@ -39,11 +39,39 @@ const STATIC_CATEGORIES = [
     slug: 'accesorios',
     icon: Package,
     subcategories: [
-      { id: 3, name: 'Tacos', slug: 'tacos' },
-      { id: 4, name: 'Bolas de Pool', slug: 'bolas-de-pool' },
-      { id: 5, name: 'Tizas', slug: 'tizas' },
-      { id: 6, name: 'Fundas y Cubiertas', slug: 'fundas-y-cubiertas' },
-      { id: 7, name: 'Estuches', slug: 'estuches' },
+      { id: 36, name: 'Tacos', slug: 'tacos' },
+      { id: 16, name: 'Bolas de Pool', slug: 'bolas-de-pool' },
+      { id: 35, name: 'Suelas', slug: 'suelas' },
+      { id: 21, name: 'Fundas y Cubiertas', slug: 'fundas-de-mesa' },
+      { id: 37, name: 'Tizas', slug: 'tizas' },
+      { id: 17, name: 'Buchacas', slug: 'buchacas' },
+      { id: 20, name: 'Estuches', slug: 'estuches' },
+    ]
+  },
+  {
+    id: 'repuestos',
+    name: 'REPUESTOS',
+    slug: 'repuestos',
+    icon: Shield,
+    subcategories: [
+      { id: 30, name: 'Paños', slug: 'pano' },
+      { id: 22, name: 'Goma de Banda', slug: 'banda-de-goma' },
+      { id: 18, name: 'Diablitos', slug: 'diablitos' },
+      { id: 19, name: 'Escobillas', slug: 'escobillas' },
+      { id: 38, name: 'Triángulos', slug: 'triangulos' },
+      { id: 24, name: 'Guantes', slug: 'guantes' },
+      { id: 23, name: 'Grip', slug: 'grip' },
+    ]
+  },
+  {
+    id: 'muebles',
+    name: 'MUEBLES',
+    slug: 'muebles-y-decoracion',
+    icon: Star,
+    subcategories: [
+      { id: 42, name: 'Banquetas y Sillas', slug: 'banquetas-y-sillas' },
+      { id: 44, name: 'Taqueras', slug: 'taqueras' },
+      { id: 43, name: 'Lámparas', slug: 'lamparas' },
     ]
   },
   {
@@ -103,86 +131,63 @@ export default function CategoryMenu() {
   const categories = useMemo(() => {
     if (!wooCategories.length) return STATIC_CATEGORIES;
 
-    // Estructura de 4 categorías principales con mapeo de slugs
+    // Estructura de categorías principales con subcategorías
     const mainCategories = [
       {
         name: 'MESAS DE POOL',
         slug: 'mesas-de-pool',
         icon: Box,
-        includeCategories: ['mesas-de-pool', 'superficie-en-piedra', 'superficie-en-madera']
-      },
-      {
-        name: 'OTRAS MESAS',
-        slug: 'otras-mesas',
-        icon: Star,
-        includeCategories: ['mesa-de-poker', 'mesa-air-hockey', 'mesa-futbolito']
+        subcategorySlugs: ['superficie-en-piedra', 'superficie-en-madera']
       },
       {
         name: 'ACCESORIOS',
         slug: 'accesorios',
         icon: Package,
-        includeCategories: ['tacos', 'bolas-de-pool', 'bolas', 'tizas', 'fundas-y-cubiertas', 'fundas', 'buchacas', 'accesorios', 'estuches', 'suelas']
+        subcategorySlugs: ['tacos', 'bolas-de-pool', 'suelas', 'fundas-de-mesa', 'tizas', 'buchacas', 'estuches']
+      },
+      {
+        name: 'REPUESTOS',
+        slug: 'repuestos',
+        icon: Shield,
+        subcategorySlugs: ['pano', 'banda-de-goma', 'diablitos', 'escobillas', 'triangulos', 'guantes', 'grip']
+      },
+      {
+        name: 'MUEBLES',
+        slug: 'muebles-y-decoracion',
+        icon: Star,
+        subcategorySlugs: ['banquetas-y-sillas', 'taqueras', 'lamparas']
       },
       {
         name: 'OFERTAS',
         slug: 'ofertas',
         icon: Flame,
-        includeCategories: ['ofertas', 'promociones', 'descuentos']
+        subcategorySlugs: []
       }
     ];
 
     return mainCategories.map(mainCat => {
-      // Encontrar todas las categorías de WooCommerce que pertenecen a esta categoría principal
-      const matchingCategories = wooCategories.filter(wooCat =>
-        mainCat.includeCategories.some(slug =>
-          wooCat.slug.includes(slug) || slug.includes(wooCat.slug)
-        ) && wooCat.count > 0 && wooCat.slug !== 'uncategorized'
-      );
+      // Buscar subcategorías por slug exacto
+      const subcategories: { id: number; name: string; slug: string }[] = [];
 
-      // Si hay una categoría padre principal (como "mesas-de-pool"), úsala
-      const mainWooCat = matchingCategories.find(cat => cat.slug === mainCat.slug);
-
-      // Usar Set para evitar duplicados por ID
-      const subcategoriesMap = new Map();
-
-      // Primero agregar las categorías que coinciden (excluyendo la principal)
-      matchingCategories
-        .filter(cat => cat.slug !== mainCat.slug)
-        .forEach(cat => {
-          subcategoriesMap.set(cat.id, {
+      for (const slug of mainCat.subcategorySlugs) {
+        const cat = wooCategories.find(wc => wc.slug === slug);
+        if (cat && cat.count > 0) {
+          subcategories.push({
             id: cat.id,
             name: cat.name,
             slug: cat.slug,
           });
-        });
-
-      // Si la categoría principal existe, agregar sus subcategorías de WooCommerce
-      if (mainWooCat) {
-        wooCategories
-          .filter(cat => cat.parent === mainWooCat.id && cat.count > 0)
-          .forEach(sub => {
-            // Solo agregar si no existe ya en el map
-            if (!subcategoriesMap.has(sub.id)) {
-              subcategoriesMap.set(sub.id, {
-                id: sub.id,
-                name: sub.name,
-                slug: sub.slug,
-              });
-            }
-          });
+        }
       }
-
-      // Convertir el Map a array
-      const subcategories = Array.from(subcategoriesMap.values());
 
       return {
         id: mainCat.slug,
         name: mainCat.name,
-        slug: mainWooCat?.slug || mainCat.slug,
+        slug: mainCat.slug,
         icon: mainCat.icon,
         subcategories: subcategories
       };
-    }).filter(cat => cat.subcategories.length > 0 || wooCategories.some(w => w.slug === cat.slug));
+    });
   }, [wooCategories]);
 
   // Calcular posición del dropdown cuando se abre
@@ -198,12 +203,11 @@ export default function CategoryMenu() {
 
   return (
     <>
-      <nav className="bg-white hidden md:block">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-center gap-8 overflow-x-auto scrollbar-hide">
+      <nav className="bg-white hidden lg:block border-b border-gray-100">
+        <div className="max-w-[1400px] mx-auto px-4">
+          <div className="flex items-center justify-center gap-1 xl:gap-4">
             {categories.map((category) => {
               const hasSubcategories = category.subcategories.length > 0;
-              const IconComponent = category.icon;
 
               return (
                 <div
@@ -216,12 +220,12 @@ export default function CategoryMenu() {
                   {/* Categoría principal */}
                   <Link
                     to={`/tienda?categoria=${category.slug}`}
-                    className="flex items-center gap-2 px-4 py-4 text-sm font-medium text-black hover:text-gray-500 transition-all duration-200 whitespace-nowrap uppercase tracking-wider"
+                    className="flex items-center gap-1 px-3 py-3 text-xs xl:text-sm font-medium text-black hover:text-gray-500 transition-all duration-200 whitespace-nowrap uppercase tracking-wide"
                   >
                     <span>{category.name}</span>
                     {hasSubcategories && (
                       <ChevronDown
-                        size={14}
+                        size={12}
                         className={`transition-transform duration-200 ${openDropdown === category.slug ? 'rotate-180' : ''}`}
                       />
                     )}
@@ -230,26 +234,29 @@ export default function CategoryMenu() {
               );
             })}
 
+            {/* Separador visual */}
+            <div className="h-4 w-px bg-gray-200 mx-1"></div>
+
             {/* Personaliza tu Taco - Enlace especial */}
             <Link
               to="/tienda?categoria=tacos"
-              className="flex items-center gap-2 px-4 py-4 text-sm font-medium text-black hover:text-gray-500 transition-all duration-200 whitespace-nowrap uppercase tracking-wider"
+              className="flex items-center gap-1 px-3 py-3 text-xs xl:text-sm font-medium text-black hover:text-gray-500 transition-all duration-200 whitespace-nowrap uppercase tracking-wide"
             >
-              <span>PERSONALIZA TU TACO</span>
+              <span>TACOS</span>
             </Link>
 
             {/* Cambia tu Paño - Botón modal */}
             <button
               onClick={() => setShowClothModal(true)}
-              className="flex items-center gap-2 px-4 py-4 text-sm font-medium text-black hover:text-gray-500 transition-all duration-200 whitespace-nowrap uppercase tracking-wider"
+              className="flex items-center gap-1 px-3 py-3 text-xs xl:text-sm font-medium text-black hover:text-gray-500 transition-all duration-200 whitespace-nowrap uppercase tracking-wide"
             >
-              <span>CAMBIA TU PAÑO</span>
+              <span>CAMBIO PAÑO</span>
             </button>
 
             {/* Contacto */}
             <Link
               to="/contacto"
-              className="flex items-center gap-2 px-4 py-4 text-sm font-medium text-black hover:text-gray-500 transition-all duration-200 whitespace-nowrap uppercase tracking-wider"
+              className="flex items-center gap-1 px-3 py-3 text-xs xl:text-sm font-medium text-black hover:text-gray-500 transition-all duration-200 whitespace-nowrap uppercase tracking-wide"
             >
               <span>CONTACTO</span>
             </Link>

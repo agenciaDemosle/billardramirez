@@ -60,11 +60,15 @@ class WooCommerceAPI {
    */
   async getProducts(params: WooCommerceParams = {}): Promise<Product[]> {
     try {
+      // Mapear perPage a per_page si viene
+      const { perPage, per_page, ...restParams } = params as any;
+      const finalPerPage = perPage || per_page || 12;
+
       const defaultParams = {
-        per_page: 12,
         page: 1,
         status: 'publish',
-        ...params,
+        ...restParams,
+        per_page: finalPerPage,
       };
 
       const response = await this.client.get<Product[]>('/products', {

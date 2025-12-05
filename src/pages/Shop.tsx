@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import React from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { SlidersHorizontal, X, ChevronDown } from 'lucide-react';
@@ -25,59 +25,50 @@ export default function Shop() {
   const MESAS_POOL_SLUGS = ['mesas-de-pool', 'superficie-en-piedra', 'superficie-en-madera'];
   const isMesasPoolCategory = MESAS_POOL_SLUGS.includes(categoryParam);
 
-  // Convertir slug de categoría a ID
-  // Si es "mesas-de-pool", no filtramos por categoría en la API (traemos más y filtramos cliente)
-  const categoryId = categoryParam && !isMesasPoolCategory
-    ? categories?.find((cat) => cat.slug === categoryParam)?.id?.toString()
-    : '';
+  // Calcular filtros directamente usando useMemo para que reaccionen a cambios de URL
+  const filters = React.useMemo(() => {
+    // Calcular categoryId
+    let newCategoryId = '';
+    if (categoryParam) {
+      const cat = categories?.find((c) => c.slug === categoryParam);
+      newCategoryId = cat?.id?.toString() || '';
+    }
 
-  // Obtener IDs de las categorías de mesas para filtrar del lado del cliente
-  const mesasPoolCategoryIds = categories
-    ?.filter((cat) => MESAS_POOL_SLUGS.includes(cat.slug))
-    .map((cat) => cat.id) || [];
+    // Calcular orden
+    let orderby = sortParam;
+    let order: 'asc' | 'desc' = 'desc';
 
-  const [filters, setFilters] = useState({
-    category: categoryId,
-    search: searchQuery,
-    orderby: sortParam,
-    order: 'desc' as 'asc' | 'desc',
-    page: pageParam,
-    perPage: isMesasPoolCategory ? 100 : 12, // Traer más productos para mesas de pool
-  });
+    if (sortParam === 'price') {
+      orderby = 'price';
+      order = 'asc';
+    } else if (sortParam === 'price-desc') {
+      orderby = 'price';
+      order = 'desc';
+    } else if (sortParam === 'title-desc') {
+      orderby = 'title';
+      order = 'desc';
+    } else if (sortParam === 'title') {
+      orderby = 'title';
+      order = 'asc';
+    }
+
+    return {
+      category: newCategoryId,
+      search: searchQuery,
+      orderby: orderby,
+      order: order,
+      page: pageParam,
+      perPage: isMesasPoolCategory ? 100 : 12,
+    };
+  }, [categoryParam, searchQuery, sortParam, pageParam, categories, isMesasPoolCategory]);
 
   const { data: allProducts, isLoading } = useProducts(filters);
 
-  // Filtrar productos del lado del cliente para mesas de pool
+  // Filtrar productos del lado del cliente (solo para filtros adicionales)
   const products = React.useMemo(() => {
     if (!allProducts) return allProducts;
 
     let filtered = allProducts;
-
-    // Si es categoría de mesas de pool, filtrar por las categorías correspondientes
-    if (isMesasPoolCategory && mesasPoolCategoryIds.length > 0) {
-      // Filtrar solo productos que pertenezcan a alguna categoría de mesas
-      filtered = filtered.filter(product => {
-        const productCategoryIds = product.categories?.map(cat => cat.id) || [];
-        return productCategoryIds.some(id => mesasPoolCategoryIds.includes(id));
-      });
-
-      // Si es subcategoría específica (piedra o madera), filtrar más
-      if (categoryParam === 'superficie-en-piedra') {
-        const piedraId = categories?.find(c => c.slug === 'superficie-en-piedra')?.id;
-        if (piedraId) {
-          filtered = filtered.filter(product =>
-            product.categories?.some(cat => cat.id === piedraId)
-          );
-        }
-      } else if (categoryParam === 'superficie-en-madera') {
-        const maderaId = categories?.find(c => c.slug === 'superficie-en-madera')?.id;
-        if (maderaId) {
-          filtered = filtered.filter(product =>
-            product.categories?.some(cat => cat.id === maderaId)
-          );
-        }
-      }
-    }
 
     // Aplicar filtros adicionales si estamos en categoría de mesas de pool
     if (isMesasPoolCategory) {
@@ -119,48 +110,7 @@ export default function Shop() {
     }
 
     return filtered;
-  }, [allProducts, categoryParam, usoParam, superficieParam, acabadoParam, isMesasPoolCategory, mesasPoolCategoryIds, categories]);
-
-  useEffect(() => {
-    // Si es categoría de mesas de pool, no filtrar por categoría (traer todos y filtrar cliente)
-    const isMesas = MESAS_POOL_SLUGS.includes(categoryParam);
-    const newCategoryId = categoryParam && !isMesas
-      ? categories?.find((cat) => cat.slug === categoryParam)?.id?.toString()
-      : '';
-
-    let orderby = sortParam;
-    let order: 'asc' | 'desc' = 'desc';
-
-    if (sortParam === 'price') {
-      orderby = 'price';
-      order = 'asc';
-    } else if (sortParam === 'price-desc') {
-      orderby = 'price';
-      order = 'desc';
-    } else if (sortParam === 'title-desc') {
-      orderby = 'title';
-      order = 'desc';
-    } else if (sortParam === 'title') {
-      orderby = 'title';
-      order = 'asc';
-    } else if (sortParam === 'date') {
-      orderby = 'date';
-      order = 'desc';
-    } else if (sortParam === 'popularity') {
-      orderby = 'popularity';
-      order = 'desc';
-    }
-
-    setFilters((prev) => ({
-      ...prev,
-      category: newCategoryId || '',
-      search: searchQuery,
-      orderby: orderby,
-      order: order,
-      page: pageParam,
-      perPage: isMesas ? 100 : 12,
-    }));
-  }, [categoryParam, searchQuery, sortParam, pageParam, categories]);
+  }, [allProducts, usoParam, superficieParam, acabadoParam, isMesasPoolCategory]);
 
   const handleCategoryChange = (categorySlug: string) => {
     const params = new URLSearchParams(searchParams);
