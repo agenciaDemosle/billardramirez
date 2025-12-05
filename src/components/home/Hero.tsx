@@ -222,7 +222,7 @@ export default function Hero() {
 
             {/* Accesorios */}
             <Link
-              to="/tienda?categoria=accesorios"
+              to="/accesorios"
               className="group relative overflow-hidden aspect-[3/4] sm:aspect-[4/5]"
             >
               <img
