@@ -81,7 +81,7 @@ export default function AtencionCliente() {
                 <p className="text-gray-600">
                   Lunes a Viernes: 9:00 - 18:00
                   <br />
-                  Sábados: 10:00 - 14:00
+                  Sábados: 11:00 - 15:00
                   <br />
                   Domingos: Cerrado
                 </p>

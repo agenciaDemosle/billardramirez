@@ -40,7 +40,7 @@ export default function Home() {
     },
     {
       question: "¿Tienen showroom para ver las mesas de pool?",
-      answer: "Sí, contamos con un showroom en Santiago donde puedes ver y probar nuestras mesas de pool antes de comprar. Estamos ubicados en Maximiliano Ibáñez 1436, Quinta Normal, Santiago. Nuestro horario de atención es: Lunes a Viernes de 9:00 a 18:00 hrs y Sábados de 10:00 a 14:00 hrs. Puedes agendar tu visita por WhatsApp."
+      answer: "Sí, contamos con un showroom en Santiago donde puedes ver y probar nuestras mesas de pool antes de comprar. Estamos ubicados en Maximiliano Ibáñez 1436, Quinta Normal, Santiago. Nuestro horario de atención es: Lunes a Viernes de 9:00 a 18:00 hrs y Sábados de 11:00 a 15:00 hrs. Puedes agendar tu visita por WhatsApp."
     },
     {
       question: "¿Qué diferencia hay entre una mesa de pool profesional y una recreacional?",

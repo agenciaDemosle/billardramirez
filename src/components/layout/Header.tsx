@@ -652,7 +652,7 @@ export default function Header() {
                 Lun - Vie: 9:00 - 18:00
               </p>
               <p className="text-xs text-gray-500">
-                Sábados: 10:00 - 14:00
+                Sábados: 11:00 - 15:00
               </p>
             </div>
           </div>

@@ -184,7 +184,7 @@ export default function Contacto() {
                         <p className="text-xs text-gray-400 mb-1">Horario</p>
                         <p className="text-sm">
                           Lun - Vie: 9:00 - 18:00<br />
-                          Sáb: 10:00 - 14:00
+                          Sáb: 11:00 - 15:00
                         </p>
                       </div>
                     </div>

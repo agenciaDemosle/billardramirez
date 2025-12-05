@@ -125,7 +125,7 @@ export default function Footer() {
               </li>
               <li>
                 <p className="text-sm text-gray-400">
-                  Sáb: 10:00 - 14:00
+                  Sáb: 11:00 - 15:00
                 </p>
               </li>
             </ul>
