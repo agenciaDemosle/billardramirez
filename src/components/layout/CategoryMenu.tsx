@@ -245,6 +245,14 @@ export default function CategoryMenu() {
             >
               <span>CAMBIA TU PAÑO</span>
             </button>
+
+            {/* Contacto */}
+            <Link
+              to="/contacto"
+              className="flex items-center gap-2 px-4 py-4 text-sm font-medium text-black hover:text-gray-500 transition-all duration-200 whitespace-nowrap uppercase tracking-wider"
+            >
+              <span>CONTACTO</span>
+            </Link>
           </div>
         </div>
 
