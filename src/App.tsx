@@ -29,6 +29,7 @@ import TerminosCondiciones from './pages/TerminosCondiciones';
 import PoliticaPrivacidad from './pages/PoliticaPrivacidad';
 import ProcessingPayment from './pages/ProcessingPayment';
 import OrderConfirmed from './pages/OrderConfirmed';
+import VerifyingPayment from './pages/VerifyingPayment';
 import NotFound from './pages/NotFound';
 
 // Create QueryClient
@@ -78,6 +79,7 @@ function App() {
 
                 {/* Páginas de Pago */}
                 <Route path="/procesando-pago" element={<ProcessingPayment />} />
+                <Route path="/verificando-pago" element={<VerifyingPayment />} />
                 <Route path="/pedido-confirmado" element={<OrderConfirmed />} />
 
                 {/* 404 Not Found */}

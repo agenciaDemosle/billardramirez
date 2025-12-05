@@ -10,7 +10,27 @@ import { useCart } from '../hooks/useCart';
 import { formatPrice } from '../utils/helpers';
 import { wooApi } from '../api/woocommerce';
 
-// Comunas con envío a $4.000
+// Regiones de Chile
+const REGIONES_CHILE = [
+  { code: 'AP', name: 'Arica y Parinacota' },
+  { code: 'TA', name: 'Tarapacá' },
+  { code: 'AN', name: 'Antofagasta' },
+  { code: 'AT', name: 'Atacama' },
+  { code: 'CO', name: 'Coquimbo' },
+  { code: 'VS', name: 'Valparaíso' },
+  { code: 'RM', name: 'Región Metropolitana' },
+  { code: 'LI', name: "O'Higgins" },
+  { code: 'ML', name: 'Maule' },
+  { code: 'NB', name: 'Ñuble' },
+  { code: 'BI', name: 'Biobío' },
+  { code: 'AR', name: 'La Araucanía' },
+  { code: 'LR', name: 'Los Ríos' },
+  { code: 'LL', name: 'Los Lagos' },
+  { code: 'AI', name: 'Aysén' },
+  { code: 'MA', name: 'Magallanes' },
+];
+
+// Comunas con envío a $4.000 (Región Metropolitana)
 const COMUNAS_ENVIO_4000 = [
   'Colina', 'San Bernardo', 'Puente Alto', 'Padre Hurtado', 'La Florida',
   'Peñalolén', 'Ñuñoa', 'Macul', 'Las Condes', 'Vitacura', 'Lo Barnechea',
@@ -425,11 +445,17 @@ export default function Checkout() {
                       )}
                     </div>
                     <div>
-                      <input
+                      <select
                         {...register('state')}
-                        placeholder="Región"
-                        className="w-full border-b border-gray-300 py-3 text-sm focus:outline-none focus:border-black transition-colors bg-transparent placeholder:text-gray-400"
-                      />
+                        className="w-full border-b border-gray-300 py-3 text-sm focus:outline-none focus:border-black transition-colors bg-transparent text-gray-900"
+                      >
+                        <option value="">Región</option>
+                        {REGIONES_CHILE.map((region) => (
+                          <option key={region.code} value={region.name}>
+                            {region.name}
+                          </option>
+                        ))}
+                      </select>
                       {errors.state && (
                         <p className="text-xs text-red-500 mt-1">{errors.state.message}</p>
                       )}

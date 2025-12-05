@@ -54,7 +54,8 @@ if (isset($line_items[0])) {
 }
 
 // URLs de retorno y notificación
-$url_return = SITE_URL . '/pedido-confirmado?order=' . $order_id;
+// Usamos una página intermedia que verifica el estado del pago
+$url_return = SITE_URL . '/verificando-pago?order=' . $order_id;
 $url_notify = SITE_URL . '/api/paiku/webhook.php';
 
 // Datos para la transacción de Paiku

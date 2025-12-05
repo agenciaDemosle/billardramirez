@@ -452,27 +452,27 @@ export default function Header() {
       <CategoryMenu />
 
       {/* 4) Marquee negro con Comprar y Ubicación incluidos - Visible en todas las pantallas */}
-      <div className="bg-black text-white py-1.5 sm:py-2 overflow-hidden">
+      <div className="bg-black text-white py-2 sm:py-2.5 overflow-hidden">
         <div className="animate-marquee whitespace-nowrap flex items-center">
           {[...Array(10)].map((_, i) => (
-            <span key={i} className="flex items-center mx-2 sm:mx-4 text-[10px] sm:text-xs md:text-sm tracking-wide">
-              <Link to="/tienda" className="font-medium uppercase hover:text-gray-300 transition-colors px-2 sm:px-4">
+            <span key={i} className="flex items-center mx-4 sm:mx-6 text-[10px] sm:text-xs md:text-sm tracking-wide">
+              <Link to="/tienda" className="font-medium uppercase hover:text-gray-300 transition-colors px-3 sm:px-5">
                 Comprar
               </Link>
               <span className="text-gray-500">|</span>
-              <Link to="/contacto" className="font-medium uppercase hover:text-gray-300 transition-colors px-2 sm:px-4">
+              <Link to="/contacto" className="font-medium uppercase hover:text-gray-300 transition-colors px-3 sm:px-5">
                 Ubicación
               </Link>
-              <span className="mx-3 sm:mx-6 text-gray-500">•</span>
+              <span className="mx-6 sm:mx-10 text-gray-500">•</span>
               <span className="hidden xs:inline">ENCUENTRA LA MEJOR CALIDAD AQUÍ</span>
               <span className="xs:hidden">CALIDAD</span>
-              <span className="mx-3 sm:mx-6 text-gray-500">•</span>
+              <span className="mx-6 sm:mx-10 text-gray-500">•</span>
               <span className="hidden sm:inline">SÁBADOS TIENDA ABIERTA</span>
               <span className="sm:hidden">SÁBADOS ABIERTO</span>
-              <span className="mx-3 sm:mx-6 text-gray-500">•</span>
+              <span className="mx-6 sm:mx-10 text-gray-500">•</span>
               <span className="hidden md:inline">ENVÍO GRATIS EN ACCESORIOS SOBRE LOS $100.000</span>
               <span className="md:hidden">ENVÍO GRATIS +$100K</span>
-              <span className="mx-3 sm:mx-6 text-gray-500">•</span>
+              <span className="mx-6 sm:mx-10 text-gray-500">•</span>
             </span>
           ))}
         </div>
