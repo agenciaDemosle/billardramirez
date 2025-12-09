@@ -84,6 +84,19 @@ function create_woocommerce_order($transaction_data) {
 
     // Calcular shipping
     $shipping_cost = $transaction_data['shipping_cost'] ?? 0;
+    $envio_por_pagar = $transaction_data['envio_por_pagar'] ?? false;
+
+    // Determinar método y título de envío
+    if ($envio_por_pagar) {
+        $shipping_method_id = 'local_pickup';
+        $shipping_method_title = 'Envío por Pagar (fuera de RM)';
+    } elseif ($shipping_cost > 0) {
+        $shipping_method_id = 'flat_rate';
+        $shipping_method_title = 'Envío Estándar RM';
+    } else {
+        $shipping_method_id = 'free_shipping';
+        $shipping_method_title = 'Envío Gratis';
+    }
 
     // Preparar datos de la orden
     $order_data = [
@@ -115,8 +128,8 @@ function create_woocommerce_order($transaction_data) {
         'line_items' => $line_items,
         'shipping_lines' => [
             [
-                'method_id' => 'flat_rate',
-                'method_title' => $shipping_cost > 0 ? 'Envío Estándar' : 'Envío Gratis',
+                'method_id' => $shipping_method_id,
+                'method_title' => $shipping_method_title,
                 'total' => (string)$shipping_cost,
             ],
         ],
@@ -136,6 +149,14 @@ function create_woocommerce_order($transaction_data) {
             [
                 'key' => '_payment_gateway',
                 'value' => 'paiku'
+            ],
+            [
+                'key' => '_envio_por_pagar',
+                'value' => $envio_por_pagar ? 'yes' : 'no'
+            ],
+            [
+                'key' => '_shipping_cost',
+                'value' => (string)$shipping_cost
             ]
         ],
         'status' => 'processing', // Estado: procesando

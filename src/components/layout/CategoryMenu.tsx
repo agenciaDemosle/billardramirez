@@ -2,7 +2,7 @@ import { useState, useRef, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { wooApi } from '../../api/woocommerce';
-import ClothChangeModal from '../product/ClothChangeModal';
+import TableRepairModal from '../product/TableRepairModal';
 import {
   ChevronDown,
   Target,
@@ -24,54 +24,58 @@ type IconType = ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttribut
 // Categorías estáticas predefinidas para carga instantánea
 const STATIC_CATEGORIES = [
   {
-    id: 'mesas-de-pool',
-    name: 'MESAS DE POOL',
-    slug: 'mesas-de-pool',
+    id: 'mesas-y-accesorios',
+    name: 'MESAS Y ACCESORIOS',
+    slug: 'mesas-y-accesorios',
     icon: Box,
     subcategories: [
-      { id: 40, name: 'Profesional', slug: 'superficie-en-piedra' },
-      { id: 39, name: 'Premium Recreacional', slug: 'superficie-en-madera' },
+      { id: 27, name: 'Mesas de Pool', slug: 'mesas-de-pool' },
+      { id: 26, name: 'Mesas de Poker', slug: 'mesadepoker' },
+      { id: 43, name: 'Lámparas', slug: 'lamparas' },
+      { id: 38, name: 'Triángulos', slug: 'triangulos' },
+      { id: 44, name: 'Taqueras', slug: 'taqueras' },
+      { id: 19, name: 'Productos de Limpieza', slug: 'escobillas' },
+      { id: 21, name: 'Cubiertas Mesa Pool', slug: 'fundas-de-mesa' },
+      { id: 22, name: 'Goma de Banda', slug: 'banda-de-goma' },
+      { id: 17, name: 'Troneras y Buchacas', slug: 'buchacas' },
+      { id: 16, name: 'Bolas de Pool', slug: 'bolas-de-pool' },
     ]
   },
   {
-    id: 'accesorios',
-    name: 'ACCESORIOS',
-    slug: 'accesorios',
-    icon: Package,
+    id: 'tacos-y-accesorios',
+    name: 'TACOS Y ACCESORIOS',
+    slug: 'tacos-y-accesorios',
+    icon: Zap,
     subcategories: [
       { id: 36, name: 'Tacos', slug: 'tacos' },
-      { id: 16, name: 'Bolas de Pool', slug: 'bolas-de-pool' },
-      { id: 35, name: 'Suelas', slug: 'suelas' },
-      { id: 21, name: 'Fundas y Cubiertas', slug: 'fundas-de-mesa' },
+      { id: 20, name: 'Bolsos', slug: 'estuches' },
       { id: 37, name: 'Tizas', slug: 'tizas' },
-      { id: 17, name: 'Buchacas', slug: 'buchacas' },
-      { id: 20, name: 'Estuches', slug: 'estuches' },
+      { id: 24, name: 'Guantes', slug: 'guantes' },
+      { id: 35, name: 'Suelas', slug: 'suelas' },
+      { id: 23, name: 'Grip', slug: 'grip' },
+      { id: 18, name: 'Diablitos', slug: 'diablitos' },
+      { id: 45, name: 'Pegamentos', slug: 'pegamentos' },
+      { id: 46, name: 'Boquillas', slug: 'boquillas' },
     ]
   },
   {
-    id: 'repuestos',
-    name: 'REPUESTOS',
-    slug: 'repuestos',
+    id: 'panos',
+    name: 'PAÑOS',
+    slug: 'pano',
     icon: Shield,
-    subcategories: [
-      { id: 30, name: 'Paños', slug: 'pano' },
-      { id: 22, name: 'Goma de Banda', slug: 'banda-de-goma' },
-      { id: 18, name: 'Diablitos', slug: 'diablitos' },
-      { id: 19, name: 'Escobillas', slug: 'escobillas' },
-      { id: 38, name: 'Triángulos', slug: 'triangulos' },
-      { id: 24, name: 'Guantes', slug: 'guantes' },
-      { id: 23, name: 'Grip', slug: 'grip' },
-    ]
+    subcategories: []
   },
   {
     id: 'muebles',
-    name: 'MUEBLES',
+    name: 'MUEBLES Y DECORACIÓN',
     slug: 'muebles-y-decoracion',
     icon: Star,
     subcategories: [
       { id: 42, name: 'Banquetas y Sillas', slug: 'banquetas-y-sillas' },
       { id: 44, name: 'Taqueras', slug: 'taqueras' },
       { id: 43, name: 'Lámparas', slug: 'lamparas' },
+      { id: 16, name: 'Llaveros', slug: 'llaveros' },
+      { id: 16, name: 'Ceniceros', slug: 'ceniceros' },
     ]
   },
   {
@@ -116,7 +120,7 @@ const getIconForCategory = (slug: string): IconType => {
 export default function CategoryMenu() {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
-  const [showClothModal, setShowClothModal] = useState(false);
+  const [showRepairModal, setShowRepairModal] = useState(false);
   const buttonRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
   // Obtener categorías desde WooCommerce (en background)
@@ -134,28 +138,28 @@ export default function CategoryMenu() {
     // Estructura de categorías principales con subcategorías
     const mainCategories = [
       {
-        name: 'MESAS DE POOL',
-        slug: 'mesas-de-pool',
+        name: 'MESAS Y ACCESORIOS',
+        slug: 'mesas-y-accesorios',
         icon: Box,
-        subcategorySlugs: ['superficie-en-piedra', 'superficie-en-madera']
+        subcategorySlugs: ['mesas-de-pool', 'mesadepoker', 'lamparas', 'triangulos', 'taqueras', 'escobillas', 'fundas-de-mesa', 'banda-de-goma', 'buchacas', 'bolas-de-pool']
       },
       {
-        name: 'ACCESORIOS',
-        slug: 'accesorios',
-        icon: Package,
-        subcategorySlugs: ['tacos', 'bolas-de-pool', 'suelas', 'fundas-de-mesa', 'tizas', 'buchacas', 'estuches']
+        name: 'TACOS Y ACCESORIOS',
+        slug: 'tacos-y-accesorios',
+        icon: Zap,
+        subcategorySlugs: ['tacos', 'estuches', 'tizas', 'guantes', 'suelas', 'grip', 'diablitos', 'pegamentos', 'boquillas']
       },
       {
-        name: 'REPUESTOS',
-        slug: 'repuestos',
+        name: 'PAÑOS',
+        slug: 'pano',
         icon: Shield,
-        subcategorySlugs: ['pano', 'banda-de-goma', 'diablitos', 'escobillas', 'triangulos', 'guantes', 'grip']
+        subcategorySlugs: []
       },
       {
-        name: 'MUEBLES',
+        name: 'MUEBLES Y DECORACIÓN',
         slug: 'muebles-y-decoracion',
         icon: Star,
-        subcategorySlugs: ['banquetas-y-sillas', 'taqueras', 'lamparas']
+        subcategorySlugs: ['banquetas-y-sillas', 'taqueras', 'lamparas', 'llaveros', 'ceniceros']
       },
       {
         name: 'OFERTAS',
@@ -171,7 +175,7 @@ export default function CategoryMenu() {
 
       for (const slug of mainCat.subcategorySlugs) {
         const cat = wooCategories.find(wc => wc.slug === slug);
-        if (cat && cat.count > 0) {
+        if (cat) {
           subcategories.push({
             id: cat.id,
             name: cat.name,
@@ -203,7 +207,7 @@ export default function CategoryMenu() {
 
   return (
     <>
-      <nav className="bg-white hidden lg:block border-b border-gray-100">
+      <nav className="bg-black hidden lg:block">
         <div className="max-w-[1400px] mx-auto px-4">
           <div className="flex items-center justify-center gap-1 xl:gap-4">
             {categories.map((category) => {
@@ -220,7 +224,7 @@ export default function CategoryMenu() {
                   {/* Categoría principal */}
                   <Link
                     to={`/tienda?categoria=${category.slug}`}
-                    className="flex items-center gap-1 px-3 py-3 text-xs xl:text-sm font-medium text-black hover:text-gray-500 transition-all duration-200 whitespace-nowrap uppercase tracking-wide"
+                    className="flex items-center gap-1 px-3 py-3 text-xs xl:text-sm font-medium text-white hover:text-gray-300 transition-all duration-200 whitespace-nowrap uppercase tracking-wide"
                   >
                     <span>{category.name}</span>
                     {hasSubcategories && (
@@ -235,28 +239,20 @@ export default function CategoryMenu() {
             })}
 
             {/* Separador visual */}
-            <div className="h-4 w-px bg-gray-200 mx-1"></div>
+            <div className="h-4 w-px bg-gray-600 mx-1"></div>
 
-            {/* Personaliza tu Taco - Enlace especial */}
-            <Link
-              to="/tienda?categoria=tacos"
-              className="flex items-center gap-1 px-3 py-3 text-xs xl:text-sm font-medium text-black hover:text-gray-500 transition-all duration-200 whitespace-nowrap uppercase tracking-wide"
-            >
-              <span>TACOS</span>
-            </Link>
-
-            {/* Cambia tu Paño - Botón modal */}
+            {/* Reparación de Mesa - Botón modal */}
             <button
-              onClick={() => setShowClothModal(true)}
-              className="flex items-center gap-1 px-3 py-3 text-xs xl:text-sm font-medium text-black hover:text-gray-500 transition-all duration-200 whitespace-nowrap uppercase tracking-wide"
+              onClick={() => setShowRepairModal(true)}
+              className="flex items-center gap-1 px-3 py-3 text-xs xl:text-sm font-medium text-white hover:text-gray-300 transition-all duration-200 whitespace-nowrap uppercase tracking-wide"
             >
-              <span>CAMBIO PAÑO</span>
+              <span>REPARACIÓN DE MESAS</span>
             </button>
 
             {/* Contacto */}
             <Link
               to="/contacto"
-              className="flex items-center gap-1 px-3 py-3 text-xs xl:text-sm font-medium text-black hover:text-gray-500 transition-all duration-200 whitespace-nowrap uppercase tracking-wide"
+              className="flex items-center gap-1 px-3 py-3 text-xs xl:text-sm font-medium text-white hover:text-gray-300 transition-all duration-200 whitespace-nowrap uppercase tracking-wide"
             >
               <span>CONTACTO</span>
             </Link>
@@ -299,8 +295,8 @@ export default function CategoryMenu() {
         </div>
       )}
 
-      {/* Modal de Cambio de Paño */}
-      <ClothChangeModal isOpen={showClothModal} onClose={() => setShowClothModal(false)} />
+      {/* Modal de Reparación de Mesa */}
+      <TableRepairModal isOpen={showRepairModal} onClose={() => setShowRepairModal(false)} />
     </>
   );
 }

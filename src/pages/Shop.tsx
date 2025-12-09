@@ -25,13 +25,32 @@ export default function Shop() {
   const MESAS_POOL_SLUGS = ['mesas-de-pool', 'superficie-en-piedra', 'superficie-en-madera'];
   const isMesasPoolCategory = MESAS_POOL_SLUGS.includes(categoryParam);
 
+  // Mapeo de categorías padre virtuales a sus subcategorías reales
+  const PARENT_CATEGORY_MAP: Record<string, string[]> = {
+    'mesas-y-accesorios': ['mesas-de-pool', 'superficie-en-piedra', 'superficie-en-madera', 'lamparas', 'triangulos', 'taqueras', 'escobillas', 'fundas-de-mesa', 'banda-de-goma', 'buchacas', 'bolas-de-pool'],
+    'tacos-y-accesorios': ['tacos', 'estuches', 'tizas', 'guantes', 'suelas', 'grip', 'diablitos', 'pegamentos', 'boquillas'],
+    'muebles-y-decoracion': ['banquetas-y-sillas', 'taqueras', 'lamparas'],
+    'mesas-de-pool': ['superficie-en-piedra', 'superficie-en-madera'],
+  };
+
   // Calcular filtros directamente usando useMemo para que reaccionen a cambios de URL
   const filters = React.useMemo(() => {
-    // Calcular categoryId
+    // Calcular categoryId - manejar categorías padre virtuales
     let newCategoryId = '';
     if (categoryParam) {
+      // Primero buscar coincidencia directa
       const cat = categories?.find((c) => c.slug === categoryParam);
-      newCategoryId = cat?.id?.toString() || '';
+      if (cat) {
+        newCategoryId = cat.id.toString();
+      } else if (PARENT_CATEGORY_MAP[categoryParam]) {
+        // Es una categoría padre virtual - buscar IDs de todas las subcategorías
+        const childSlugs = PARENT_CATEGORY_MAP[categoryParam];
+        const childIds = childSlugs
+          .map(slug => categories?.find(c => c.slug === slug)?.id)
+          .filter(Boolean);
+        // WooCommerce acepta múltiples IDs separados por coma
+        newCategoryId = childIds.join(',');
+      }
     }
 
     // Calcular orden
@@ -52,13 +71,17 @@ export default function Shop() {
       order = 'asc';
     }
 
+    // Verificar si es la categoría de ofertas
+    const isOfertas = categoryParam === 'ofertas';
+
     return {
       category: newCategoryId,
       search: searchQuery,
       orderby: orderby,
       order: order,
       page: pageParam,
-      perPage: isMesasPoolCategory ? 100 : 12,
+      perPage: 100,
+      on_sale: isOfertas ? true : undefined,
     };
   }, [categoryParam, searchQuery, sortParam, pageParam, categories, isMesasPoolCategory]);
 

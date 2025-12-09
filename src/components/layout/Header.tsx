@@ -1,9 +1,7 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Menu, X, Search, ShoppingCart, Phone, Mail, ChevronDown, Box, Star, Package, Flame, Mic } from 'lucide-react';
+import { Menu, X, Search, ShoppingCart, Phone, Mail, ChevronDown, Box, Star, Package, Flame, Shield, Mic } from 'lucide-react';
 import { useCart } from '../../hooks/useCart';
-import { useQuery } from '@tanstack/react-query';
-import { wooApi } from '../../api/woocommerce';
 import CategoryMenu from './CategoryMenu';
 
 // Extend Window interface for SpeechRecognition
@@ -21,8 +19,18 @@ export default function Header() {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const [isSearchingVoice, setIsSearchingVoice] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const { itemCount, toggleCart } = useCart();
   const navigate = useNavigate();
+
+  // Detectar scroll para ocultar barras verdes
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // Speech Recognition - Optimizado para respuesta rápida
   const startVoiceSearch = () => {
@@ -116,88 +124,71 @@ export default function Header() {
 
   const ballColor = getBallColor(itemCount);
 
-  // Obtener categorías desde WooCommerce
-  const { data: wooCategories = [] } = useQuery({
-    queryKey: ['categories'],
-    queryFn: () => wooApi.getCategories({ per_page: 100, hide_empty: false }),
-  });
-
-  // Procesar categorías para estructura jerárquica - 4 principales
-  const mainCategories = useMemo(() => {
-    if (!wooCategories.length) return [];
-
-    const categories = [
-      {
-        name: 'MESAS DE POOL',
-        slug: 'mesas-de-pool',
-        icon: Box,
-        includeCategories: ['mesas-de-pool', 'superficie-en-piedra', 'superficie-en-madera']
-      },
-      {
-        name: 'OTRAS MESAS',
-        slug: 'otras-mesas',
-        icon: Star,
-        includeCategories: ['mesa-de-poker', 'mesa-air-hockey', 'mesa-futbolito']
-      },
-      {
-        name: 'ACCESORIOS',
-        slug: 'accesorios',
-        icon: Package,
-        includeCategories: ['tacos', 'bolas-de-pool', 'bolas', 'tizas', 'fundas-y-cubiertas', 'fundas', 'buchacas', 'accesorios', 'estuches', 'suelas']
-      },
-      {
-        name: 'OFERTAS',
-        slug: 'ofertas',
-        icon: Flame,
-        includeCategories: ['ofertas', 'promociones', 'descuentos']
-      }
-    ];
-
-    return categories.map(mainCat => {
-      const matchingCategories = wooCategories.filter(wooCat =>
-        mainCat.includeCategories.some(slug =>
-          wooCat.slug.includes(slug) || slug.includes(wooCat.slug)
-        ) && wooCat.count > 0 && wooCat.slug !== 'uncategorized'
-      );
-
-      const mainWooCat = matchingCategories.find(cat => cat.slug === mainCat.slug);
-      const subcategoriesMap = new Map();
-
-      matchingCategories
-        .filter(cat => cat.slug !== mainCat.slug)
-        .forEach(cat => {
-          subcategoriesMap.set(cat.id, {
-            id: cat.id,
-            name: cat.name,
-            slug: cat.slug,
-          });
-        });
-
-      if (mainWooCat) {
-        wooCategories
-          .filter(cat => cat.parent === mainWooCat.id && cat.count > 0)
-          .forEach(sub => {
-            if (!subcategoriesMap.has(sub.id)) {
-              subcategoriesMap.set(sub.id, {
-                id: sub.id,
-                name: sub.name,
-                slug: sub.slug,
-              });
-            }
-          });
-      }
-
-      const subcategories = Array.from(subcategoriesMap.values());
-
-      return {
-        id: mainCat.slug,
-        name: mainCat.name,
-        slug: mainWooCat?.slug || mainCat.slug,
-        icon: mainCat.icon,
-        subcategories: subcategories
-      };
-    }).filter(cat => cat.subcategories.length > 0 || wooCategories.some(w => w.slug === cat.slug));
-  }, [wooCategories]);
+  // Categorías estáticas para el menú mobile - Misma estructura que CategoryMenu
+  const mainCategories = [
+    {
+      id: 'mesas-y-accesorios',
+      name: 'MESAS Y ACCESORIOS',
+      slug: 'mesas-y-accesorios',
+      icon: Box,
+      subcategories: [
+        { id: 27, name: 'Mesas de Pool', slug: 'mesas-de-pool' },
+        { id: 26, name: 'Mesas de Poker', slug: 'mesadepoker' },
+        { id: 43, name: 'Lámparas', slug: 'lamparas' },
+        { id: 38, name: 'Triángulos', slug: 'triangulos' },
+        { id: 44, name: 'Taqueras', slug: 'taqueras' },
+        { id: 19, name: 'Productos de Limpieza', slug: 'escobillas' },
+        { id: 21, name: 'Cubiertas Mesa Pool', slug: 'fundas-de-mesa' },
+        { id: 22, name: 'Goma de Banda', slug: 'banda-de-goma' },
+        { id: 17, name: 'Troneras y Buchacas', slug: 'buchacas' },
+        { id: 16, name: 'Bolas de Pool', slug: 'bolas-de-pool' },
+      ]
+    },
+    {
+      id: 'tacos-y-accesorios',
+      name: 'TACOS Y ACCESORIOS',
+      slug: 'tacos-y-accesorios',
+      icon: Package,
+      subcategories: [
+        { id: 36, name: 'Tacos', slug: 'tacos' },
+        { id: 20, name: 'Bolsos', slug: 'estuches' },
+        { id: 37, name: 'Tizas', slug: 'tizas' },
+        { id: 24, name: 'Guantes', slug: 'guantes' },
+        { id: 35, name: 'Suelas', slug: 'suelas' },
+        { id: 23, name: 'Grip', slug: 'grip' },
+        { id: 18, name: 'Diablitos', slug: 'diablitos' },
+        { id: 45, name: 'Pegamentos', slug: 'pegamentos' },
+        { id: 46, name: 'Boquillas', slug: 'boquillas' },
+      ]
+    },
+    {
+      id: 'panos',
+      name: 'PAÑOS',
+      slug: 'pano',
+      icon: Shield,
+      subcategories: []
+    },
+    {
+      id: 'muebles',
+      name: 'MUEBLES Y DECORACIÓN',
+      slug: 'muebles-y-decoracion',
+      icon: Star,
+      subcategories: [
+        { id: 42, name: 'Banquetas y Sillas', slug: 'banquetas-y-sillas' },
+        { id: 44, name: 'Taqueras', slug: 'taqueras' },
+        { id: 43, name: 'Lámparas', slug: 'lamparas' },
+        { id: 49, name: 'Llaveros', slug: 'llaveros' },
+        { id: 50, name: 'Ceniceros', slug: 'ceniceros' },
+      ]
+    },
+    {
+      id: 'ofertas',
+      name: 'OFERTAS',
+      slug: 'ofertas',
+      icon: Flame,
+      subcategories: []
+    },
+  ];
 
   // Cerrar el menú al cambiar de tamaño de ventana
   useEffect(() => {
@@ -271,16 +262,20 @@ export default function Header() {
   const daysUntilChristmas = getDaysUntilChristmas();
 
   return (
-    <div className="sticky top-0 z-50 safe-area-top">
-      {/* 1) Barra Superior - Cuenta regresiva Navidad - Más compacta en mobile */}
-      <div className="bg-[#165B33] text-white py-1.5 sm:py-2 text-center px-3">
+    <div className="sticky top-0 z-50 safe-area-top bg-black">
+      {/* 1) Barra Superior - Cuenta regresiva Navidad - Se oculta al hacer scroll */}
+      <div className={`bg-[#165B33] text-white py-1.5 sm:py-2 text-center px-3 transition-all duration-300 overflow-hidden ${
+        isScrolled ? 'max-h-0 py-0 opacity-0' : 'max-h-20 opacity-100'
+      }`}>
         <p className="text-[11px] sm:text-sm font-medium tracking-wide leading-tight">
           <span className="hidden xs:inline">FALTAN </span><span className="font-bold text-sm sm:text-lg">{daysUntilChristmas}</span> DÍAS PARA NAVIDAD<span className="hidden sm:inline"> - ¡Adelanta tus compras!</span>
         </p>
       </div>
 
-      {/* 2) Header Principal - Verde */}
-      <header className="bg-[#00963c]">
+      {/* 2) Header Principal - Verde - Se oculta al hacer scroll */}
+      <header className={`bg-[#00963c] transition-all duration-300 overflow-hidden ${
+        isScrolled ? 'max-h-0 py-0 opacity-0' : 'max-h-40 opacity-100'
+      }`}>
         <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-2 sm:py-3 md:py-4">
           {/* Layout Mobile - Optimizado táctil */}
           <div className="md:hidden">
@@ -471,28 +466,26 @@ export default function Header() {
       {/* 3) Menú de Categorías */}
       <CategoryMenu />
 
-      {/* 4) Marquee negro con Comprar y Ubicación incluidos - Visible en todas las pantallas */}
-      <div className="bg-black text-white py-2 sm:py-2.5 overflow-hidden">
+      {/* 4) Marquee blanco con botones - Visible en todas las pantallas */}
+      <div className="bg-white text-black py-2 sm:py-2.5 overflow-hidden border-b border-gray-100">
         <div className="animate-marquee whitespace-nowrap flex items-center">
           {[...Array(10)].map((_, i) => (
             <span key={i} className="flex items-center mx-4 sm:mx-6 text-[10px] sm:text-xs md:text-sm tracking-wide">
-              <Link to="/tienda" className="font-medium uppercase hover:text-gray-300 transition-colors px-3 sm:px-5">
-                Comprar
-              </Link>
-              <span className="text-gray-500">|</span>
-              <Link to="/contacto" className="font-medium uppercase hover:text-gray-300 transition-colors px-3 sm:px-5">
-                Ubicación
-              </Link>
-              <span className="mx-6 sm:mx-10 text-gray-500">•</span>
               <span className="hidden xs:inline">ENCUENTRA LA MEJOR CALIDAD AQUÍ</span>
               <span className="xs:hidden">CALIDAD</span>
-              <span className="mx-6 sm:mx-10 text-gray-500">•</span>
+              <span className="mx-6 sm:mx-10 text-gray-300">•</span>
               <span className="hidden sm:inline">SÁBADOS TIENDA ABIERTA</span>
               <span className="sm:hidden">SÁBADOS ABIERTO</span>
-              <span className="mx-6 sm:mx-10 text-gray-500">•</span>
+              <a href="https://www.google.com/maps/search/Billard+Ramirez" target="_blank" rel="noopener noreferrer" className="ml-2 sm:ml-3 bg-black text-white font-medium uppercase px-2 sm:px-3 py-1 text-[9px] sm:text-[10px] hover:bg-gray-800 transition-colors">
+                Ubicación
+              </a>
+              <span className="mx-6 sm:mx-10 text-gray-300">•</span>
               <span className="hidden md:inline">ENVÍO GRATIS EN ACCESORIOS SOBRE LOS $100.000</span>
               <span className="md:hidden">ENVÍO GRATIS +$100K</span>
-              <span className="mx-6 sm:mx-10 text-gray-500">•</span>
+              <Link to="/tienda?categoria=accesorios" className="ml-2 sm:ml-3 bg-black text-white font-medium uppercase px-2 sm:px-3 py-1 text-[9px] sm:text-[10px] hover:bg-gray-800 transition-colors">
+                Comprar
+              </Link>
+              <span className="mx-6 sm:mx-10 text-gray-300">•</span>
             </span>
           ))}
         </div>
@@ -528,50 +521,21 @@ export default function Header() {
 
         {/* Contenido scrolleable */}
         <div className="h-[calc(100vh-65px)] overflow-y-auto">
-          {/* Navegación Principal */}
-          <nav className="px-5 py-6">
-            <div className="space-y-0">
+          {/* Navegación */}
+          <div className="px-5 py-4">
+            {/* Inicio */}
+            <div className="border-b border-gray-100">
               <Link
                 to="/"
-                className="block py-3 text-2xl font-display uppercase tracking-wide text-black hover:opacity-60 transition-opacity border-b border-gray-100"
+                className="block py-3 text-sm uppercase tracking-wider text-gray-600 hover:text-black transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Inicio
               </Link>
-              <Link
-                to="/tienda"
-                className="block py-3 text-2xl font-display uppercase tracking-wide text-black hover:opacity-60 transition-opacity border-b border-gray-100"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Tienda
-              </Link>
-              <Link
-                to="/tienda?categoria=mesas-de-pool"
-                className="block py-3 text-2xl font-display uppercase tracking-wide text-black hover:opacity-60 transition-opacity border-b border-gray-100"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Mesas de Pool
-              </Link>
-              <Link
-                to="/tienda?categoria=accesorios"
-                className="block py-3 text-2xl font-display uppercase tracking-wide text-black hover:opacity-60 transition-opacity border-b border-gray-100"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Accesorios
-              </Link>
-              <Link
-                to="/contacto"
-                className="block py-3 text-2xl font-display uppercase tracking-wide text-black hover:opacity-60 transition-opacity border-b border-gray-100"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Contacto
-              </Link>
             </div>
-          </nav>
 
-          {/* Categorías */}
-          <div className="px-5 py-4 border-t border-gray-100">
-            <p className="text-[10px] uppercase tracking-[0.2em] text-gray-400 mb-4">
+            {/* Categorías */}
+            <p className="text-[10px] uppercase tracking-[0.2em] text-gray-400 mt-6 mb-4">
               Categorías
             </p>
             <div className="space-y-0">
@@ -627,10 +591,24 @@ export default function Header() {
                 );
               })}
             </div>
+
+            {/* Contacto */}
+            <p className="text-[10px] uppercase tracking-[0.2em] text-gray-400 mt-6 mb-4">
+              Información
+            </p>
+            <div className="border-b border-gray-100">
+              <Link
+                to="/contacto"
+                className="block py-3 text-sm uppercase tracking-wider text-gray-600 hover:text-black transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Contacto
+              </Link>
+            </div>
           </div>
 
-          {/* CTA Cotizar */}
-          <div className="px-5 py-6">
+          {/* CTA Cotizar y WhatsApp */}
+          <div className="px-5 py-6 space-y-3">
             <Link
               to="/tienda?categoria=mesas-de-pool"
               className="block w-full py-4 text-center text-xs uppercase tracking-[0.2em] bg-black text-white hover:bg-gray-900 transition-colors"
@@ -638,6 +616,18 @@ export default function Header() {
             >
               Cotizar Mesa
             </Link>
+            <a
+              href="https://wa.me/56965839601?text=Hola,%20me%20gustaría%20consultar%20sobre%20sus%20productos"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 w-full py-4 text-center text-xs uppercase tracking-[0.2em] bg-[#25D366] text-white hover:bg-[#20BD5A] transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+              </svg>
+              WhatsApp
+            </a>
           </div>
 
           {/* Footer del menú */}

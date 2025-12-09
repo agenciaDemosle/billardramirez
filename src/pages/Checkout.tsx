@@ -59,7 +59,6 @@ const checkoutSchema = z.object({
   address2: z.string().optional(),
   comuna: z.string().min(2, 'Comuna requerida'),
   state: z.string().min(2, 'Región requerida'),
-  postcode: z.string().min(4, 'Código postal requerido'),
 });
 
 type CheckoutFormData = z.infer<typeof checkoutSchema>;
@@ -165,7 +164,7 @@ export default function Checkout() {
             address_2: data.address2 || '',
             city: data.comuna,
             state: data.state,
-            postcode: data.postcode,
+            postcode: '-',
             phone: data.phone,
           },
           line_items: items.map((item) => {
@@ -269,7 +268,7 @@ export default function Checkout() {
             address_2: data.address2 || '',
             city: data.comuna,
             state: data.state,
-            postcode: data.postcode,
+            postcode: '-',
             country: 'CL',
             email: data.email,
             phone: data.phone,
@@ -281,7 +280,7 @@ export default function Checkout() {
             address_2: data.address2 || '',
             city: data.comuna,
             state: data.state,
-            postcode: data.postcode,
+            postcode: '-',
             country: 'CL',
           },
           line_items: items.map((item) => {
@@ -500,16 +499,6 @@ export default function Checkout() {
                         <p className="text-xs text-red-500 mt-1">{errors.comuna.message}</p>
                       )}
                     </div>
-                  </div>
-                  <div className="sm:w-1/2">
-                    <input
-                      {...register('postcode')}
-                      placeholder="Código postal"
-                      className="w-full border-b border-gray-300 py-3 text-sm focus:outline-none focus:border-black transition-colors bg-transparent placeholder:text-gray-400"
-                    />
-                    {errors.postcode && (
-                      <p className="text-xs text-red-500 mt-1">{errors.postcode.message}</p>
-                    )}
                   </div>
                 </div>
               </div>

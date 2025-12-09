@@ -121,6 +121,8 @@ $transaction_data = [
     'email' => $email,
     'billing' => $billing,
     'line_items' => $line_items,
+    'shipping_cost' => $data['shipping_cost'] ?? 0,
+    'envio_por_pagar' => $data['envio_por_pagar'] ?? false,
     'created_at' => date('Y-m-d H:i:s'),
     'updated_at' => date('Y-m-d H:i:s')
 ];

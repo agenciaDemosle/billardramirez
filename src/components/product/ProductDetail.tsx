@@ -323,6 +323,18 @@ export default function ProductDetail({ product }: ProductDetailProps) {
                     basePrice={price}
                     productName={product.name}
                     description={product.description}
+                    excludeDimensions={
+                      product.name.toLowerCase().includes('roma giratoria')
+                        ? ['270x146']
+                        : []
+                    }
+                    tableType={
+                      product.name.toLowerCase().includes('roma giratoria')
+                        ? 'roma-giratoria'
+                        : product.categories.some(cat => cat.id === 40 || cat.slug === 'superficie-en-piedra')
+                          ? 'profesional'
+                          : 'recreacional'
+                    }
                   />
                 </div>
               )}

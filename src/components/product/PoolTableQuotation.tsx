@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
-import { MapPin, Ruler, Palette, Truck, ChevronRight, Check } from 'lucide-react';
+import { MapPin, Ruler, Palette, Truck, ChevronRight, Check, UtensilsCrossed } from 'lucide-react';
 import { formatPrice } from '../../utils/helpers';
 
 interface PoolTableQuotationProps {
   basePrice: number;
   productName: string;
   description: string;
+  excludeDimensions?: string[]; // Dimensiones a excluir por modelo
+  tableType?: 'profesional' | 'recreacional' | 'roma-giratoria'; // Tipo de mesa para cubierta
 }
 
 // Predefined table dimensions based on standard sizes
@@ -71,14 +73,27 @@ const regions = [
   { name: 'Magallanes', distance: 3000 },
 ];
 
-export default function PoolTableQuotation({ basePrice, productName, description }: PoolTableQuotationProps) {
-  const [selectedDimension, setSelectedDimension] = useState(tableDimensions[0]);
+export default function PoolTableQuotation({ basePrice, productName, description, excludeDimensions = [], tableType }: PoolTableQuotationProps) {
+  // Filtrar dimensiones excluidas para este modelo
+  const availableDimensions = tableDimensions.filter(d => !excludeDimensions.includes(d.value));
+  const [selectedDimension, setSelectedDimension] = useState(availableDimensions[0]);
   const [selectedCloth, setSelectedCloth] = useState(clothOptions[0]);
   const [selectedClothColor, setSelectedClothColor] = useState(clothOptions[0].colors[0]);
   const [selectedRegion, setSelectedRegion] = useState(regions[0]);
   const [customDimensions, setCustomDimensions] = useState({ width: '', length: '' });
   const [useCustomDimensions, setUseCustomDimensions] = useState(false);
   const [additionalNotes, setAdditionalNotes] = useState('');
+  const [wantsDiningCover, setWantsDiningCover] = useState(tableType === 'roma-giratoria');
+
+  // Configuración de cubierta de comedor según tipo de mesa
+  const diningCoverConfig = {
+    'roma-giratoria': { price: 0, label: 'Incluida' },
+    'recreacional': { price: 289900, label: `Desde ${formatPrice(289900)}` },
+    'profesional': { price: 389000, label: `Desde ${formatPrice(389000)}` },
+  };
+
+  const isRomaGiratoria = tableType === 'roma-giratoria';
+  const coverPrice = isRomaGiratoria ? 0 : (wantsDiningCover && tableType ? diningCoverConfig[tableType].price : 0);
 
   // Check if product description mentions customization
   const isCustomizable = description.toLowerCase().includes('personaliz') ||
@@ -87,7 +102,7 @@ export default function PoolTableQuotation({ basePrice, productName, description
   // Calculate total price
   const tablePrice = basePrice + selectedDimension.priceAdjustment;
   const clothPrice = selectedCloth.price;
-  const totalPrice = tablePrice + clothPrice;
+  const totalPrice = tablePrice + clothPrice + coverPrice;
 
   // Update cloth color when cloth type changes
   useEffect(() => {
@@ -95,6 +110,10 @@ export default function PoolTableQuotation({ basePrice, productName, description
   }, [selectedCloth]);
 
   const handleWhatsAppQuote = () => {
+    const coverText = isRomaGiratoria
+      ? 'Cubierta de comedor: Incluida\n'
+      : (wantsDiningCover && tableType ? `Cubierta de comedor: ${formatPrice(coverPrice)}\n` : '');
+
     const message = encodeURIComponent(
       `Hola! Me interesa cotizar la siguiente mesa de pool:\n\n` +
       `Producto: ${productName}\n` +
@@ -102,11 +121,13 @@ export default function PoolTableQuotation({ basePrice, productName, description
         ? `${customDimensions.width} x ${customDimensions.length} cm (Personalizada)`
         : `${selectedDimension.label} (${selectedDimension.detail})`}\n` +
       `Paño: ${selectedCloth.name} - ${selectedClothColor.name}\n` +
+      (isRomaGiratoria || wantsDiningCover ? `Cubierta de comedor: ${isRomaGiratoria ? 'Incluida' : 'Sí'}\n` : '') +
       `Región de envío: ${selectedRegion.name}\n\n` +
       `COTIZACIÓN:\n` +
       `Mesa: ${formatPrice(tablePrice)}\n` +
       `Paño: ${clothPrice === 0 ? 'Incluido' : formatPrice(clothPrice)}\n` +
-      `Envío: ${selectedRegion.distance === 0 ? 'Gratis (RM)' : 'A cotizar'}\n` +
+      coverText +
+      `Envío: Por confirmar\n` +
       `SUBTOTAL: ${formatPrice(totalPrice)}\n\n` +
       (additionalNotes ? `Notas: ${additionalNotes}\n\n` : '') +
       `¿Podrían confirmar esta cotización?`
@@ -140,8 +161,8 @@ export default function PoolTableQuotation({ basePrice, productName, description
             </div>
           </div>
 
-          <div className="grid grid-cols-3 gap-2">
-            {tableDimensions.map((dimension) => (
+          <div className={`grid gap-2 ${availableDimensions.length === 2 ? 'grid-cols-2' : 'grid-cols-3'}`}>
+            {availableDimensions.map((dimension) => (
               <button
                 key={dimension.value}
                 onClick={() => {
@@ -276,11 +297,60 @@ export default function PoolTableQuotation({ basePrice, productName, description
           </div>
         </div>
 
-        {/* Step 3: Shipping */}
+        {/* Step 3: Dining Cover */}
+        {tableType && (
+          <div>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-6 h-6 bg-black text-white text-[10px] flex items-center justify-center">
+                3
+              </div>
+              <div className="flex items-center gap-2">
+                <UtensilsCrossed size={14} className="text-gray-400" />
+                <span className="text-xs uppercase tracking-wider text-gray-600">Cubierta de Comedor</span>
+              </div>
+            </div>
+
+            {isRomaGiratoria ? (
+              <div className="p-4 bg-green-50 border border-green-200">
+                <div className="flex items-center gap-3">
+                  <Check size={16} className="text-green-600" />
+                  <div>
+                    <p className="text-sm font-medium text-green-800">Incluida con tu mesa</p>
+                    <p className="text-xs text-green-600">La Roma Giratoria incluye cubierta de comedor</p>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                <label className="flex items-start gap-3 p-4 border border-gray-200 cursor-pointer hover:border-gray-400 transition-colors">
+                  <input
+                    type="checkbox"
+                    checked={wantsDiningCover}
+                    onChange={(e) => setWantsDiningCover(e.target.checked)}
+                    className="mt-0.5 w-4 h-4 border-gray-300 rounded-none text-black focus:ring-black"
+                  />
+                  <div className="flex-1">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-medium">Agregar cubierta de comedor</span>
+                      <span className="text-sm text-gray-600">
+                        {tableType && diningCoverConfig[tableType].label}
+                      </span>
+                    </div>
+                    <p className="text-xs text-gray-500 mt-1">
+                      Convierte tu mesa de pool en mesa de comedor
+                    </p>
+                  </div>
+                </label>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Step: Shipping */}
         <div>
           <div className="flex items-center gap-3 mb-4">
             <div className="w-6 h-6 bg-black text-white text-[10px] flex items-center justify-center">
-              3
+              {tableType ? 4 : 3}
             </div>
             <div className="flex items-center gap-2">
               <MapPin size={14} className="text-gray-400" />
@@ -309,18 +379,10 @@ export default function PoolTableQuotation({ basePrice, productName, description
             ))}
           </select>
 
-          {selectedRegion.distance > 0 && (
-            <div className="flex items-center gap-2 mt-3 text-xs text-gray-500">
-              <Truck size={12} />
-              <span>Costo de envío a cotizar</span>
-            </div>
-          )}
-          {selectedRegion.distance === 0 && (
-            <div className="flex items-center gap-2 mt-3 text-xs text-green-600">
-              <Check size={12} />
-              <span>Envío gratis en Región Metropolitana</span>
-            </div>
-          )}
+          <div className="flex items-center gap-2 mt-3 text-xs text-gray-500">
+            <Truck size={12} />
+            <span>Costo de envío por confirmar</span>
+          </div>
         </div>
 
         {/* Additional Notes */}
@@ -345,9 +407,15 @@ export default function PoolTableQuotation({ basePrice, productName, description
               <span className="text-gray-500">Paño {selectedCloth.name}</span>
               <span>{clothPrice === 0 ? 'Incluido' : formatPrice(clothPrice)}</span>
             </div>
+            {(isRomaGiratoria || wantsDiningCover) && tableType && (
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-500">Cubierta de comedor</span>
+                <span>{isRomaGiratoria ? 'Incluida' : formatPrice(coverPrice)}</span>
+              </div>
+            )}
             <div className="flex justify-between text-sm">
               <span className="text-gray-500">Envío</span>
-              <span>{selectedRegion.distance === 0 ? 'Gratis' : 'A cotizar'}</span>
+              <span>Por confirmar</span>
             </div>
           </div>
 

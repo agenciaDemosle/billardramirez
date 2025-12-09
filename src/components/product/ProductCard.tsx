@@ -1,10 +1,8 @@
 import { Link } from 'react-router-dom';
-import { ShoppingCart, Calculator, Bell } from 'lucide-react';
-import { useState } from 'react';
+import { ShoppingCart, Calculator } from 'lucide-react';
 import type { Product } from '../../types/product';
 import { formatPrice, getDiscountPercentage, getProductUrl } from '../../utils/helpers';
 import { useCart } from '../../hooks/useCart';
-import StockNotificationModal from './StockNotificationModal';
 import { trackAddToCart } from '../../hooks/useAnalytics';
 
 interface ProductCardProps {
@@ -16,7 +14,6 @@ interface ProductCardProps {
 
 export default function ProductCard({ product, listName, listId, index }: ProductCardProps) {
   const { addToCart } = useCart();
-  const [showNotificationModal, setShowNotificationModal] = useState(false);
   const discount = getDiscountPercentage(product.regular_price, product.sale_price);
   const imageUrl = product.images[0]?.src || '/placeholder-product.jpg';
 
@@ -58,7 +55,7 @@ export default function ProductCard({ product, listName, listId, index }: Produc
     <div className="group">
       <Link to={getProductUrl(product.slug)} className="block">
         {/* Image Container */}
-        <div className="relative aspect-[4/5] overflow-hidden bg-[#f5f5f5] mb-4">
+        <div className="relative aspect-square overflow-hidden bg-[#f5f5f5] mb-4">
           <img
             src={imageUrl}
             alt={product.name}
@@ -104,18 +101,6 @@ export default function ProductCard({ product, listName, listId, index }: Produc
                 )}
               </>
             )}
-            {product.stock_status === 'outofstock' && (
-              <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  setShowNotificationModal(true);
-                }}
-                className="w-full bg-black text-white text-xs uppercase tracking-wider py-3 px-4 flex items-center justify-center gap-2 hover:bg-gray-900 transition-colors"
-              >
-                <Bell size={14} />
-                Notificarme
-              </button>
-            )}
           </div>
         </div>
 
@@ -146,14 +131,6 @@ export default function ProductCard({ product, listName, listId, index }: Produc
           </div>
         </div>
       </Link>
-
-      {/* Stock Notification Modal */}
-      <StockNotificationModal
-        isOpen={showNotificationModal}
-        onClose={() => setShowNotificationModal(false)}
-        productName={product.name}
-        productId={product.id}
-      />
     </div>
   );
 }

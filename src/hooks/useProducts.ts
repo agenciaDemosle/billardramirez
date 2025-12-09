@@ -12,6 +12,7 @@ interface UseProductsParams {
   order?: 'asc' | 'desc';
   featured?: boolean;
   onSale?: boolean;
+  on_sale?: boolean;
 }
 
 export function useProducts(params: UseProductsParams = {}) {

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import PoolTableTypeModal from './PoolTableTypeModal';
-import ClothChangeModal from '../product/ClothChangeModal';
+import TableRepairModal from '../product/TableRepairModal';
 import { Link } from 'react-router-dom';
 import { trackCTAClick } from '../../hooks/useAnalytics';
 
@@ -11,7 +11,7 @@ const heroImages = [
 
 export default function Hero() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isClothModalOpen, setIsClothModalOpen] = useState(false);
+  const [isRepairModalOpen, setIsRepairModalOpen] = useState(false);
   const [currentImage, setCurrentImage] = useState(0);
 
   // Auto-rotate images every 5 seconds
@@ -105,10 +105,10 @@ export default function Hero() {
         />
       </section>
 
-      {/* Modal de cambio de paño */}
-      <ClothChangeModal
-        isOpen={isClothModalOpen}
-        onClose={() => setIsClothModalOpen(false)}
+      {/* Modal de reparación de mesa */}
+      <TableRepairModal
+        isOpen={isRepairModalOpen}
+        onClose={() => setIsRepairModalOpen(false)}
       />
 
       {/* Sección ¿Qué estás buscando? - Estilo redecora full width */}
@@ -137,7 +137,7 @@ export default function Hero() {
                 loading="lazy"
               />
               <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors duration-300"></div>
-              <div className="absolute top-4 sm:top-8 md:top-12 left-0 right-0 p-3 sm:p-6 md:p-10">
+              <div className="absolute inset-0 flex items-center justify-center p-3 sm:p-6 md:p-10">
                 <h3 className="text-white text-lg sm:text-2xl md:text-4xl lg:text-5xl xl:text-6xl font-display uppercase leading-tight tracking-wide text-center">
                   <span className="font-script text-yellow-400 text-xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl normal-case">Personaliza</span>
                   <br />tu taco
@@ -145,50 +145,50 @@ export default function Hero() {
               </div>
             </Link>
 
-            {/* Mesa de Pool */}
+            {/* Mesas de Pool Recreacionales */}
             <Link
-              to="/tienda?categoria=mesas-de-pool"
+              to="/tienda?categoria=superficie-en-madera"
               className="group relative overflow-hidden aspect-[3/4] sm:aspect-[4/5]"
             >
               <img
                 src="/images/fotos/mesas-de-pool.webp"
-                alt="Mesas de pool"
+                alt="Mesas de pool recreacionales"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 loading="lazy"
               />
               <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors duration-300"></div>
-              <div className="absolute top-4 sm:top-8 md:top-12 left-0 right-0 p-3 sm:p-6 md:p-10">
+              <div className="absolute inset-0 flex items-center justify-center p-3 sm:p-6 md:p-10">
                 <h3 className="text-white text-lg sm:text-2xl md:text-4xl lg:text-5xl xl:text-6xl font-display uppercase leading-tight tracking-wide text-center">
-                  Mesas de
-                  <br /><span className="font-script text-yellow-400 text-xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl normal-case">pool</span>
+                  Mesas de Pool
+                  <br /><span className="font-script text-yellow-400 text-xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl normal-case">Recreacionales</span>
                 </h3>
               </div>
             </Link>
 
-            {/* Cambio de Paño */}
-            <button
-              onClick={() => setIsClothModalOpen(true)}
-              className="group relative overflow-hidden aspect-[3/4] sm:aspect-[4/5] w-full"
+            {/* Mesas de Pool Profesionales */}
+            <Link
+              to="/tienda?categoria=superficie-en-piedra"
+              className="group relative overflow-hidden aspect-[3/4] sm:aspect-[4/5]"
             >
               <img
-                src="/images/fotos/cambia-pano.webp"
-                alt="Cambio de paño"
+                src="/images/fotos/profesional.png"
+                alt="Mesas de pool profesionales"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 loading="lazy"
               />
               <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors duration-300"></div>
-              <div className="absolute top-4 sm:top-8 md:top-12 left-0 right-0 p-3 sm:p-6 md:p-10">
+              <div className="absolute inset-0 flex items-center justify-center p-3 sm:p-6 md:p-10">
                 <h3 className="text-white text-lg sm:text-2xl md:text-4xl lg:text-5xl xl:text-6xl font-display uppercase leading-tight tracking-wide text-center">
-                  Cambia tu
-                  <br /><span className="font-script text-yellow-400 text-xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl normal-case">paño</span>
+                  Mesas de Pool
+                  <br /><span className="font-script text-yellow-400 text-xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl normal-case">Profesionales</span>
                 </h3>
               </div>
-            </button>
+            </Link>
 
             {/* Reparación de Mesa */}
-            <Link
-              to="/contacto"
-              className="group relative overflow-hidden aspect-[3/4] sm:aspect-[4/5]"
+            <button
+              onClick={() => setIsRepairModalOpen(true)}
+              className="group relative overflow-hidden aspect-[3/4] sm:aspect-[4/5] w-full"
             >
               <img
                 src="/images/fotos/reparacion-mesas.webp"
@@ -197,13 +197,13 @@ export default function Hero() {
                 loading="lazy"
               />
               <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors duration-300"></div>
-              <div className="absolute top-4 sm:top-8 md:top-12 left-0 right-0 p-3 sm:p-6 md:p-10">
+              <div className="absolute inset-0 flex items-center justify-center p-3 sm:p-6 md:p-10">
                 <h3 className="text-white text-lg sm:text-2xl md:text-4xl lg:text-5xl xl:text-6xl font-display uppercase leading-tight tracking-wide text-center">
                   <span className="font-script text-yellow-400 text-xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl normal-case">Reparación</span>
-                  <br />de mesas
+                  <br />de mesa
                 </h3>
               </div>
-            </Link>
+            </button>
 
             {/* Arriendo de Mesa */}
             <Link
@@ -217,7 +217,7 @@ export default function Hero() {
                 loading="lazy"
               />
               <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors duration-300"></div>
-              <div className="absolute top-4 sm:top-8 md:top-12 left-0 right-0 p-3 sm:p-6 md:p-10">
+              <div className="absolute inset-0 flex items-center justify-center p-3 sm:p-6 md:p-10">
                 <h3 className="text-white text-lg sm:text-2xl md:text-4xl lg:text-5xl xl:text-6xl font-display uppercase leading-tight tracking-wide text-center">
                   <span className="font-script text-yellow-400 text-xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl normal-case">Arriendo</span>
                   <br />de mesa
@@ -237,7 +237,7 @@ export default function Hero() {
                 loading="lazy"
               />
               <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors duration-300"></div>
-              <div className="absolute top-4 sm:top-8 md:top-12 left-0 right-0 p-3 sm:p-6 md:p-10">
+              <div className="absolute inset-0 flex items-center justify-center p-3 sm:p-6 md:p-10">
                 <h3 className="text-white text-lg sm:text-2xl md:text-4xl lg:text-5xl xl:text-6xl font-display uppercase leading-tight tracking-wide text-center">
                   <span className="font-script text-yellow-400 text-xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl normal-case">Accesorios</span>
                 </h3>
