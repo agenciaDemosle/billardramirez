@@ -1,7 +1,8 @@
-import { useState, Fragment } from 'react';
+import { useState, Fragment, useEffect } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { X, Check } from 'lucide-react';
 import { formatPrice } from '../../utils/helpers';
+import { trackWhatsAppClick, trackCTAClick } from '../../hooks/useAnalytics';
 
 interface TableRepairModalProps {
   isOpen: boolean;
@@ -35,6 +36,17 @@ const CLOTH_OPTIONS = [
 export default function TableRepairModal({ isOpen, onClose }: TableRepairModalProps) {
   const [wantsMaintenance, setWantsMaintenance] = useState(true);
   const [selectedCloth, setSelectedCloth] = useState<string | null>(null);
+
+  // Track cuando se abre el modal de reparaciones
+  useEffect(() => {
+    if (isOpen) {
+      trackCTAClick(
+        'Reparación de Mesa',
+        'table_repair_modal_open',
+        'service'
+      );
+    }
+  }, [isOpen]);
 
   // Calcular total (IVA ya incluido en los precios)
   const maintenanceTotal = wantsMaintenance ? MAINTENANCE_SERVICE.price : 0;
@@ -70,8 +82,25 @@ export default function TableRepairModal({ isOpen, onClose }: TableRepairModalPr
     return encodeURIComponent(message);
   };
 
-  const handleWhatsAppClick = () => {
+  const handleWhatsAppClick = async () => {
     if (!wantsMaintenance && !selectedCloth) return;
+
+    // Track WhatsApp click con detalles del servicio
+    const selectedClothName = selectedCloth
+      ? CLOTH_OPTIONS.find(c => c.id === selectedCloth)?.name
+      : 'Sin paño';
+
+    const serviceDetails = [];
+    if (wantsMaintenance) serviceDetails.push('Mantención Full');
+    if (selectedCloth) serviceDetails.push(selectedClothName);
+
+    await trackWhatsAppClick({
+      click_location: 'table_repair_modal',
+      button_text: 'Cotizar por WhatsApp',
+      service_interested: `Reparación Mesa: ${serviceDetails.join(' + ')}`,
+      value: total,
+    });
+
     const phoneNumber = '56965839601';
     const url = `https://wa.me/${phoneNumber}?text=${generateWhatsAppMessage()}`;
     window.open(url, '_blank');
@@ -136,7 +165,17 @@ export default function TableRepairModal({ isOpen, onClose }: TableRepairModalPr
                   {/* Servicio de Mantención Full */}
                   <div className="mb-6">
                     <button
-                      onClick={() => setWantsMaintenance(!wantsMaintenance)}
+                      onClick={() => {
+                        const newValue = !wantsMaintenance;
+                        setWantsMaintenance(newValue);
+
+                        // Track selección de mantención
+                        trackCTAClick(
+                          newValue ? 'Mantención Full: Seleccionada' : 'Mantención Full: Deseleccionada',
+                          'table_repair_maintenance_toggle',
+                          'service_option'
+                        );
+                      }}
                       className={`w-full text-left p-4 border-2 transition-all ${
                         wantsMaintenance
                           ? 'border-black bg-black text-white'
@@ -191,7 +230,17 @@ export default function TableRepairModal({ isOpen, onClose }: TableRepairModalPr
                         return (
                           <button
                             key={cloth.id}
-                            onClick={() => setSelectedCloth(isSelected ? null : cloth.id)}
+                            onClick={() => {
+                              const newCloth = isSelected ? null : cloth.id;
+                              setSelectedCloth(newCloth);
+
+                              // Track selección de paño
+                              trackCTAClick(
+                                newCloth ? `Paño: ${cloth.name}` : 'Paño: Deseleccionado',
+                                'table_repair_cloth_selection',
+                                'service_option'
+                              );
+                            }}
                             className={`w-full flex items-center justify-between p-3 border transition-all ${
                               isSelected
                                 ? 'border-black bg-gray-50'

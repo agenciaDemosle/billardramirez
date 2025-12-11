@@ -20,7 +20,7 @@ import { useLaserEngravingPrice } from '../../hooks/useCustomization';
 import { Helmet } from 'react-helmet-async';
 import PoolTableSpecs from './PoolTableSpecs';
 import PoolTableQuotation from './PoolTableQuotation';
-import { trackViewContent, trackAddToCart } from '../../hooks/useAnalytics';
+import { trackViewContent, trackAddToCart, trackPoolTableQuoteStart } from '../../hooks/useAnalytics';
 
 interface ProductDetailProps {
   product: Product;
@@ -62,6 +62,21 @@ export default function ProductDetail({ product }: ProductDetailProps) {
       product_price: price,
     });
   }, [product.id, product.name, product.categories, price]);
+
+  // Track pool table quote start when viewing a pool table product
+  useEffect(() => {
+    if (isPoolTable && inStock) {
+      // Determinar el tipo de mesa basado en la categoría
+      const tableType = product.categories.some(cat => cat.id === 40 || cat.slug === 'superficie-en-piedra')
+        ? 'profesional'
+        : 'recreacional';
+
+      trackPoolTableQuoteStart({
+        table_type: tableType,
+        location: 'product_page',
+      });
+    }
+  }, [isPoolTable, inStock, product.categories]);
 
   const handleAddToCart = () => {
     const customization = laserEngravingEnabled && laserEngravingText.trim()

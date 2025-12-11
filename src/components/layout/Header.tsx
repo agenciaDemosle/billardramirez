@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Menu, X, Search, ShoppingCart, Phone, Mail, ChevronDown, Box, Star, Package, Flame, Shield, Mic } from 'lucide-react';
 import { useCart } from '../../hooks/useCart';
+import { trackPoolTableQuoteStart } from '../../hooks/useAnalytics';
 import CategoryMenu from './CategoryMenu';
 
 // Extend Window interface for SpeechRecognition
@@ -458,6 +459,10 @@ export default function Header() {
               {/* Botón Cotizar - Estilo minimalista redecora */}
               <Link
                 to="/tienda?categoria=mesas-de-pool"
+                onClick={() => trackPoolTableQuoteStart({
+                  table_type: 'general',
+                  location: 'header'
+                })}
                 className="hidden lg:block text-white text-xs uppercase tracking-wider border border-white px-5 py-2.5 hover:bg-white hover:text-[#00963c] transition-all duration-300"
               >
                 Cotizar Mesa
@@ -629,7 +634,13 @@ export default function Header() {
             <Link
               to="/tienda?categoria=mesas-de-pool"
               className="block w-full py-4 text-center text-xs uppercase tracking-[0.2em] bg-black text-white hover:bg-gray-900 transition-colors"
-              onClick={() => setIsMenuOpen(false)}
+              onClick={() => {
+                trackPoolTableQuoteStart({
+                  table_type: 'general',
+                  location: 'mobile_menu'
+                });
+                setIsMenuOpen(false);
+              }}
             >
               Cotizar Mesa
             </Link>

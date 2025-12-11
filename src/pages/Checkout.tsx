@@ -9,7 +9,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useCart } from '../hooks/useCart';
 import { formatPrice } from '../utils/helpers';
 import { wooApi } from '../api/woocommerce';
-import { trackInitiateCheckout, trackPurchase } from '../hooks/useAnalytics';
+import { trackInitiateCheckout, trackPurchase, trackCTAClick } from '../hooks/useAnalytics';
 
 // Comunas con envío a $4.000 (solo estas de la RM)
 const COMUNAS_ENVIO_4000 = [
@@ -580,7 +580,16 @@ export default function Checkout() {
                           name="paymentMethod"
                           value={gateway.id}
                           checked={paymentMethod === gateway.id}
-                          onChange={(e) => setPaymentMethod(e.target.value)}
+                          onChange={(e) => {
+                            const newMethod = e.target.value;
+                            setPaymentMethod(newMethod);
+                            // Track payment method selection
+                            trackCTAClick(
+                              `Método de pago: ${gateway.title}`,
+                              'checkout_payment_method',
+                              'payment_selection'
+                            );
+                          }}
                           className="mt-0.5"
                         />
                         <div>
@@ -600,6 +609,15 @@ export default function Checkout() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
+                  onClick={() => {
+                    if (!isSubmitting) {
+                      trackCTAClick(
+                        'Realizar pedido',
+                        'checkout_submit',
+                        'primary'
+                      );
+                    }
+                  }}
                   className="w-full bg-black text-white text-xs uppercase tracking-wider py-4 hover:bg-gray-900 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
                 >
                   {isSubmitting ? 'Procesando...' : 'Realizar pedido'}
@@ -677,7 +695,16 @@ export default function Checkout() {
           <button
             type="submit"
             form="checkout-form"
-            onClick={handleSubmit(onSubmit)}
+            onClick={(e) => {
+              if (!isSubmitting) {
+                trackCTAClick(
+                  'Realizar pedido',
+                  'checkout_submit_mobile',
+                  'primary'
+                );
+              }
+              handleSubmit(onSubmit)(e);
+            }}
             disabled={isSubmitting}
             className="w-full bg-black text-white text-xs uppercase tracking-wider py-4 hover:bg-gray-900 transition-colors disabled:bg-gray-400"
           >
