@@ -1,6 +1,10 @@
+import { useState } from 'react';
 import { Truck, Trophy, Shield, Headphones, ArrowUp } from 'lucide-react';
+import ScheduleVisitModal from './ScheduleVisitModal';
 
 export default function ShowroomSection() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <>
       {/* 1) Banner Showroom - Estilo elegante */}
@@ -37,17 +41,14 @@ export default function ShowroomSection() {
 
             {/* Botones - Estilo elegante negro/blanco */}
             <div className="flex flex-col sm:flex-row gap-4">
-              <a
-                href="https://wa.me/56965839601?text=Hola%20quiero%20agendar%20una%20visita%20al%20showroom"
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                onClick={() => setIsModalOpen(true)}
+                className="bg-white text-black hover:bg-black hover:text-white border-2 border-white font-medium px-8 py-4 uppercase text-sm tracking-wider transition-all duration-300"
               >
-                <button className="bg-white text-black hover:bg-black hover:text-white border-2 border-white font-medium px-8 py-4 uppercase text-sm tracking-wider transition-all duration-300">
-                  Agendar visita
-                </button>
-              </a>
+                Agendar visita
+              </button>
               <a
-                href="https://www.google.com/maps/search/?api=1&query=Maximiliano+Ibáñez+1436,+Quinta+Normal,+Santiago,+Chile"
+                href="https://www.google.com/maps/search/Billard+Ramirez"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -114,6 +115,9 @@ export default function ShowroomSection() {
           </div>
         </div>
       </section>
+
+      {/* Modal de agendamiento */}
+      <ScheduleVisitModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </>
   );
 }

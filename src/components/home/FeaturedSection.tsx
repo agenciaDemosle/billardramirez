@@ -110,7 +110,7 @@ export default function FeaturedSection() {
                 item_list_id: 'homepage_featured',
                 index: index,
               })}
-              className="flex-shrink-0 w-[calc(100%-24px)] sm:w-[calc(50%-4px)] md:w-[calc(33.333%-5px)] lg:w-[calc(25%-6px)] snap-start group relative overflow-hidden aspect-[4/5] first:ml-3 sm:first:ml-0"
+              className="flex-shrink-0 w-[calc(100%-24px)] sm:w-[calc(50%-4px)] md:w-[calc(33.333%-5px)] lg:w-[calc(25%-6px)] snap-start group relative overflow-hidden aspect-square first:ml-3 sm:first:ml-0"
             >
               {/* Image */}
               <img

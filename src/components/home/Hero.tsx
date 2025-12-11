@@ -128,7 +128,7 @@ export default function Hero() {
             {/* Personaliza tu Taco */}
             <Link
               to="/tienda?categoria=tacos"
-              className="group relative overflow-hidden aspect-[3/4] sm:aspect-[4/5]"
+              className="group relative overflow-hidden aspect-square"
             >
               <img
                 src="/images/fotos/personaliza-taco.webp"
@@ -148,7 +148,7 @@ export default function Hero() {
             {/* Mesas de Pool Recreacionales */}
             <Link
               to="/tienda?categoria=superficie-en-madera"
-              className="group relative overflow-hidden aspect-[3/4] sm:aspect-[4/5]"
+              className="group relative overflow-hidden aspect-square"
             >
               <img
                 src="/images/fotos/mesas-de-pool.webp"
@@ -168,7 +168,7 @@ export default function Hero() {
             {/* Mesas de Pool Profesionales */}
             <Link
               to="/tienda?categoria=superficie-en-piedra"
-              className="group relative overflow-hidden aspect-[3/4] sm:aspect-[4/5]"
+              className="group relative overflow-hidden aspect-square"
             >
               <img
                 src="/images/fotos/profesional.png"
@@ -188,7 +188,7 @@ export default function Hero() {
             {/* Reparación de Mesa */}
             <button
               onClick={() => setIsRepairModalOpen(true)}
-              className="group relative overflow-hidden aspect-[3/4] sm:aspect-[4/5] w-full"
+              className="group relative overflow-hidden aspect-square w-full"
             >
               <img
                 src="/images/fotos/reparacion-mesas.webp"
@@ -208,7 +208,7 @@ export default function Hero() {
             {/* Arriendo de Mesa */}
             <Link
               to="/contacto"
-              className="group relative overflow-hidden aspect-[3/4] sm:aspect-[4/5]"
+              className="group relative overflow-hidden aspect-square"
             >
               <img
                 src="/images/fotos/arriendo-mesa.webp"
@@ -228,7 +228,7 @@ export default function Hero() {
             {/* Accesorios */}
             <Link
               to="/accesorios"
-              className="group relative overflow-hidden aspect-[3/4] sm:aspect-[4/5]"
+              className="group relative overflow-hidden aspect-square"
             >
               <img
                 src="/images/fotos/accesorios.webp"

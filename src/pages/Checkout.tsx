@@ -50,9 +50,33 @@ const REGIONES_CHILE = Object.keys(COMUNAS_POR_REGION).map((name, index) => ({
   name,
 }));
 
+// Validar RUT chileno
+const validateRut = (rut: string) => {
+  if (!rut) return false;
+  const cleanRut = rut.replace(/[.-]/g, '').toUpperCase();
+  if (cleanRut.length < 8) return false;
+
+  const body = cleanRut.slice(0, -1);
+  const dv = cleanRut.slice(-1);
+
+  let sum = 0;
+  let multiplier = 2;
+
+  for (let i = body.length - 1; i >= 0; i--) {
+    sum += parseInt(body[i]) * multiplier;
+    multiplier = multiplier === 7 ? 2 : multiplier + 1;
+  }
+
+  const expectedDv = 11 - (sum % 11);
+  const calculatedDv = expectedDv === 11 ? '0' : expectedDv === 10 ? 'K' : expectedDv.toString();
+
+  return dv === calculatedDv;
+};
+
 const checkoutSchema = z.object({
   firstName: z.string().min(2, 'El nombre debe tener al menos 2 caracteres'),
   lastName: z.string().min(2, 'El apellido debe tener al menos 2 caracteres'),
+  rut: z.string().min(8, 'RUT inválido').refine(validateRut, 'RUT inválido'),
   email: z.string().email('Email inválido'),
   phone: z.string().min(9, 'Teléfono inválido'),
   address1: z.string().min(5, 'La dirección debe tener al menos 5 caracteres'),
@@ -97,7 +121,24 @@ export default function Checkout() {
     resolver: zodResolver(checkoutSchema),
   });
 
-  const isEnvioPorPagar = selectedComuna && !COMUNAS_ENVIO_4000.includes(selectedComuna);
+  // Categorías/productos que siempre tienen envío "Por pagar"
+  const CATEGORIAS_ENVIO_POR_PAGAR = ['mesa-de-poker', 'poker', 'taqueras', 'banquetas', 'sillas', 'mesas-de-pool'];
+  const PRODUCTOS_ENVIO_POR_PAGAR = ['poker', 'taquera', 'banqueta', 'silla'];
+
+  // Verificar si algún producto del carrito requiere envío por pagar
+  const tieneProductoEnvioPorPagar = items.some(item => {
+    // Verificar por categoría
+    const categoriaEspecial = item.categories?.some(cat =>
+      CATEGORIAS_ENVIO_POR_PAGAR.some(slug => cat.slug.toLowerCase().includes(slug))
+    );
+    // Verificar por nombre del producto
+    const nombreEspecial = PRODUCTOS_ENVIO_POR_PAGAR.some(keyword =>
+      item.name.toLowerCase().includes(keyword)
+    );
+    return categoriaEspecial || nombreEspecial;
+  });
+
+  const isEnvioPorPagar = tieneProductoEnvioPorPagar || (selectedComuna && !COMUNAS_ENVIO_4000.includes(selectedComuna));
   const shippingCost = isEnvioPorPagar ? 0 : 4000;
   const finalTotal = total + shippingCost;
 
@@ -160,6 +201,7 @@ export default function Checkout() {
           billing: {
             first_name: data.firstName,
             last_name: data.lastName,
+            rut: data.rut,
             address_1: data.address1,
             address_2: data.address2 || '',
             city: data.comuna,
@@ -264,6 +306,7 @@ export default function Checkout() {
           billing: {
             first_name: data.firstName,
             last_name: data.lastName,
+            company: data.rut, // RUT almacenado en campo company
             address_1: data.address1,
             address_2: data.address2 || '',
             city: data.comuna,
@@ -406,6 +449,16 @@ export default function Checkout() {
                   </div>
                   <div>
                     <input
+                      {...register('rut')}
+                      placeholder="RUT (ej: 12.345.678-9)"
+                      className="w-full border-b border-gray-300 py-3 text-sm focus:outline-none focus:border-black transition-colors bg-transparent placeholder:text-gray-400"
+                    />
+                    {errors.rut && (
+                      <p className="text-xs text-red-500 mt-1">{errors.rut.message}</p>
+                    )}
+                  </div>
+                  <div>
+                    <input
                       {...register('email')}
                       type="email"
                       placeholder="Email"
@@ -487,7 +540,8 @@ export default function Checkout() {
                       >
                         <option value="">{selectedRegion ? 'Selecciona comuna' : 'Primero selecciona región'}</option>
                         {comunasDisponibles.map((comuna) => {
-                          const tieneEnvio4000 = COMUNAS_ENVIO_4000.includes(comuna);
+                          // Si tiene producto grande, siempre es "Por pagar"
+                          const tieneEnvio4000 = !tieneProductoEnvioPorPagar && COMUNAS_ENVIO_4000.includes(comuna);
                           return (
                             <option key={comuna} value={comuna}>
                               {comuna} {tieneEnvio4000 ? '($4.000)' : '(Por pagar)'}

@@ -23,14 +23,31 @@ export default function Header() {
   const { itemCount, toggleCart } = useCart();
   const navigate = useNavigate();
 
-  // Detectar scroll para ocultar barras verdes
+  // Detectar scroll para ocultar barras verdes con histéresis para evitar parpadeo
   useEffect(() => {
+    let lastScrollY = window.scrollY;
+    let ticking = false;
+
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const currentScrollY = window.scrollY;
+          // Histéresis: ocultar al bajar más de 80px, mostrar al subir más de 30px
+          if (!isScrolled && currentScrollY > 80) {
+            setIsScrolled(true);
+          } else if (isScrolled && currentScrollY < 30) {
+            setIsScrolled(false);
+          }
+          lastScrollY = currentScrollY;
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
-    window.addEventListener('scroll', handleScroll);
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [isScrolled]);
 
   // Speech Recognition - Optimizado para respuesta rápida
   const startVoiceSearch = () => {
@@ -659,10 +676,13 @@ export default function Header() {
                 Horario
               </p>
               <p className="text-xs text-gray-500">
-                Lun - Vie: 9:00 - 18:00
+                Lun - Vie: 9:00 - 13:00, 14:00 - 18:30
               </p>
               <p className="text-xs text-gray-500">
                 Sábados: 11:00 - 15:00
+              </p>
+              <p className="text-xs text-gray-500">
+                Domingos: Cerrado
               </p>
             </div>
           </div>

@@ -10,7 +10,8 @@ import {
   Share2,
   ChevronLeft,
   ChevronRight,
-  X
+  X,
+  MapPin
 } from 'lucide-react';
 import type { Product } from '../../types/product';
 import { formatPrice, getDiscountPercentage } from '../../utils/helpers';
@@ -109,7 +110,7 @@ export default function ProductDetail({ product }: ProductDetailProps) {
           url: window.location.href,
         });
       } catch (err) {
-        console.log('Error sharing:', err);
+        // Error silencioso al compartir
       }
     } else {
       navigator.clipboard.writeText(window.location.href);
@@ -204,6 +205,27 @@ export default function ProductDetail({ product }: ProductDetailProps) {
                   ))}
                 </div>
               )}
+
+              {/* Visit Our Store */}
+              <div className="mt-6 p-5 bg-[#f5f5f5] border border-gray-200">
+                <div className="flex items-start gap-3">
+                  <MapPin size={20} className="text-gray-600 flex-shrink-0 mt-0.5" />
+                  <div className="flex-1">
+                    <p className="text-sm text-gray-700 mb-3">
+                      O si prefieres, ven a conocernos directamente a nuestro local en <span className="font-medium">Maximiliano Ibáñez 1436, Quinta Normal</span>
+                    </p>
+                    <a
+                      href="https://www.google.com/maps/search/Billard+Ramirez"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 bg-black text-white text-xs uppercase tracking-wider px-4 py-2.5 hover:bg-gray-900 transition-colors"
+                    >
+                      <MapPin size={14} />
+                      Cómo llegar
+                    </a>
+                  </div>
+                </div>
+              </div>
             </div>
 
             {/* Product Info */}

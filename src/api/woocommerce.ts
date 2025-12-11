@@ -77,7 +77,6 @@ class WooCommerceAPI {
 
       return response.data;
     } catch (error) {
-      console.error('Error fetching products:', error);
       throw error;
     }
   }
@@ -90,7 +89,6 @@ class WooCommerceAPI {
       const response = await this.client.get<Product>(`/products/${id}`);
       return response.data;
     } catch (error) {
-      console.error(`Error fetching product ${id}:`, error);
       throw error;
     }
   }
@@ -110,7 +108,6 @@ class WooCommerceAPI {
 
       return response.data[0];
     } catch (error) {
-      console.error(`Error fetching product by slug ${slug}:`, error);
       throw error;
     }
   }
@@ -127,7 +124,6 @@ class WooCommerceAPI {
       );
       return response.data;
     } catch (error) {
-      console.error(`Error fetching variations for product ${productId}:`, error);
       throw error;
     }
   }
@@ -149,7 +145,6 @@ class WooCommerceAPI {
 
       return response.data;
     } catch (error) {
-      console.error('Error fetching categories:', error);
       throw error;
     }
   }
@@ -164,7 +159,6 @@ class WooCommerceAPI {
       );
       return response.data;
     } catch (error) {
-      console.error(`Error fetching category ${id}:`, error);
       throw error;
     }
   }
@@ -179,7 +173,6 @@ class WooCommerceAPI {
         ...params,
       });
     } catch (error) {
-      console.error(`Error searching products with query "${query}":`, error);
       throw error;
     }
   }
@@ -194,7 +187,6 @@ class WooCommerceAPI {
         per_page: limit,
       });
     } catch (error) {
-      console.error('Error fetching featured products:', error);
       throw error;
     }
   }
@@ -209,7 +201,6 @@ class WooCommerceAPI {
         per_page: limit,
       });
     } catch (error) {
-      console.error('Error fetching products on sale:', error);
       throw error;
     }
   }
@@ -227,7 +218,6 @@ class WooCommerceAPI {
         ...params,
       });
     } catch (error) {
-      console.error(`Error fetching products for category ${categoryId}:`, error);
       throw error;
     }
   }
@@ -240,7 +230,6 @@ class WooCommerceAPI {
       const response = await this.client.post('/orders', orderData);
       return response.data;
     } catch (error) {
-      console.error('Error creating order:', error);
       throw error;
     }
   }
@@ -257,21 +246,8 @@ class WooCommerceAPI {
         }
       });
 
-      console.log('=== DEBUG PAYMENT GATEWAYS ===');
-      console.log('URL completa:', this.baseURL + '/payment_gateways');
-      console.log('Total de gateways devueltos:', response.data.length);
-      console.log('Gateways:', response.data);
-      console.log('Headers:', response.headers);
-      console.log('================================');
-
-      // Por ahora devolver todos sin filtrar
       return response.data;
     } catch (error) {
-      console.error('Error fetching payment gateways:', error);
-      if (axios.isAxiosError(error)) {
-        console.error('Response data:', error.response?.data);
-        console.error('Response status:', error.response?.status);
-      }
       throw error;
     }
   }
@@ -284,7 +260,6 @@ class WooCommerceAPI {
       const response = await this.client.get(`/orders/${orderId}`);
       return response.data;
     } catch (error) {
-      console.error(`Error fetching order ${orderId}:`, error);
       throw error;
     }
   }
@@ -300,7 +275,6 @@ class WooCommerceAPI {
       const response = await axios.get(`${baseURL}/wp-json/billard/v1/customization/laser-price`);
       return response.data;
     } catch (error) {
-      console.error('Error fetching customization price:', error);
       // Valor por defecto en caso de error
       return {
         price: 10000,

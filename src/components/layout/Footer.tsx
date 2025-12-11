@@ -16,7 +16,7 @@ export default function Footer() {
               className="h-12 w-auto mb-6 brightness-0 invert"
             />
             <p className="text-sm text-gray-400 leading-relaxed mb-6">
-              Pool, diseño y estilo para tu casa.
+              Diseñamos y equipamos espacios de pool para disfrutar el juego con estilo.
             </p>
             <div className="flex gap-4">
               <a
@@ -131,13 +131,35 @@ export default function Footer() {
               </li>
               <li>
                 <p className="text-sm text-gray-400">
-                  Lun - Vie: 9:00 - 18:00
+                  Lun - Vie: 9:00 - 13:00, 14:00 - 18:30
                 </p>
               </li>
               <li>
                 <p className="text-sm text-gray-400">
                   Sáb: 11:00 - 15:00
                 </p>
+              </li>
+              <li>
+                <p className="text-sm text-gray-400">
+                  Dom: Cerrado
+                </p>
+              </li>
+              <li className="pt-2">
+                <p className="text-sm text-gray-400 mb-2">
+                  Maximiliano Ibáñez #1436, Quinta Normal
+                </p>
+                <a
+                  href="https://www.google.com/maps/search/Billard+Ramirez"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-xs uppercase tracking-wider text-white border border-gray-600 px-3 py-2 hover:bg-white hover:text-black transition-colors"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  Cómo llegar
+                </a>
               </li>
             </ul>
           </div>

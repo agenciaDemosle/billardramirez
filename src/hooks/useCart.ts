@@ -21,6 +21,7 @@ export function useCart() {
       sku: product.sku,
       variationId,
       variation,
+      categories: product.categories,
       customization,
     });
 

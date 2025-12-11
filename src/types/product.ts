@@ -99,6 +99,7 @@ export interface CartItem {
   variation?: {
     [key: string]: string;
   };
+  categories?: { id: number; name: string; slug: string }[];
   customization?: {
     laserEngraving?: {
       enabled: boolean;
