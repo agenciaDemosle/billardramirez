@@ -1,7 +1,12 @@
 import { Link } from 'react-router-dom';
+import { trackPhoneClick } from '../../hooks/useAnalytics';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
+
+  const handlePhoneClick = () => {
+    trackPhoneClick('footer', 'Llamar');
+  };
 
   return (
     <footer className="bg-black text-white">
@@ -120,7 +125,11 @@ export default function Footer() {
             </p>
             <ul className="space-y-3">
               <li>
-                <a href="tel:+56965839601" className="text-sm text-gray-400 hover:text-white transition-colors">
+                <a
+                  href="tel:+56965839601"
+                  onClick={handlePhoneClick}
+                  className="text-sm text-gray-400 hover:text-white transition-colors"
+                >
                   +56 9 6583 9601
                 </a>
               </li>

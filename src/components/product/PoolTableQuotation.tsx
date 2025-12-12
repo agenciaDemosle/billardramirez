@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { MapPin, Ruler, Palette, Truck, ChevronRight, Check, UtensilsCrossed } from 'lucide-react';
 import { formatPrice } from '../../utils/helpers';
+import { trackPoolTableQuoteComplete, trackWhatsAppClick } from '../../hooks/useAnalytics';
 
 interface PoolTableQuotationProps {
   basePrice: number;
@@ -109,10 +110,38 @@ export default function PoolTableQuotation({ basePrice, productName, description
     setSelectedClothColor(selectedCloth.colors[0]);
   }, [selectedCloth]);
 
-  const handleWhatsAppQuote = () => {
+  const handleWhatsAppQuote = async () => {
     const coverText = isRomaGiratoria
       ? 'Cubierta de comedor: Incluida\n'
       : (wantsDiningCover && tableType ? `Cubierta de comedor: ${formatPrice(coverPrice)}\n` : '');
+
+    // Preparar datos para tracking
+    const dimensionsText = useCustomDimensions && customDimensions.width && customDimensions.length
+      ? `${customDimensions.width} x ${customDimensions.length} cm`
+      : selectedDimension.detail;
+
+    const selectedAccessories = [];
+    if (isRomaGiratoria || wantsDiningCover) {
+      selectedAccessories.push('Cubierta de comedor');
+    }
+
+    // Track quote completion
+    await trackPoolTableQuoteComplete({
+      table_type: tableType || 'recreacional',
+      dimensions: dimensionsText,
+      cloth_color: `${selectedCloth.name} - ${selectedClothColor.name}`,
+      accessories: selectedAccessories,
+      estimated_value: totalPrice,
+      contact_method: 'whatsapp',
+    });
+
+    // Track WhatsApp click
+    await trackWhatsAppClick({
+      click_location: 'product_quotation',
+      button_text: 'Solicitar cotización',
+      service_interested: productName,
+      value: totalPrice,
+    });
 
     const message = encodeURIComponent(
       `Hola! Me interesa cotizar la siguiente mesa de pool:\n\n` +

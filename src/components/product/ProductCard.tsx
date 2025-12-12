@@ -3,7 +3,7 @@ import { ShoppingCart, Calculator } from 'lucide-react';
 import type { Product } from '../../types/product';
 import { formatPrice, getDiscountPercentage, getProductUrl } from '../../utils/helpers';
 import { useCart } from '../../hooks/useCart';
-import { trackAddToCart } from '../../hooks/useAnalytics';
+import { trackAddToCart, trackSelectItem } from '../../hooks/useAnalytics';
 
 interface ProductCardProps {
   product: Product;
@@ -51,9 +51,22 @@ export default function ProductCard({ product, listName, listId, index }: Produc
     });
   };
 
+  const handleProductClick = () => {
+    // Track product click (select_item)
+    trackSelectItem({
+      product_id: product.id.toString(),
+      product_name: product.name,
+      product_category: product.categories[0]?.name || 'Sin categoría',
+      price: parseFloat(product.price),
+      item_list_name: listName,
+      item_list_id: listId,
+      index: index,
+    });
+  };
+
   return (
     <div className="group">
-      <Link to={getProductUrl(product.slug)} className="block">
+      <Link to={getProductUrl(product.slug)} onClick={handleProductClick} className="block">
         {/* Image Container */}
         <div className="relative aspect-square overflow-hidden bg-[#f5f5f5] mb-4">
           <img

@@ -1,6 +1,7 @@
 import { useState, Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { X } from 'lucide-react';
+import { trackWhatsAppClick } from '../../hooks/useAnalytics';
 
 interface ClothChangeModalProps {
   isOpen: boolean;
@@ -40,8 +41,21 @@ export default function ClothChangeModal({ isOpen, onClose }: ClothChangeModalPr
     return encodeURIComponent(message);
   };
 
-  const handleWhatsAppClick = () => {
+  const handleWhatsAppClick = async () => {
     if (!isValid) return;
+
+    // Calculate approximate service value (for tracking purposes)
+    const area = (parseFloat(length) * parseFloat(width)) / 10000;
+    const estimatedValue = area * 50000; // Estimación aproximada
+
+    // Track WhatsApp click for cloth change service
+    await trackWhatsAppClick({
+      click_location: 'cloth_change_modal',
+      button_text: 'Solicitar Cotización',
+      service_interested: 'Cambio de Paño',
+      value: estimatedValue,
+    });
+
     const phoneNumber = '56965839601';
     const url = `https://wa.me/${phoneNumber}?text=${generateWhatsAppMessage()}`;
     window.open(url, '_blank');

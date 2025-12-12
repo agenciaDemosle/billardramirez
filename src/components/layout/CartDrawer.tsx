@@ -4,9 +4,23 @@ import { Dialog, Transition } from '@headlessui/react';
 import { X, Plus, Minus, Trash2 } from 'lucide-react';
 import { useCart } from '../../hooks/useCart';
 import { formatPrice } from '../../utils/helpers';
+import { trackRemoveFromCart } from '../../hooks/useAnalytics';
 
 export default function CartDrawer() {
   const { items, isOpen, closeCart, updateQuantity, removeItem, total } = useCart();
+
+  const handleRemoveItem = (item: any) => {
+    // Track remove from cart
+    trackRemoveFromCart({
+      product_id: item.product_id?.toString() || item.id.toString(),
+      product_name: item.name,
+      product_category: 'Sin categoría',
+      product_price: item.price,
+      quantity: item.quantity,
+    });
+
+    removeItem(item.id);
+  };
 
   return (
     <Transition.Root show={isOpen} as={Fragment}>
@@ -91,7 +105,7 @@ export default function CartDrawer() {
                                     <button
                                       type="button"
                                       className="text-gray-400 hover:text-black transition-colors flex-shrink-0"
-                                      onClick={() => removeItem(item.id)}
+                                      onClick={() => handleRemoveItem(item)}
                                     >
                                       <Trash2 size={16} />
                                     </button>

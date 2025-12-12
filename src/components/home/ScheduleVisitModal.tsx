@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { X, Calendar, Clock, ChevronLeft, ChevronRight } from 'lucide-react';
+import { trackWhatsAppClick } from '../../hooks/useAnalytics';
 
 interface ScheduleVisitModalProps {
   isOpen: boolean;
@@ -107,11 +108,19 @@ export default function ScheduleVisitModal({ isOpen, onClose }: ScheduleVisitMod
     return `${time} - ${nextHour}:00`;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!selectedDate || !selectedTime || !name || !phone) return;
 
     const formattedDate = `${selectedDate.getDate()} de ${MONTH_NAMES[selectedDate.getMonth()]}`;
     const dayName = DAY_NAMES[selectedDate.getDay()];
+
+    // Track WhatsApp click for showroom visit
+    await trackWhatsAppClick({
+      click_location: 'schedule_visit_modal',
+      button_text: 'Confirmar por WhatsApp',
+      service_interested: 'Visita Showroom',
+      value: 0,
+    });
 
     const message = encodeURIComponent(
       `Hola, quiero agendar una visita al showroom.\n\n` +

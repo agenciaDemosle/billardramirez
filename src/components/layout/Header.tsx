@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Menu, X, Search, ShoppingCart, Phone, Mail, ChevronDown, Box, Star, Package, Flame, Shield, Mic } from 'lucide-react';
 import { useCart } from '../../hooks/useCart';
-import { trackPoolTableQuoteStart } from '../../hooks/useAnalytics';
+import { trackPoolTableQuoteStart, trackSearch } from '../../hooks/useAnalytics';
 import CategoryMenu from './CategoryMenu';
 
 // Extend Window interface for SpeechRecognition
@@ -81,6 +81,12 @@ export default function Header() {
 
         // Buscar con delay mínimo
         searchTimeout = setTimeout(() => {
+          // Track voice search event
+          trackSearch({
+            search_term: finalTranscript.trim(),
+            search_type: 'voice',
+          });
+
           const params = new URLSearchParams();
           params.set('buscar', finalTranscript.trim());
           navigate(`/tienda?${params.toString()}`);
@@ -219,6 +225,12 @@ export default function Header() {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
+      // Track search event
+      trackSearch({
+        search_term: searchQuery.trim(),
+        search_type: 'text',
+      });
+
       const params = new URLSearchParams();
       params.set('buscar', searchQuery.trim());
       navigate(`/tienda?${params.toString()}`);

@@ -657,6 +657,101 @@ export function trackOutboundClick(url: string, linkText: string = '') {
 }
 
 // ============================================
+// PRODUCT INTERACTION EVENTS
+// ============================================
+
+// Track product click (select_item)
+export function trackSelectItem(params: {
+  product_id: string;
+  product_name: string;
+  product_category: string;
+  price: number;
+  item_list_name?: string;
+  item_list_id?: string;
+  index?: number;
+}) {
+  cleanDataLayer();
+
+  if (typeof window !== 'undefined' && window.dataLayer) {
+    window.dataLayer.push({
+      event: 'select_item',
+      // GA4 format
+      ecommerce: {
+        items: [{
+          item_id: params.product_id,
+          item_name: params.product_name,
+          item_category: params.product_category,
+          price: params.price,
+          ...(params.item_list_name && { item_list_name: params.item_list_name }),
+          ...(params.item_list_id && { item_list_id: params.item_list_id }),
+          ...(params.index !== undefined && { index: params.index }),
+        }]
+      },
+      // Additional params
+      product_id: params.product_id,
+      product_name: params.product_name,
+      product_category: params.product_category,
+      value: params.price,
+      currency: 'CLP',
+    });
+  }
+
+  // console.log('👆 Select Item:', params);
+}
+
+// Track remove from cart
+export function trackRemoveFromCart(params: {
+  product_id: string;
+  product_name: string;
+  product_category: string;
+  product_price: number;
+  quantity: number;
+}) {
+  cleanDataLayer();
+
+  if (typeof window !== 'undefined' && window.dataLayer) {
+    window.dataLayer.push({
+      event: 'remove_from_cart',
+      // GA4 format
+      ecommerce: {
+        items: [{
+          item_id: params.product_id,
+          item_name: params.product_name,
+          item_category: params.product_category,
+          price: params.product_price,
+          quantity: params.quantity,
+        }]
+      },
+      // Additional params
+      product_id: params.product_id,
+      product_name: params.product_name,
+      value: params.product_price * params.quantity,
+      currency: 'CLP',
+    });
+  }
+
+  // console.log('🗑️ Remove from Cart:', params);
+}
+
+// Track search
+export function trackSearch(params: {
+  search_term: string;
+  search_type?: 'text' | 'voice';
+}) {
+  cleanDataLayer();
+
+  if (typeof window !== 'undefined' && window.dataLayer) {
+    window.dataLayer.push({
+      event: 'search',
+      search_term: params.search_term,
+      search_type: params.search_type || 'text',
+    });
+  }
+
+  // console.log('🔍 Search:', params);
+}
+
+// ============================================
 // SCROLL TRACKING
 // ============================================
 
@@ -997,6 +1092,8 @@ export function useAnalytics() {
     // E-commerce
     trackViewContent,
     trackAddToCart,
+    trackRemoveFromCart,
+    trackSelectItem,
     trackInitiateCheckout,
     trackPurchase,
 
@@ -1010,6 +1107,9 @@ export function useAnalytics() {
 
     // Outbound
     trackOutboundClick,
+
+    // Search
+    trackSearch,
 
     // Scroll & Visibility
     trackScrollDepth,
