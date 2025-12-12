@@ -1,12 +1,8 @@
 {
   "exportFormatVersion": 2,
-  "exportTime": "2025-12-12 00:00:00",
   "containerVersion": {
     "tag": [
       {
-        "accountId": "TU_ACCOUNT_ID",
-        "containerId": "TU_CONTAINER_ID",
-        "tagId": "1",
         "name": "GA4 - select_item",
         "type": "gaawe",
         "parameter": [
@@ -26,14 +22,10 @@
             "value": "{{GA4 Measurement ID}}"
           }
         ],
-        "fingerprint": "1",
         "firingTriggerId": ["2"],
         "tagFiringOption": "ONCE_PER_EVENT"
       },
       {
-        "accountId": "TU_ACCOUNT_ID",
-        "containerId": "TU_CONTAINER_ID",
-        "tagId": "2",
         "name": "GA4 - remove_from_cart",
         "type": "gaawe",
         "parameter": [
@@ -53,14 +45,10 @@
             "value": "{{GA4 Measurement ID}}"
           }
         ],
-        "fingerprint": "2",
         "firingTriggerId": ["3"],
         "tagFiringOption": "ONCE_PER_EVENT"
       },
       {
-        "accountId": "TU_ACCOUNT_ID",
-        "containerId": "TU_CONTAINER_ID",
-        "tagId": "3",
         "name": "GA4 - search",
         "type": "gaawe",
         "parameter": [
@@ -111,16 +99,12 @@
             "value": "{{GA4 Measurement ID}}"
           }
         ],
-        "fingerprint": "3",
         "firingTriggerId": ["4"],
         "tagFiringOption": "ONCE_PER_EVENT"
       }
     ],
     "trigger": [
       {
-        "accountId": "TU_ACCOUNT_ID",
-        "containerId": "TU_CONTAINER_ID",
-        "triggerId": "2",
         "name": "CE - select_item",
         "type": "CUSTOM_EVENT",
         "customEventFilter": [
@@ -139,13 +123,9 @@
               }
             ]
           }
-        ],
-        "fingerprint": "1"
+        ]
       },
       {
-        "accountId": "TU_ACCOUNT_ID",
-        "containerId": "TU_CONTAINER_ID",
-        "triggerId": "3",
         "name": "CE - remove_from_cart",
         "type": "CUSTOM_EVENT",
         "customEventFilter": [
@@ -164,13 +144,9 @@
               }
             ]
           }
-        ],
-        "fingerprint": "2"
+        ]
       },
       {
-        "accountId": "TU_ACCOUNT_ID",
-        "containerId": "TU_CONTAINER_ID",
-        "triggerId": "4",
         "name": "CE - search",
         "type": "CUSTOM_EVENT",
         "customEventFilter": [
@@ -189,15 +165,11 @@
               }
             ]
           }
-        ],
-        "fingerprint": "3"
+        ]
       }
     ],
     "variable": [
       {
-        "accountId": "TU_ACCOUNT_ID",
-        "containerId": "TU_CONTAINER_ID",
-        "variableId": "1",
         "name": "DLV - search_term",
         "type": "v",
         "parameter": [
@@ -216,13 +188,9 @@
             "key": "name",
             "value": "search_term"
           }
-        ],
-        "fingerprint": "1"
+        ]
       },
       {
-        "accountId": "TU_ACCOUNT_ID",
-        "containerId": "TU_CONTAINER_ID",
-        "variableId": "2",
         "name": "DLV - search_type",
         "type": "v",
         "parameter": [
@@ -241,8 +209,7 @@
             "key": "name",
             "value": "search_type"
           }
-        ],
-        "fingerprint": "2"
+        ]
       }
     ]
   }
