@@ -24,31 +24,16 @@ export default function Header() {
   const { itemCount, toggleCart } = useCart();
   const navigate = useNavigate();
 
-  // Detectar scroll para ocultar barras verdes con histéresis para evitar parpadeo
+  // Detectar scroll para ocultar barras verdes
   useEffect(() => {
-    let lastScrollY = window.scrollY;
-    let ticking = false;
-
     const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          const currentScrollY = window.scrollY;
-          // Histéresis: ocultar al bajar más de 80px, mostrar al subir más de 30px
-          if (!isScrolled && currentScrollY > 80) {
-            setIsScrolled(true);
-          } else if (isScrolled && currentScrollY < 30) {
-            setIsScrolled(false);
-          }
-          lastScrollY = currentScrollY;
-          ticking = false;
-        });
-        ticking = true;
-      }
+      const scrollY = window.scrollY;
+      setIsScrolled(scrollY > 50);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [isScrolled]);
+  }, []);
 
   // Speech Recognition - Optimizado para respuesta rápida
   const startVoiceSearch = () => {
